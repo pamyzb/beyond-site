@@ -1,6 +1,6 @@
 "use client";
-import type { FormEvent } from 'react';
-import { Button } from './button';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { CircleAlert, Check, LoaderCircle, RotateCcw } from 'lucide-react';
 import { WHATSAPP } from '@/lib/design';
 
 const fields = [
@@ -9,25 +9,112 @@ const fields = [
   {name:'phone',title:'CELULAR',placeholder:'(00) 99999-9999',type:'tel',autocomplete:'tel'},
   {name:'email',title:'E-MAIL',placeholder:'Ex: voce@empresa.com',type:'email',autocomplete:'email'},
 ];
+function maskPhone(input: HTMLInputElement) {
+  const raw=input.value;
+  const caret=input.selectionStart ?? raw.length;
+  let digits=raw.replace(/\D/g,'');
+  let before=raw.slice(0,caret).replace(/\D/g,'').length;
+  if(digits.length===13&&digits.startsWith('55')){digits=digits.slice(2);before=Math.max(0,before-2);}
+  digits=digits.slice(0,11);
+  const local=digits.slice(2);
+  const formatted=digits.length>2?`(${digits.slice(0,2)}) ${local.slice(0,5)}${local.length>5?'-'+local.slice(5):''}`:digits?`(${digits}`:'';
+  input.value=formatted;
+  let position=0,seen=0;
+  while(position<formatted.length&&seen<before){if(/\d/.test(formatted[position]))seen++;position++;}
+  input.setSelectionRange(position,position);
+}
+// Prototype only: no request, mail client, or message is sent from this form.
+// Future recipient: contato@beyondthebytes.com.br.
 export function ContactForm() {
+  const [status,setStatus]=useState<'idle'|'sending'|'success'>('idle');
+  const [errors,setErrors]=useState<Record<string,string>>({});
+  function errorFor(input: HTMLInputElement | HTMLTextAreaElement) {
+    if(!input.value.trim())return 'Preencha este campo.';
+    if(input.name==='phone'&&!input.validity.valid)return 'Informe o celular com DDD e 9 dígitos.';
+    if(input.name==='email'&&!input.validity.valid)return 'Informe um e-mail válido.';
+    return '';
+  }
+  function updateError(input: HTMLInputElement | HTMLTextAreaElement) {
+    if(!(input.name in errors))return;
+    const message=errorFor(input);
+    setErrors(previous=>{const next={...previous};if(message)next[input.name]=message;else delete next[input.name];return next;});
+  }
+  const timer=useRef<ReturnType<typeof setTimeout> | null>(null);
+  const heading=useRef<HTMLHeadingElement>(null);
+  const firstField=useRef<HTMLInputElement>(null);
+  const returning=useRef(false);
+  useEffect(()=>()=>{if(timer.current)clearTimeout(timer.current);},[]);
+  useEffect(()=>{
+    if(status==='success')heading.current?.focus();
+    if(status==='idle'&&returning.current){firstField.current?.focus();returning.current=false;}
+  },[status]);
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if(!event.currentTarget.reportValidity())return;
-    const d=new FormData(event.currentTarget);
-    const message=`Olá! Sou ${d.get('name')}, da ${d.get('company')}.\nCelular: ${d.get('phone')}\nE-mail: ${d.get('email')}\n\n${d.get('project')}`;
-    window.open(`${WHATSAPP}?text=${encodeURIComponent(message)}`,'_blank','noopener,noreferrer');
+    if(status!=='idle'||timer.current)return;
+    const inputs=Array.from(event.currentTarget.querySelectorAll<HTMLInputElement|HTMLTextAreaElement>('input,textarea'));
+    const nextErrors:Record<string,string>={};
+    inputs.forEach(input=>{const message=errorFor(input);if(message)nextErrors[input.name]=message;});
+    setErrors(nextErrors);
+    if(Object.keys(nextErrors).length){inputs.find(input=>nextErrors[input.name])?.focus();return;}
+    setStatus('sending');
+    timer.current=setTimeout(()=>{timer.current=null;setStatus('success');},1100);
   }
-  return <form className="contact-form" onSubmit={submit}>
-    {fields.map(field=><label className="field flex min-w-0 flex-col gap-[4.5px]" htmlFor={field.name} key={field.name}>
+  if(status==='success')return <div className="contact-form contact-success">
+    <div className="contact-success-icon" aria-hidden="true"><span><Check size={28} strokeWidth={2}/></span></div>
+    <h3 ref={heading} tabIndex={-1}>Mensagem enviada!</h3>
+    <p className="contact-success-copy">Recebemos seu contato. Um sócio da Beyond vai falar com você em breve.</p>
+    <div className="form-actions">
+      <button type="button" className="button button-lime contact-submit contact-reset" onClick={()=>{returning.current=true;setStatus('idle');}}><RotateCcw className="button-icon" size={18} aria-hidden="true"/><span className="button-label">Enviar outra mensagem</span></button>
+      <a className="button whatsapp-link" href={WHATSAPP}><img className="button-icon" src="/assets/figma/form-whatsapp.svg" width={24} height={24} alt="" /><span className="button-label">Chame a gente no WhatsApp</span></a>
+    </div>
+  </div>;
+  return <form className="contact-form" noValidate onSubmit={submit} aria-busy={status==='sending'}>
+    {fields.map((field,index)=><label className="field flex min-w-0 flex-col gap-[4.5px]" htmlFor={field.name} key={field.name}>
       <span className="field-label">{field.title}</span>
-      <input id={field.name} name={field.name} placeholder={field.placeholder} type={field.type} autoComplete={field.autocomplete} required />
+      <span className="contact-input-wrap">
+      <input ref={index===0?firstField:undefined} id={field.name} name={field.name} placeholder={field.placeholder} type={field.type} autoComplete={field.autocomplete} required disabled={status==='sending'}
+        aria-invalid={!!errors[field.name]} aria-describedby={errors[field.name]?`${field.name}-error`:undefined}
+        inputMode={field.name==='phone'?'tel':field.name==='email'?'email':undefined}
+        autoCapitalize={field.name==='email'?'none':undefined} spellCheck={field.name==='email'?false:undefined}
+        pattern={field.name==='phone'?'\\([1-9][0-9]\\) [0-9]{5}-[0-9]{4}':field.name==='email'?'[^\\s@]+@[^\\s@]+\\.[^\\s@]+':undefined}
+        onInput={event=>{
+          const input=event.currentTarget;
+          input.setCustomValidity('');
+          if(field.name==='phone')maskPhone(input);
+          if(field.name==='email')input.value=input.value.replace(/\s/g,'');
+          updateError(input);
+        }}
+        onKeyDown={event=>{
+          if(field.name!=='phone'||!['Backspace','Delete'].includes(event.key))return;
+          const input=event.currentTarget;
+          const start=input.selectionStart ?? 0,end=input.selectionEnd ?? start;
+          if(start!==end)return;
+          if(event.key==='Backspace'){
+            let from=start;
+            while(from>0&&!/\d/.test(input.value[from-1]))from--;
+            if(from!==start)input.setSelectionRange(Math.max(0,from-1),start);
+          }else{
+            let to=start;
+            while(to<input.value.length&&!/\d/.test(input.value[to]))to++;
+            if(to!==start)input.setSelectionRange(start,Math.min(input.value.length,to+1));
+          }
+        }}
+        />
+      {errors[field.name]&&<CircleAlert className="contact-field-alert" size={20} aria-hidden="true"/>}
+      </span>
+      {errors[field.name]&&<span className="contact-field-error" id={`${field.name}-error`}>{errors[field.name]}</span>}
     </label>)}
     <label className="field field-wide flex min-w-0 flex-col gap-[4.5px]" htmlFor="project"><span className="field-label">DESCRIÇÃO DO PROJETO</span>
-      <textarea id="project" name="project" placeholder="Conte sobre seu desafio, momento e objetivo." required rows={5} />
+      <span className="contact-input-wrap">
+      <textarea id="project" name="project" placeholder="Conte sobre seu desafio, momento e objetivo." required rows={5} disabled={status==='sending'} aria-invalid={!!errors.project} aria-describedby={errors.project?'project-error':undefined} onInput={event=>updateError(event.currentTarget)} />
+      {errors.project&&<CircleAlert className="contact-field-alert" size={20} aria-hidden="true"/>}
+      </span>
+      {errors.project&&<span className="contact-field-error" id="project-error">{errors.project}</span>}
     </label>
     <div className="form-actions">
-      <Button className="button-lime" type="submit">Fale com um sócio da Beyond</Button>
-      <a className="whatsapp-link" href={WHATSAPP}>Chame a gente no WhatsApp</a>
+      <button className="button button-lime contact-submit" type="submit" disabled={status==='sending'}><span className="button-label">{status==='sending'?'Enviando…':'Fale com um sócio da Beyond'}</span>{status==='sending'?<LoaderCircle className="button-icon contact-spinner" size={18} aria-hidden="true"/>:<img className="button-icon" src="/assets/figma/header-button-arrow.svg" width={18} height={18} alt="" />}</button>
+      <a className="button whatsapp-link" href={WHATSAPP}><img className="button-icon" src="/assets/figma/form-whatsapp.svg" width={24} height={24} alt="" /><span className="button-label">Chame a gente no WhatsApp</span></a>
     </div>
+    <span className="contact-live-status" role="status">{status==='sending'?'Simulando o envio da mensagem…':''}</span>
   </form>;
 }

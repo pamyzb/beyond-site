@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 /** One delegated listener keeps the fill origin at the pointer's entry point. */
 export function ButtonMotion() {
   useEffect(() => {
-    const selector = '.button-link, .button, .menu-toggle';
+    const selector = '.button-link, .button, .menu-toggle, .qr-instructions';
     const enter = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse' || !(event.target instanceof Element)) return;
       const button = event.target.closest<HTMLElement>(selector);

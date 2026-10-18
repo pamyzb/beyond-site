@@ -16,9 +16,8 @@ export function MotionRoot({ children }: {children: ReactNode}) {
     if(!appSection || !contextSafe)return;
     let disposed=false;
     let refreshFrame=0;
-    const syncTheme=()=>{
-      const heading=appSection.querySelector<HTMLElement>('h2');
-      if(heading)root.dataset.scrollTheme=heading.getBoundingClientRect().top<window.innerHeight?'dark':'light';
+    const syncTheme=(trigger:ScrollTrigger)=>{
+      root.dataset.scrollTheme=trigger.scroll()>=trigger.start?'dark':'light';
     };
     const createTrigger=contextSafe(()=>{
       measureType(element);
@@ -33,14 +32,15 @@ export function MotionRoot({ children }: {children: ReactNode}) {
           onEnter:syncWhatsApp,onLeaveBack:syncWhatsApp,onRefresh:syncWhatsApp});
         syncWhatsApp();
       }
-      ScrollTrigger.create({id:'app-scroll-theme',trigger:appSection,
+      const themeTrigger=ScrollTrigger.create({id:'app-scroll-theme',trigger:appSection,
         start:()=>{
           const heading=appSection.querySelector<HTMLElement>('h2');
           const offset=heading?heading.getBoundingClientRect().top-appSection.getBoundingClientRect().top:0;
           return `top+=${offset} bottom`;
         },end:'max',onUpdate:syncTheme,
-        onEnter:syncTheme,onLeaveBack:syncTheme,onRefresh:syncTheme});
-      syncTheme();
+        onEnter:()=>{root.dataset.scrollTheme='dark';},
+        onLeaveBack:()=>{root.dataset.scrollTheme='light';},onRefresh:syncTheme});
+      syncTheme(themeTrigger);
       root.dataset.ready='true';
     });
     // Fonts can change both text bounds and responsive section heights.

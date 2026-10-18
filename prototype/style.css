@@ -251,9 +251,11 @@ button{cursor:pointer}
 .section-band{width:100%;background:var(--color-page)}
 .section-band>.design-section{margin-inline:auto}
 /* A single reversible scroll state paints the page canvas. */
-:root{--scroll-canvas:var(--color-white);--scroll-ink:#000;--scroll-muted:#4b5563;--theme-duration:600ms;--theme-ease:cubic-bezier(.22,1,.36,1)}
-:root[data-scroll-theme=dark]{--scroll-canvas:#000;--scroll-ink:#fff;--scroll-muted:#d1d5db}
-body,.section-band,.section-band>.design-section{background-color:var(--scroll-canvas);transition:background-color var(--theme-duration) var(--theme-ease)}
+@property --theme-dark-progress{syntax:'<number>';inherits:true;initial-value:0}
+:root{--theme-dark-progress:0;--theme-dark-canvas:#0E121D;--scroll-canvas:color-mix(in srgb,#fff calc((1 - var(--theme-dark-progress))*100%),var(--theme-dark-canvas));--scroll-ink:#000;--scroll-muted:#4b5563;--theme-duration:500ms;--theme-ease:ease;transition:--theme-dark-progress var(--theme-duration) var(--theme-ease)}
+:root[data-scroll-theme=dark]{--theme-dark-progress:1;--scroll-ink:#fff;--scroll-muted:#d1d5db}
+body{background-color:var(--scroll-canvas)}
+.section-band,.section-band>.design-section{background-color:transparent}
 .section-conversa{--color-black:var(--scroll-ink);--color-text-subtle:var(--scroll-muted)}
 .section-conversa .text-run{transition:color var(--theme-duration) var(--theme-ease)}
 /* Keep the designed surfaces within the changing page canvas. */

@@ -3,6 +3,7 @@ import { ClientCarousel } from './client-carousel';
 import { type DesignBlock, type SectionData, type Style } from '@/lib/design';
 import { TextBlock } from './text-block';
 
+import { AppArtwork } from './app-artwork';
 import { ReflowArtwork } from './artwork';
 
 const art: Record<string,string> = {Article:'client-usp',Article_2:'client-pasteur',Article_3:'client-superpet',Article_10:'ai-visual',Article_11:'case-screen',container1:'phone-project','container 2':'phone-cases',Container_43:'testimonial-photo',Article_16:'about-16',Article_17:'about-17',Article_18:'about-18'};
@@ -14,7 +15,7 @@ function groupKey(block: DesignBlock, id: string) {
   if (id==='metricas') return block.ancestors.find(k=>/^Paragraph_[456]$/.test(k));
   return block.ancestors.find(k=>/^Article(?:_\d+)?$/.test(k));
 }
-export function ContentCards({ section }: { section: SectionData }) {
+export function ContentCards({ section, appArtwork }: { section: SectionData; appArtwork?:Record<string,string> }) {
   const items: { key: string; card: boolean; blocks: DesignBlock[] }[] = [];
   const cards = new Map<string, typeof items[number]>();
   section.blocks.forEach((block,i)=>{
@@ -31,7 +32,7 @@ export function ContentCards({ section }: { section: SectionData }) {
     if (section.id==='processo' && item.key==='Article_15') style['--card-order']=3;
     if (section.id==='blog' && blog[item.key]) style['--card-art']=`url("/assets/figma/${blog[item.key]}.svg")`;
     return <article key={item.key} className="content-card" data-source={item.key} data-motion="card" style={style}>
-      {art[item.key] && <ReflowArtwork name={art[item.key]} />}
+      {art[item.key] && (appArtwork?.[art[item.key]] ? <AppArtwork svg={appArtwork[art[item.key]]} className="component-art"/> : <ReflowArtwork name={art[item.key]} />)}
       {item.blocks.map((block,i)=><TextBlock key={`${block.source}-${i}`} block={block} section={section} />)}
     </article>;
   })}</div>{section.id==='clientes' && <ClientCarousel clients={items.filter(item=>item.card).map(item=>({key:item.key,name:item.blocks[0].runs.map(run=>run.text).join(' '),summary:item.blocks.slice(1).map(block=>block.runs.map(run=>run.text).join(' ')).join(' '),image:'/assets/figma/'+art[item.key]+'.svg'}))} />}</>;

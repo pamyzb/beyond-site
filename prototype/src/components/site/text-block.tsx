@@ -3,6 +3,7 @@ import { actionFor, color, TYPE_TOKENS, type DesignBlock, type SectionData, type
 import { Artwork } from './artwork';
 import { HeroVideoWord } from './hero-video-word';
 import { HeroTypewriter } from './hero-typewriter';
+import { AppTitleWord } from './app-title-word';
 
 export function TextBlock({ block, section }: { block: DesignBlock; section: SectionData }) {
   if(section.id==='inicio' && block.role==='h1') return <h1 className="hero-grid-title"><span>Tecnologia que</span><span className="hero-grid-title-bottom">move <HeroVideoWord /></span></h1>;
@@ -28,7 +29,7 @@ export function TextBlock({ block, section }: { block: DesignBlock; section: Sec
         '--run-size': TYPE_TOKENS[run.size] ? `var(--text-${TYPE_TOKENS[run.size]})` : `${run.size}px`,
         fontWeight:block.role==='label'?'var(--weight-semibold)':href&&block.actionBox?500:Number(run.weight), fontStyle:run.italic?'italic':'normal', letterSpacing:run.tracking, color:color(run.color)};
       if (run.origin) Object.assign(runStyle, {transformOrigin:`${run.origin[0]-run.x}px ${run.origin[1]-run.y+run.size*.85}px`, transform:`rotate(${run.angle}deg)`});
-      return <Fragment key={i}><span className={`text-run${section.id==='inicio'&&run.text==='negócios'?' textured-word':''}${menuItem?' menu-ink':''}`} style={runStyle} data-size={run.size}>{section.id==='inicio' && /software house/i.test(run.text) && /anos/i.test(run.text)?<HeroTypewriter text={run.text}/>:run.text}{menuItem && <>
+      return <Fragment key={i}><span className={`text-run${section.id==='inicio'&&run.text==='negócios'?' textured-word':''}${menuItem?' menu-ink':''}`} style={runStyle} data-size={run.size}>{section.id==='inicio' && /software house/i.test(run.text) && /anos/i.test(run.text)?<HeroTypewriter text={run.text}/>:section.id==='aplicativo' && block.role==='h3' && ['palma','Experimente'].includes(run.text.trim())?<AppTitleWord text={run.text}/>:run.text}{menuItem && <>
         <span className="menu-bracket menu-bracket-left" aria-hidden="true" />
         <span className="menu-bracket menu-bracket-right" aria-hidden="true" />
         <svg className="menu-scribble" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M3 7 C22 2 65 2 96 4 C78 5 41 7 20 9 C44 7 72 8 92 9" /></svg>

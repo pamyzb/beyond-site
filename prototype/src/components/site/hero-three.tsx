@@ -58,20 +58,21 @@ export function HeroGlass() {
       };
       const wake=()=>{if(!frame&&active&&!document.hidden)frame=requestAnimationFrame(render);};
       const resize=()=>{
-        const nextWidth=hero.clientWidth,nextHeight=hero.clientHeight;
+        const nextWidth=container.clientWidth,nextHeight=container.clientHeight;
         if(interacted){x*=nextWidth/width;targetX*=nextWidth/width;y*=nextHeight/height;targetY*=nextHeight/height;}
         width=nextWidth;height=nextHeight;
         renderer.setSize(width,height);
         camera.aspect=width/height;camera.fov=THREE.MathUtils.radToDeg(2*Math.atan(height/2000));camera.updateProjectionMatrix();
-        const size=width<640?170:width<1440?290:360;
+        const size=hero.clientWidth<640?170:hero.clientWidth<1440?290:360;
         logo.scale.setScalar(size/480);
         if(!interacted){x=targetX=width/2;y=targetY=height/2;}
         wake();
       };
       const move=(event:PointerEvent)=>{
         if(reduced.matches||!fine.matches||event.pointerType==='touch')return;
-        const bounds=hero.getBoundingClientRect();
-        if(event.clientY<bounds.top||event.clientY>bounds.bottom)return;
+        const heroBounds=hero.getBoundingClientRect();
+        if(event.clientY<heroBounds.top||event.clientY>heroBounds.bottom)return;
+        const bounds=container.getBoundingClientRect();
         interacted=true;targetX=event.clientX-bounds.left;targetY=event.clientY-bounds.top;
         if(previous){ty+=(event.clientX-previous.x)*.006;tx+=(event.clientY-previous.y)*.003;}
         previous={x:event.clientX,y:event.clientY};wake();
@@ -79,7 +80,7 @@ export function HeroGlass() {
       const leave=()=>{previous=null;};
       const visibility=()=>{last=0;if(document.hidden){cancelAnimationFrame(frame);frame=0;}else wake();};
       const motionChange=()=>{if(reduced.matches){previous=null;tx=-.16;ty=.32;}wake();};
-      const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(hero);
+      const resizeObserver=new ResizeObserver(resize);resizeObserver.observe(container);
       const intersection=new IntersectionObserver(entries=>{active=entries[0].isIntersecting;if(active)wake();else{cancelAnimationFrame(frame);frame=0;last=0;}},{rootMargin:'100px'});intersection.observe(hero);
       const header=document.querySelector('.site-header:not(.hero-header-reveal)');
       hero.addEventListener('pointermove',move);hero.addEventListener('pointerleave',leave);

@@ -18,13 +18,29 @@ const descriptions=[
 export function ServicesSection({section}:{section:SectionData}) {
   const [canGoBack,setCanGoBack]=useState(false);
   const [atEnd,setAtEnd]=useState(false);
+  const [activeGroup,setActiveGroup]=useState(0);
   const destination=useRef<number | null>(null);
   const scope=useRef<HTMLElement>(null);
   const viewport=useRef<HTMLDivElement>(null);
   const rail=useRef<HTMLDivElement>(null);
   const copy=section.blocks.map(block=>block.runs.map(run=>run.text).join(' '));
   const titles=section.blocks.filter(block=>block.role==='h3').map(block=>block.runs.map(run=>run.text).join(' '));
-  function navigate(direction: number | 'first' | 'last') {
+  function groupPositions() {
+    const element=viewport.current,cards=rail.current?.children;
+    if(!element || !cards?.length)return [0,0,0];
+    const first=cards[0].getBoundingClientRect().left;
+    const max=Math.max(0,element.scrollWidth-element.clientWidth);
+    return [0,2,4].map(index=>Math.min(max,cards[index].getBoundingClientRect().left-first));
+  }
+  function updatePagination() {
+    const element=viewport.current;
+    if(!element)return;
+    const positions=groupPositions();
+    setActiveGroup(positions.reduce((nearest,position,index)=>Math.abs(position-element.scrollLeft)<Math.abs(positions[nearest]-element.scrollLeft)?index:nearest,0));
+    setCanGoBack(element.scrollLeft>2);
+    setAtEnd(element.scrollLeft>=element.scrollWidth-element.clientWidth-2);
+  }
+  function navigate(direction: number | 'first' | 'last' | {group:number}) {
     const windowElement=viewport.current;
     const cards=rail.current?.children;
     if(!windowElement || !cards?.length)return;
@@ -46,7 +62,7 @@ export function ServicesSection({section}:{section:SectionData}) {
     }
     const current=destination.current??windowElement.scrollLeft;
     const page=pages.reduce((nearest,position,index)=>Math.abs(position-current)<Math.abs(pages[nearest]-current)?index:nearest,0);
-    const target=direction==='first'?0:direction==='last'?max:pages[Math.max(0,Math.min(pages.length-1,page+direction))];
+    const target=typeof direction==='object'?groupPositions()[direction.group]:direction==='first'?0:direction==='last'?max:pages[Math.max(0,Math.min(pages.length-1,page+direction))];
     destination.current=target;
     windowElement.scrollTo({left:target,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
   }
@@ -65,8 +81,9 @@ export function ServicesSection({section}:{section:SectionData}) {
       paths[1]?.setAttribute('d',`M 1 ${middle} V ${bottom-radius} Q 1 ${bottom} ${1+radius} ${bottom} H ${right-radius} Q ${right} ${bottom} ${right} ${bottom-radius} V ${middle}`);
     };
     updateOutline();
-    const observer=new ResizeObserver(updateOutline);
+    const observer=new ResizeObserver(()=>{updateOutline();updatePagination();});
     if(outline)observer.observe(outline);
+    if(viewport.current)observer.observe(viewport.current);
     const mm=gsap.matchMedia();
     mm.add('(prefers-reduced-motion: no-preference)',()=>{
       const cards=Array.from(rail.current?.children??[]);
@@ -94,7 +111,7 @@ export function ServicesSection({section}:{section:SectionData}) {
   return <section ref={scope} id="servicos" className="services-editorial" aria-label={section.label}>
     <SectionHeading label={copy[0]} title={<>Problemas que a gente <em>{'{resolve}'}</em></>} subtitle={copy[2]}/>
     <div className="services-stage">
-      <div ref={viewport} id="services-carousel" className="services-window" tabIndex={0} role="region" aria-roledescription="carrossel" aria-label="Serviços" onScroll={event=>{setCanGoBack(event.currentTarget.scrollLeft>2);setAtEnd(event.currentTarget.scrollLeft>=event.currentTarget.scrollWidth-event.currentTarget.clientWidth-2);if(destination.current!==null && Math.abs(event.currentTarget.scrollLeft-destination.current)<2)destination.current=null;}} onPointerDown={()=>{destination.current=null;}} onWheel={()=>{destination.current=null;}} onKeyDown={event=>{
+      <div ref={viewport} id="services-carousel" className="services-window" tabIndex={0} role="region" aria-roledescription="carrossel" aria-label="Serviços" onScroll={event=>{updatePagination();if(destination.current!==null && Math.abs(event.currentTarget.scrollLeft-destination.current)<2)destination.current=null;}} onPointerDown={()=>{destination.current=null;}} onWheel={()=>{destination.current=null;}} onKeyDown={event=>{
         if(event.target!==event.currentTarget)return;
         if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
         event.preventDefault();
@@ -118,6 +135,9 @@ export function ServicesSection({section}:{section:SectionData}) {
       <div className="services-controls">
         <button type="button" className="button testimonial-arrow services-arrow" aria-label="Serviço anterior" disabled={!canGoBack} aria-hidden={!canGoBack} aria-controls="services-carousel" onClick={()=>navigate(-1)}><ArrowLeft className="button-icon" size={24}/></button>
         <button type="button" className="button testimonial-arrow services-arrow" aria-label="Próximo serviço" disabled={atEnd} aria-hidden={atEnd} aria-controls="services-carousel" onClick={()=>navigate(1)}><ArrowRight className="button-icon" size={24}/></button>
+      </div>
+      <div className="services-pagination" role="group" aria-label="Páginas de serviços">
+        {[0,1,2].map(group=><button key={group} type="button" aria-label={`Ir para o grupo ${group+1} de 3 de serviços`} aria-current={activeGroup===group?'true':undefined} aria-controls="services-carousel" onClick={()=>navigate({group})}><span/></button>)}
       </div>
     </div>
     <div className="services-contact"><ButtonLink className="services-contact-button" href={actionFor(copy[11],section.id)}><img className="button-icon" src="/assets/figma/whatsapp-button-icon.svg" width={24} height={24} alt="" />{copy[11]}</ButtonLink><p>{copy[12]}</p></div>
