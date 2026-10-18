@@ -1,0 +1,4632 @@
+{
+  "source": {
+    "file": "6GJ5Lmw6KLMBCBBnioehPF",
+    "node": "15857:1601",
+    "width": 1440,
+    "height": 13708.59
+  },
+  "sections": [
+    {
+      "id": "inicio",
+      "label": "Tecnologia que move negócios",
+      "y": 0,
+      "height": 967,
+      "dark": false,
+      "art": "assets/figma/inicio.svg",
+      "blocks": [
+        {
+          "source": "Text",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Software house · São Paulo · X anos",
+              "x": 595.784,
+              "y": 265.4,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Tags",
+            "title",
+            "hero-text",
+            "Section-Hero"
+          ]
+        },
+        {
+          "source": "Tecnologia que move negÃ³cios",
+          "role": "h1",
+          "runs": [
+            {
+              "text": "Tecnologia que",
+              "x": 190.535,
+              "y": 412.2,
+              "size": 152.0,
+              "weight": "700",
+              "italic": false,
+              "tracking": "-10px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "move",
+              "x": 189.738,
+              "y": 552.2,
+              "size": 152.0,
+              "weight": "700",
+              "italic": false,
+              "tracking": "-10px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "negócios",
+              "x": 618.449,
+              "y": 552.2,
+              "size": 152.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-10px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Tecnologia que move negÃ³cios",
+            "title",
+            "hero-text",
+            "Section-Hero"
+          ]
+        },
+        {
+          "source": "Fale com um especialista",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Fale com um especialista",
+              "x": 632.0,
+              "y": 667.6,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_6",
+            "primary",
+            "hero-text",
+            "Section-Hero"
+          ],
+          "actionBox": [
+            576.0,
+            638.0,
+            288.0,
+            48.0
+          ]
+        },
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Somos uma software house que pensa como sócia do seu negócio.",
+              "x": 101.11,
+              "y": 785.8,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "Criamos produtos digitais, sistemas e agentes de IA sob medida.",
+              "x": 101.11,
+              "y": 812.8,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "Da ideia ao produto no ar.",
+              "x": 101.11,
+              "y": 839.8,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "about",
+            "Frame 17",
+            "Frame 41",
+            "Section-Hero"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clientes",
+      "label": "Empresas que crescem com a Beyond",
+      "y": 967,
+      "height": 132,
+      "dark": false,
+      "art": "assets/figma/clientes.svg",
+      "blocks": [
+        {
+          "source": "Heading 2",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "EMPRESAS QUE",
+              "x": 60.0,
+              "y": 19.799999999999955,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{CRESCEM}",
+              "x": 216.251,
+              "y": 19.799999999999955,
+              "size": 18.0,
+              "weight": "600",
+              "italic": true,
+              "tracking": "0.08em",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "COM A BEYOND",
+              "x": 338.845,
+              "y": 19.799999999999955,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]",
+            "Heading 2",
+            "TItle",
+            "section-title",
+            "Clientes"
+          ]
+        },
+        {
+          "source": "Universidade de SÃ£o Paulo",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Universidade de São Paulo",
+              "x": 190.0,
+              "y": 83.09999999999991,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Bold Text",
+            "Paragraph",
+            "Article",
+            "Container_5",
+            "Clientes"
+          ]
+        },
+        {
+          "source": "Maior universidade do Brasil",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Maior universidade do Brasil",
+              "x": 190.0,
+              "y": 105.70000000000005,
+              "size": 12.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "1px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Small",
+            "Paragraph",
+            "Article",
+            "Container_5",
+            "Clientes"
+          ]
+        },
+        {
+          "source": "Institut Pasteur",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Institut Pasteur",
+              "x": 634.0,
+              "y": 83.09999999999991,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Bold Text_2",
+            "Paragraph_2",
+            "Article_2",
+            "Container_5",
+            "Clientes"
+          ]
+        },
+        {
+          "source": "Maior fundaÃ§Ã£o de pesquisa do Brasil",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Maior fundação de pesquisa do Brasil",
+              "x": 634.0,
+              "y": 105.70000000000005,
+              "size": 12.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "1px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Small_2",
+            "Paragraph_2",
+            "Article_2",
+            "Container_5",
+            "Clientes"
+          ]
+        },
+        {
+          "source": "Superpet",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Superpet",
+              "x": 1127.0,
+              "y": 83.09999999999991,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Bold Text_3",
+            "Paragraph_3",
+            "Article_3",
+            "Container_5",
+            "Clientes"
+          ]
+        },
+        {
+          "source": "Maior feira pet do Brasil",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Maior feira pet do Brasil",
+              "x": 1127.0,
+              "y": 105.70000000000005,
+              "size": 12.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "1px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Small_3",
+            "Paragraph_3",
+            "Article_3",
+            "Container_5",
+            "Clientes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "metricas",
+      "label": "Beyond em números",
+      "y": 1099,
+      "height": 546,
+      "dark": false,
+      "art": "assets/figma/metricas.svg",
+      "blocks": [
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_2",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "214.126",
+              "x": 106.135,
+              "y": 237.5999999999999,
+              "size": 96.0,
+              "weight": "700",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Frame 43",
+            "Paragraph_4",
+            "Metrics",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        },
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Usuários ativos nas nossas plataformas",
+              "x": 88.1667,
+              "y": 266.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_4",
+            "Metrics",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        },
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_4",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "+",
+              "x": 602.902,
+              "y": 237.5999999999999,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "200",
+              "x": 665.004,
+              "y": 237.5999999999999,
+              "size": 96.0,
+              "weight": "700",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Quem entende o desafio Ã© quem desenha e constrÃ³i a_4",
+            "Paragraph_5",
+            "Metrics",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        },
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_5",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Negócios transformados por tecnologia",
+              "x": 558.203,
+              "y": 266.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_5",
+            "Metrics",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        },
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_6",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "+",
+              "x": 1058.69,
+              "y": 237.5999999999999,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "50M",
+              "x": 1120.79,
+              "y": 237.5999999999999,
+              "size": 96.0,
+              "weight": "700",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Quem entende o desafio Ã© quem desenha e constrÃ³i a_6",
+            "Paragraph_6",
+            "Metrics",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        },
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_7",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Em valor recuperado através de eficiência",
+              "x": 1022.76,
+              "y": 266.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "operacional",
+              "x": 1144.02,
+              "y": 292.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_6",
+            "Metrics",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        },
+        {
+          "source": "TÃ­tulo da mÃ­dia",
+          "role": "p",
+          "runs": [
+            {
+              "text": "DESTAQUE NA MÍDIA",
+              "x": 60.0,
+              "y": 361.29999999999995,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Faixa de veÃ­culos",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        },
+        {
+          "source": "Chame a gente no WhatsApp",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Ver matérias",
+              "x": 1195.23,
+              "y": 360.5999999999999,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_15",
+            "",
+            "secondary",
+            "Marca ilustrativa_4",
+            "Marcas de veÃ­culos",
+            "Faixa de veÃ­culos",
+            "",
+            "Dados",
+            "MÃ©tricas"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "servicos",
+      "label": "Problemas que a gente resolve",
+      "y": 1645,
+      "height": 1166.25,
+      "dark": false,
+      "art": "assets/figma/servicos.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes ",
+          "role": "label",
+          "runs": [
+            {
+              "text": "SERVIÇOS",
+              "x": 60.0,
+              "y": 205.79999999999995,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-action",
+              "angle": -90.0,
+              "origin": [
+                60.0,
+                186.0
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin",
+            "TItle_2",
+            "section-title_2",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Heading 2_2",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "Problemas que a gente",
+              "x": 215.0,
+              "y": 141.20000000000005,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{resolve}",
+              "x": 215.0,
+              "y": 213.20000000000005,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_2",
+            "Heading 2_2",
+            "TItle_2",
+            "section-title_2",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "EstratÃ©gia, produto e tecnologia trabalhando junto",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Oferecemos serviços e soluções com tecnologia de ponta.",
+              "x": 852.656,
+              "y": 275.79999999999995,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_2",
+            "section-title_2",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Heading 3",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Lançar um",
+              "x": 76.0,
+              "y": 541.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-ink",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "produto digital",
+              "x": 76.0,
+              "y": 577.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-ink",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "(B2C)",
+              "x": 76.0,
+              "y": 613.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-ink",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3",
+            "Container_6",
+            "Article_5",
+            "linha",
+            "content",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Heading 3_2",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "ERP/back-office",
+              "x": 344.8,
+              "y": 577.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "sob medida",
+              "x": 344.8,
+              "y": 613.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_2",
+            "Container_7",
+            "Article_6",
+            "linha",
+            "content",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Heading 3_3",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "APlicativos e",
+              "x": 613.6,
+              "y": 541.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "plataformas web",
+              "x": 613.6,
+              "y": 577.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "sob medida",
+              "x": 613.6,
+              "y": 613.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_3",
+            "Container_8",
+            "Article_7",
+            "linha",
+            "content",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Heading 3_4",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Soluções de IA",
+              "x": 882.4,
+              "y": 613.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_4",
+            "Container_9",
+            "Article_8",
+            "linha",
+            "content",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Heading 3_5",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Manutenção",
+              "x": 1151.2,
+              "y": 613.4000000000001,
+              "size": 24.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_5",
+            "Container_10",
+            "Article_9",
+            "linha",
+            "content",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Colaboradores agÃªnticos",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Colaboradores agênticos",
+              "x": 92.0,
+              "y": 740.1999999999998,
+              "size": 32.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_11",
+            "Article_10",
+            "content",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Transformamos sua ideia em um protÃ³tipo funcional ",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Diagnosticamos operações, identificamos gargalos e aplicamos IA onde ela pode gerar",
+              "x": 92.0,
+              "y": 779.9000000000001,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "impacto real. Automatizamos processos, reduzimos custos e transformamos operações",
+              "x": 92.0,
+              "y": 803.9000000000001,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "tradicionais em estruturas mais eficientes.",
+              "x": 92.0,
+              "y": 827.9000000000001,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_7",
+            "Container_11",
+            "Article_10",
+            "content",
+            "",
+            "Section:Services"
+          ]
+        },
+        {
+          "source": "Fale com um especialista_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Ver detalhes do serviço",
+              "x": 108.0,
+              "y": 879.9000000000001,
+              "size": 14.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_20",
+            "Link",
+            "button",
+            "Container_11",
+            "Article_10",
+            "content",
+            "",
+            "Section:Services"
+          ],
+          "actionBox": [
+            92,
+            851,
+            223.535,
+            48
+          ]
+        },
+        {
+          "source": "Fale com um especialista_3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Fale com um sócio da Beyond",
+              "x": 614.0,
+              "y": 1013.8499999999999,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_23",
+            "",
+            "primary_2",
+            "button_2",
+            "",
+            "Section:Services"
+          ],
+          "actionBox": [
+            503.5,
+            984.25,
+            433.0,
+            48.0
+          ]
+        },
+        {
+          "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_8",
+          "role": "p",
+          "runs": [
+            {
+              "text": "45 minutos com um sócio da Beyond. Você conta o contexto,",
+              "x": 505.926,
+              "y": 1059.65,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "a gente devolve um parecer em até três dias úteis.",
+              "x": 541.876,
+              "y": 1080.65,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "button_2",
+            "",
+            "Section:Services"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cases",
+      "label": "Negócios que mudaram de patamar",
+      "y": 2811.25,
+      "height": 1090,
+      "dark": false,
+      "art": "assets/figma/cases.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _2",
+          "role": "label",
+          "runs": [
+            {
+              "text": "CASES",
+              "x": 60.0,
+              "y": 188.30000000000018,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-action",
+              "angle": -90.0,
+              "origin": [
+                60.0,
+                168.5
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_3",
+            "TItle_3",
+            "section-title_3",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Heading 2_3",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "Negócios que mudaram de",
+              "x": 215.0,
+              "y": 141.19999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{patamar}",
+              "x": 215.0,
+              "y": 213.19999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_3",
+            "Heading 2_3",
+            "TItle_3",
+            "section-title_3",
+            "Cases"
+          ]
+        },
+        {
+          "source": "EstratÃ©gia, produto e tecnologia trabalhando junto_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Projetos reais. Uma diferença que dispensa explicação.",
+              "x": 878.443,
+              "y": 275.8000000000002,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_4",
+            "section-title_3",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Institut Pasteur_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Institut Pasteur",
+              "x": 329.0,
+              "y": 383.9000000000001,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_13",
+            "tabs",
+            "safari-header",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Starlog",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Starlog",
+              "x": 564.0,
+              "y": 383.9000000000001,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_14",
+            "tabs",
+            "safari-header",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Ayalla",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Ayalla",
+              "x": 743.0,
+              "y": 383.9000000000001,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_15",
+            "tabs",
+            "safari-header",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "ReferÃªncia Mundial na CriaÃ§Ã£o de Vacinas",
+          "role": "p",
+          "runs": [
+            {
+              "text": "REFERÊNCIA MUNDIAL NA CRIAÇÃO DE VACINAS",
+              "x": 101.0,
+              "y": 472.1999999999998,
+              "size": 12.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "2px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_8",
+            "Container_18",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Heading 3_6",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Institut Pasteur",
+              "x": 101.0,
+              "y": 536.4000000000001,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-primary-900",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_6",
+            "Container_18",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "InformaÃ§Ã£o cientÃ­fica organizada em uma jornada cl",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Criação de um sistema para análise e processamento para",
+              "x": 101.0,
+              "y": 583.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "pesquisadores que reduziu em 50% o tempo gasto na",
+              "x": 101.0,
+              "y": 609.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "organização dos dados e aumentou a produtividade da",
+              "x": 101.0,
+              "y": 635.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "equipe.",
+              "x": 101.0,
+              "y": 661.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_18",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Heading 4",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Top 1",
+              "x": 101.0,
+              "y": 731.0,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 4",
+            "numbers",
+            "Container_18",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Heading 5",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Solução no mundo nesse setor",
+              "x": 101.0,
+              "y": 756.4000000000001,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 5",
+            "numbers",
+            "Container_18",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "InformaÃ§Ã£o cientÃ­fica organizada em uma jornada cl_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "“Esse projeto mudou completamente nossa rotina, sou grata à",
+              "x": 101.0,
+              "y": 829.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": true,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "Beyond por isso”",
+              "x": 101.0,
+              "y": 855.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": true,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_5",
+            "Container_19",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "NatÃ¡lia Miranda, CEO Institut Pasteur",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Natália Miranda, CEO Institut Pasteur",
+              "x": 101.0,
+              "y": 889.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Bold Text_4",
+            "Paragraph_9",
+            "name",
+            "Paragraph:margin_5",
+            "Container_19",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "Fale com um especialista_4",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Explorar case",
+              "x": 288.232,
+              "y": 950.5999999999999,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_26",
+            "",
+            "primary_3",
+            "Container_19",
+            "Container_17",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ],
+          "actionBox": [
+            101.0,
+            921.0,
+            509.0,
+            48.0
+          ]
+        },
+        {
+          "source": "InformaÃ§Ã£o cientÃ­fica organizada em uma jornada cl_3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Desktop",
+              "x": 678.0,
+              "y": 497.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "tag",
+            "Frame 49",
+            "Container_20",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        },
+        {
+          "source": "InformaÃ§Ã£o cientÃ­fica organizada em uma jornada cl_4",
+          "role": "p",
+          "runs": [
+            {
+              "text": "UX",
+              "x": 775.0,
+              "y": 497.5999999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "tag_2",
+            "Frame 49",
+            "Container_20",
+            "Container_16",
+            "Article_11",
+            "Container:margin",
+            "Cases"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conversa",
+      "label": "Converse com um sócio",
+      "y": 3901.25,
+      "height": 986,
+      "dark": false,
+      "art": "assets/figma/conversa.svg",
+      "blocks": [
+        {
+          "source": "Heading text",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "45 minutos de conversa",
+              "x": 400.914,
+              "y": 381.10000000000036,
+              "size": 56.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "com um",
+              "x": 357.715,
+              "y": 454.10000000000036,
+              "size": 56.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{sócio}",
+              "x": 594.84,
+              "y": 454.10000000000036,
+              "size": 56.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-2px",
+              "color": "--color-action",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": " da Beyond",
+              "x": 784.824,
+              "y": 454.10000000000036,
+              "size": 56.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "sobre o seu desafio",
+              "x": 463.359,
+              "y": 527.1000000000004,
+              "size": 56.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "45 minutos de conversa com um [sÃ³cio] da Beyond sobre o seu desafio",
+            "Heading text",
+            "Container_25",
+            "Container:margin_2",
+            "Section:45min"
+          ]
+        },
+        {
+          "source": "Aceleramos empresas tradicionais encontrando onde ",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Te devolvemos um parecer em até 3 dias úteis.",
+              "x": 507.182,
+              "y": 580.6999999999998,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-text-subtle",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_6",
+            "Container_25",
+            "Container:margin_2",
+            "Section:45min"
+          ]
+        },
+        {
+          "source": "Fale com um especialista_5",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Chamar no WhatsApp",
+              "x": 644.5,
+              "y": 642.6000000000004,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_29",
+            "",
+            "primary_4",
+            "Container:margin_2",
+            "Section:45min"
+          ],
+          "actionBox": [
+            588.5,
+            613.0,
+            263.0,
+            48.0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aplicativo",
+      "label": "Aplicativo da Beyond",
+      "y": 4887.25,
+      "height": 1490.34,
+      "dark": true,
+      "art": "assets/figma/aplicativo.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _3",
+          "role": "label",
+          "runs": [
+            {
+              "text": "APLICATIVO",
+              "x": 61.0,
+              "y": 219.80000000000018,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-accent",
+              "angle": -90.0,
+              "origin": [
+                61.0,
+                200.0
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_7",
+            "TItle_4",
+            "section-title_4",
+            "Section"
+          ]
+        },
+        {
+          "source": "Heading 2_4",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "Aplicativo da",
+              "x": 216.0,
+              "y": 144.69999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{Beyond}",
+              "x": 216.0,
+              "y": 216.69999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_4",
+            "Heading 2_4",
+            "TItle_4",
+            "section-title_4",
+            "Section"
+          ]
+        },
+        {
+          "source": "EstratÃ©gia, produto e tecnologia trabalhando junto_3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Do acompanhamento do projeto aos nossos principais cases.",
+              "x": 820.402,
+              "y": 282.8000000000002,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_8",
+            "section-title_4",
+            "Section"
+          ]
+        },
+        {
+          "source": "Seu projeto na palma da mÃ£o",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Seu projeto na",
+              "x": 641.999,
+              "y": 540.9700000000003,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "palma",
+              "x": 944.92,
+              "y": 540.9700000000003,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": " da",
+              "x": 1081.7,
+              "y": 540.9700000000003,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "mão",
+              "x": 844.586,
+              "y": 596.9700000000003,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Seu projeto na palma da mÃ£o",
+            "txt",
+            "container1",
+            "app",
+            "Section"
+          ]
+        },
+        {
+          "source": "Acompanhe projetos, converse com o time e veja cad",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Veja as tarefas concluídas, as horas usadas e todas as",
+              "x": 646.586,
+              "y": 645.3699999999999,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "informações do seu projeto em tempo real.",
+              "x": 699.207,
+              "y": 672.3699999999999,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "txt",
+            "container1",
+            "app",
+            "Section"
+          ]
+        },
+        {
+          "source": "Experimente o nosso trabalho",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Experimente",
+              "x": 301.962,
+              "y": 964.6400000000003,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": " o nosso",
+              "x": 555.435,
+              "y": 964.6400000000003,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "trabalho",
+              "x": 423.53,
+              "y": 1020.6400000000003,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Experimente o nosso trabalho",
+            "txt_3",
+            "txt_2",
+            "container 2",
+            "app",
+            "Section"
+          ]
+        },
+        {
+          "source": "Acompanhe projetos, converse com o time e veja cad_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Baixe o app da Beyond e conheça nossos cases por dentro.",
+              "x": 244.116,
+              "y": 1069.04,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "txt_3",
+            "txt_2",
+            "container 2",
+            "app",
+            "Section"
+          ]
+        },
+        {
+          "source": "Acompanhe projetos, converse com o time e veja cad_3",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Escaneie o QR Code",
+              "x": 480.078,
+              "y": 1211.6400000000003,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "para baixar o",
+              "x": 487.115,
+              "y": 1241.6400000000003,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": " app!",
+              "x": 653.098,
+              "y": 1241.6400000000003,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Acompanhe projetos, converse com o time e veja cad_3",
+            "Frame 53",
+            "",
+            "qrcode-cta",
+            "txt_2",
+            "container 2",
+            "app",
+            "Section"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "depoimentos",
+      "label": "Quem contratou recomenda",
+      "y": 6377.59,
+      "height": 1072,
+      "dark": true,
+      "art": "assets/figma/depoimentos.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _4",
+          "role": "label",
+          "runs": [
+            {
+              "text": "DEPOIMENTOS",
+              "x": 61.0,
+              "y": 241.80000000000018,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-accent",
+              "angle": -90.0,
+              "origin": [
+                61.0,
+                222.0
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_9",
+            "TItle_5",
+            "section-title_5",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "Heading 2_5",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "Quem contratou",
+              "x": 216.0,
+              "y": 155.69999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{recomenda}",
+              "x": 216.0,
+              "y": 227.69999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_5",
+            "Heading 2_5",
+            "TItle_5",
+            "section-title_5",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "âA Beyond nos surpreendeu muito positivamente. Ten",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "“A Beyond nos surpreendeu muito",
+              "x": -770.301,
+              "y": 451.5699999999997,
+              "size": 44.589,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-1.59247px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "positivamente. Tenho segurança em",
+              "x": -770.301,
+              "y": 509.6899999999996,
+              "size": 44.589,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-1.59247px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "indicar esse time.”",
+              "x": -770.301,
+              "y": 567.8199999999997,
+              "size": 44.589,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-1.59247px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Quote",
+            "Container_42",
+            "cards-depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "âA Beyond nos surpreendeu muito positivamente. Ten_2",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "“A Beyond nos surpreendeu",
+              "x": 216.0,
+              "y": 530.8999999999996,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "muito positivamente. Tenho",
+              "x": 216.0,
+              "y": 586.8999999999996,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "segurança em indicar esse",
+              "x": 216.0,
+              "y": 642.8999999999996,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "time.”",
+              "x": 216.0,
+              "y": 698.8999999999996,
+              "size": 44.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Quote_2",
+            "",
+            "Container_43",
+            "cards-depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "NatÃ¡lia Miranda",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Natália Miranda",
+              "x": 901.0,
+              "y": 791.3499999999995,
+              "size": 21.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Bold Text_9",
+            "Paragraph_12",
+            "pessoa",
+            "",
+            "Container_43",
+            "cards-depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "CEO Â· Feira Superpet",
+          "role": "p",
+          "runs": [
+            {
+              "text": "CEO · Feira Superpet",
+              "x": 901.0,
+              "y": 818.5999999999995,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-400",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text:margin",
+            "Paragraph_12",
+            "pessoa",
+            "",
+            "Container_43",
+            "cards-depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "âA Beyond nos surpreendeu muito positivamente. Ten_3",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "“A Beyond nos surpreendeu muito",
+              "x": 1407.7,
+              "y": 556.6700000000001,
+              "size": 44.589,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-1.59247px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "positivamente. Tenho segurança em",
+              "x": 1407.7,
+              "y": 614.8000000000002,
+              "size": 44.589,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-1.59247px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "indicar esse time.”",
+              "x": 1407.7,
+              "y": 672.9200000000001,
+              "size": 44.589,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-1.59247px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Quote_3",
+            "",
+            "Container_44",
+            "cards-depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "01",
+          "role": "p",
+          "runs": [
+            {
+              "text": "01",
+              "x": 660.413,
+              "y": 966.2299999999996,
+              "size": 16.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0em",
+              "color": "#102E1D",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_45",
+            "Depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "02",
+          "role": "p",
+          "runs": [
+            {
+              "text": "02",
+              "x": 722.13,
+              "y": 966.9099999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_46",
+            "Depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        },
+        {
+          "source": "03",
+          "role": "p",
+          "runs": [
+            {
+              "text": "03",
+              "x": 773.217,
+              "y": 966.9099999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_47",
+            "Depoimentos",
+            "depoimentos",
+            "Section_2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "processo",
+      "label": "Software de ponta a ponta",
+      "y": 7449.59,
+      "height": 1148,
+      "dark": true,
+      "art": "assets/figma/processo.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _5",
+          "role": "label",
+          "runs": [
+            {
+              "text": "PROCESSOS",
+              "x": 60.0,
+              "y": 218.80000000000018,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-accent",
+              "angle": -90.0,
+              "origin": [
+                60.0,
+                199.0
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_10",
+            "TItle_6",
+            "section-title_6",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "Heading 2_6",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "Software de",
+              "x": 215.0,
+              "y": 144.19999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{ponta a ponta}",
+              "x": 215.0,
+              "y": 216.19999999999982,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_6",
+            "Heading 2_6",
+            "TItle_6",
+            "section-title_6",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "EstratÃ©gia, produto e tecnologia trabalhando junto_4",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Um processo claro, sem surpresas.",
+              "x": 1064.44,
+              "y": 281.8000000000002,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_11",
+            "section-title_6",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "DiagnÃ³stico e discovery",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Diagnóstico e",
+              "x": 246.285,
+              "y": 431.5699999999997,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": -3.2,
+              "origin": [
+                246.285,
+                393.5699999999997
+              ]
+            },
+            {
+              "text": "discovery",
+              "x": 246.285,
+              "y": 479.5699999999997,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": -3.2,
+              "origin": [
+                246.285,
+                393.5699999999997
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card",
+            "Article_12",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "Entendemos seu negÃ³cio e definimos o que construir. VocÃª recebe: escopo e plano claros.",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Entendemos seu negócio e definimos o que",
+              "x": 253.04,
+              "y": 532.9800000000005,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": -3.2,
+              "origin": [
+                253.04,
+                514.3800000000001
+              ]
+            },
+            {
+              "text": "construir. Você recebe: escopo e plano",
+              "x": 253.04,
+              "y": 558.9800000000005,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": -3.2,
+              "origin": [
+                253.04,
+                514.3800000000001
+              ]
+            },
+            {
+              "text": "claros.",
+              "x": 253.04,
+              "y": 584.9800000000005,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": -3.2,
+              "origin": [
+                253.04,
+                514.3800000000001
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card",
+            "Article_12",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "01_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "01",
+              "x": 414.149,
+              "y": 348.1299999999992,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": -3.2,
+              "origin": [
+                414.149,
+                332.72999999999956
+              ]
+            }
+          ],
+          "ancestors": [
+            "Container_49",
+            "Article_12",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "Desenho da soluÃ§Ã£o",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Desenho da",
+              "x": 849.125,
+              "y": 550.6800000000003,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 3.0,
+              "origin": [
+                849.125,
+                512.6800000000003
+              ]
+            },
+            {
+              "text": "solução",
+              "x": 849.125,
+              "y": 598.6800000000003,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 3.0,
+              "origin": [
+                849.125,
+                512.6800000000003
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card_2",
+            "Article_13",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "Definimos a experiÃªncia e a arquitetura. VocÃª recebe: protÃ³tipo para validar.",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Definimos a experiência e a arquitetura.",
+              "x": 842.792,
+              "y": 652.1199999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 3.0,
+              "origin": [
+                842.792,
+                633.5199999999995
+              ]
+            },
+            {
+              "text": "Você recebe: protótipo para validar.",
+              "x": 842.792,
+              "y": 678.1199999999999,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 3.0,
+              "origin": [
+                842.792,
+                633.5199999999995
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card_2",
+            "Article_13",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "02_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "02",
+              "x": 1020.59,
+              "y": 485.4999999999991,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 3.0,
+              "origin": [
+                1020.59,
+                470.09999999999945
+              ]
+            }
+          ],
+          "ancestors": [
+            "Container_50",
+            "Article_13",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "EvoluÃ§Ã£o contÃ­nua",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Evolução contínua",
+              "x": 888.575,
+              "y": 945.6900000000005,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 3.0,
+              "origin": [
+                888.575,
+                907.6900000000005
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card_3",
+            "Article_14",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "Depois do lanÃ§amento, medimos e melhoramos. VocÃª recebe: um produto que cresce com o negÃ³cio.",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Depois do lançamento, medimos e",
+              "x": 884.754,
+              "y": 999.1800000000003,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 3.0,
+              "origin": [
+                884.754,
+                980.5799999999999
+              ]
+            },
+            {
+              "text": "melhoramos. Você recebe: um produto que",
+              "x": 884.754,
+              "y": 1025.1800000000003,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 3.0,
+              "origin": [
+                884.754,
+                980.5799999999999
+              ]
+            },
+            {
+              "text": "cresce com o negócio.",
+              "x": 884.754,
+              "y": 1051.1800000000003,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 3.0,
+              "origin": [
+                884.754,
+                980.5799999999999
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card_3",
+            "Article_14",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "04",
+          "role": "p",
+          "runs": [
+            {
+              "text": "04",
+              "x": 1059.54,
+              "y": 880.4699999999993,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 3.0,
+              "origin": [
+                1059.54,
+                865.0699999999997
+              ]
+            }
+          ],
+          "ancestors": [
+            "Container_51",
+            "Article_14",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "Desenvolvimento",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Desenvolvimento",
+              "x": 216.43,
+              "y": 846.9599999999991,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": -3.2,
+              "origin": [
+                216.43,
+                808.9599999999991
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card_4",
+            "Article_15",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "Entregas frequentes, com vocÃª acompanhando cada etapa. VocÃª recebe: versÃµes funcionando ao longo do caminho.",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Entregas frequentes, com você",
+              "x": 219.624,
+              "y": 900.4799999999996,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": -2.2,
+              "origin": [
+                219.624,
+                881.8799999999992
+              ]
+            },
+            {
+              "text": "acompanhando cada etapa. Você recebe:",
+              "x": 219.624,
+              "y": 926.4799999999996,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": -2.2,
+              "origin": [
+                219.624,
+                881.8799999999992
+              ]
+            },
+            {
+              "text": "versões funcionando ao longo do caminho.",
+              "x": 219.624,
+              "y": 952.4799999999996,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": -2.2,
+              "origin": [
+                219.624,
+                881.8799999999992
+              ]
+            }
+          ],
+          "ancestors": [
+            "",
+            "Process Card_4",
+            "Article_15",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        },
+        {
+          "source": "03_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "03",
+              "x": 383.484,
+              "y": 760.2199999999993,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": -2.2,
+              "origin": [
+                383.484,
+                744.8199999999997
+              ]
+            }
+          ],
+          "ancestors": [
+            "Container_52",
+            "Article_15",
+            "Container_48",
+            "Container:margin_7",
+            "Section_3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sobre",
+      "label": "O código é só uma parte do trabalho",
+      "y": 8597.59,
+      "height": 749,
+      "dark": true,
+      "art": "assets/figma/sobre.svg",
+      "blocks": [
+        {
+          "source": "Heading 2_7",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "O código é só uma",
+              "x": 61.0,
+              "y": 118.0,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{parte}",
+              "x": 414.297,
+              "y": 118.0,
+              "size": 40.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-2px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "do trabalho",
+              "x": 558.219,
+              "y": 118.0,
+              "size": 40.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_7",
+            "Heading 2_7",
+            "TItle_7",
+            "section-title_7",
+            "Section:margin"
+          ]
+        },
+        {
+          "source": "EstratÃ©gia, produto e tecnologia trabalhando junto_5",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Software que dá resultado nasce do que acontece antes,",
+              "x": 857.0,
+              "y": 179.79999999999927,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "durante e depois de escrever a primeira linha.",
+              "x": 857.0,
+              "y": 206.79999999999927,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_12",
+            "section-title_7",
+            "Section:margin"
+          ]
+        },
+        {
+          "source": "Heading 3_9",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Entender o que",
+              "x": 101.0,
+              "y": 478.2000000000007,
+              "size": 32.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "construir",
+              "x": 101.0,
+              "y": 514.2000000000007,
+              "size": 32.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_9",
+            "Container_55",
+            "Article_16",
+            "sobre",
+            "Section:margin"
+          ]
+        },
+        {
+          "source": "Transformamos sua ideia em um protÃ³tipo funcional _2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Antes de qualquer tela, entendemos seu",
+              "x": 101.0,
+              "y": 555.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "negócio, seus processos e suas dores.",
+              "x": 101.0,
+              "y": 581.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "Construir a coisa certa vale mais do que",
+              "x": 101.0,
+              "y": 607.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "construir rápido.",
+              "x": 101.0,
+              "y": 633.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_13",
+            "Container_55",
+            "Article_16",
+            "sobre",
+            "Section:margin"
+          ]
+        },
+        {
+          "source": "Heading 3_10",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Construir bem",
+              "x": 540.667,
+              "y": 478.2000000000007,
+              "size": 32.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_10",
+            "Container_57",
+            "Article_17",
+            "sobre",
+            "Section:margin"
+          ]
+        },
+        {
+          "source": "Transformamos sua ideia em um protÃ³tipo funcional _3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Código limpo, seguro e pronto para crescer,",
+              "x": 540.667,
+              "y": 519.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "com entregas frequentes e você",
+              "x": 540.667,
+              "y": 545.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "acompanhando de perto.",
+              "x": 540.667,
+              "y": 571.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_14",
+            "Container_57",
+            "Article_17",
+            "sobre",
+            "Section:margin"
+          ]
+        },
+        {
+          "source": "Heading 3_11",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Manter funcionando",
+              "x": 980.333,
+              "y": 478.2000000000007,
+              "size": 32.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Heading 3_11",
+            "Container_59",
+            "Article_18",
+            "sobre",
+            "Section:margin"
+          ]
+        },
+        {
+          "source": "Transformamos sua ideia em um protÃ³tipo funcional _4",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Um produto no ar precisa de",
+              "x": 980.333,
+              "y": 519.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "monitoramento, suporte e evolução.",
+              "x": 980.333,
+              "y": 545.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "Continuamos com você depois do",
+              "x": 980.333,
+              "y": 571.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "lançamento.",
+              "x": 980.333,
+              "y": 597.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph_15",
+            "Container_59",
+            "Article_18",
+            "sobre",
+            "Section:margin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blog",
+      "label": "O que move negócios, a gente compartilha",
+      "y": 9346.59,
+      "height": 1469,
+      "dark": true,
+      "art": "assets/figma/blog.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _6",
+          "role": "label",
+          "runs": [
+            {
+              "text": "BLOG",
+              "x": 60.0,
+              "y": 182.79999999999927,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-accent",
+              "angle": -90.0,
+              "origin": [
+                60.0,
+                163.0
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_13",
+            "TItle_8",
+            "section-title_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Heading 2_8",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "O que move negócios, a gente",
+              "x": 215.0,
+              "y": 141.20000000000073,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{compartilha}",
+              "x": 215.0,
+              "y": 213.20000000000073,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_8",
+            "Heading 2_8",
+            "TItle_8",
+            "section-title_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Tecnologia que transforma",
+              "x": 172.5,
+              "y": 903.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "empresas e aproxima pessoas.",
+              "x": 172.5,
+              "y": 933.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_39",
+            "",
+            "Article_19",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Criar o futuro começa por entender",
+              "x": 172.5,
+              "y": 966.6100000000006,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "profundamente o presente.",
+              "x": 172.5,
+              "y": 992.6100000000006,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_39",
+            "",
+            "Article_19",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Beyond Â· 2026",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Beyond · 2026",
+              "x": 172.5,
+              "y": 1023.4099999999999,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_39",
+            "",
+            "Article_19",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_3",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Tecnologia que",
+              "x": 607.5,
+              "y": 511.39999999999964,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "transforma",
+              "x": 607.5,
+              "y": 541.3999999999996,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "empresas e",
+              "x": 607.5,
+              "y": 571.3999999999996,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "aproxima pessoas.",
+              "x": 607.5,
+              "y": 601.3999999999996,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_41",
+            "",
+            "Article_20",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_4",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Criar o futuro começa por",
+              "x": 607.5,
+              "y": 634.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "entender profundamente o",
+              "x": 607.5,
+              "y": 660.6100000000006,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "presente.",
+              "x": 607.5,
+              "y": 686.6100000000006,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_41",
+            "",
+            "Article_20",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Beyond Â· 2026_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Beyond · 2026",
+              "x": 607.5,
+              "y": 717.4099999999999,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_41",
+            "",
+            "Article_20",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_5",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Tecnologia que transforma",
+              "x": 923.5,
+              "y": 557.3999999999996,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "empresas e aproxima",
+              "x": 923.5,
+              "y": 587.3999999999996,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "pessoas.",
+              "x": 923.5,
+              "y": 617.3999999999996,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_42",
+            "Sidebar",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_6",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Criar o futuro começa por entender",
+              "x": 923.5,
+              "y": 650.6000000000004,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "profundamente o presente.",
+              "x": 923.5,
+              "y": 676.6100000000006,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_42",
+            "Sidebar",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Beyond Â· 2026_3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Beyond · 2026",
+              "x": 923.5,
+              "y": 707.4099999999999,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_42",
+            "Sidebar",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_7",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Tecnologia que transforma empresas e aproxima",
+              "x": 611.5,
+              "y": 957.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "pessoas.",
+              "x": 611.5,
+              "y": 987.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_44",
+            "",
+            "Article_21",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_8",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Criar o futuro começa por entender profundamente o presente.",
+              "x": 611.5,
+              "y": 1020.6100000000006,
+              "size": 16.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_44",
+            "",
+            "Article_21",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Beyond Â· 2026_4",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Beyond · 2026",
+              "x": 611.5,
+              "y": 1051.4099999999999,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_44",
+            "",
+            "Article_21",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        },
+        {
+          "source": "Tecnologia que transforma empresas e aproxima pess_9",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Tecnologia que",
+              "x": 606.0,
+              "y": 1293.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "transforma",
+              "x": 606.0,
+              "y": 1323.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "empresas e",
+              "x": 606.0,
+              "y": 1353.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "aproxima pessoas.",
+              "x": 606.0,
+              "y": 1383.4099999999999,
+              "size": 24.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.2px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_46",
+            "",
+            "Article_23",
+            "Container_61",
+            "Container_60",
+            "Container:margin_8",
+            "Section_4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "faq",
+      "label": "Perguntas frequentes",
+      "y": 10815.59,
+      "height": 1036,
+      "dark": true,
+      "art": "assets/figma/faq.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _7",
+          "role": "label",
+          "runs": [
+            {
+              "text": "F.A.Q.",
+              "x": 60.0,
+              "y": 185.3099999999995,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-accent",
+              "angle": -90.0,
+              "origin": [
+                60.0,
+                165.51000000000022
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_14",
+            "TItle_9",
+            "section-title_9",
+            "Section_5"
+          ]
+        },
+        {
+          "source": "Heading 2_9",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "Perguntas",
+              "x": 215.0,
+              "y": 141.20999999999913,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{frequentes}",
+              "x": 215.0,
+              "y": 213.20999999999913,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_9",
+            "Heading 2_9",
+            "TItle_9",
+            "section-title_9",
+            "Section_5"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contato",
+      "label": "Tecnologia começa com uma boa conversa",
+      "y": 11851.59,
+      "height": 975,
+      "dark": true,
+      "art": "assets/figma/contato.svg",
+      "blocks": [
+        {
+          "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _8",
+          "role": "label",
+          "runs": [
+            {
+              "text": "PROCESSOS",
+              "x": 61.0,
+              "y": 218.8099999999995,
+              "size": 18.0,
+              "weight": "600",
+              "italic": false,
+              "tracking": "0.08em",
+              "color": "--color-accent",
+              "angle": -90.0,
+              "origin": [
+                61.0,
+                199.01000000000022
+              ]
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_15",
+            "TItle_10",
+            "section-title_10",
+            "Container:margin_9",
+            "Section_6"
+          ]
+        },
+        {
+          "source": "Heading 2_10",
+          "role": "h2",
+          "runs": [
+            {
+              "text": "Tecnologia começa com uma",
+              "x": 216.0,
+              "y": 144.20999999999913,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "{boa conversa}",
+              "x": 216.0,
+              "y": 216.20999999999913,
+              "size": 72.0,
+              "weight": "500",
+              "italic": true,
+              "tracking": "-4px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Aplicativo da [Beyond]_10",
+            "Heading 2_10",
+            "TItle_10",
+            "section-title_10",
+            "Container:margin_9",
+            "Section_6"
+          ]
+        },
+        {
+          "source": "EstratÃ©gia, produto e tecnologia trabalhando junto_6",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Conte em poucas linhas o que você quer resolver.",
+              "x": 157.0,
+              "y": 281.8099999999995,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "Um especialista da Beyond responde para marcar uma conversa.",
+              "x": 157.0,
+              "y": 308.8099999999995,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-gray-300",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Paragraph:margin_16",
+            "section-title_10",
+            "Container:margin_9",
+            "Section_6"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rodape",
+      "label": "Beyond the Bytes",
+      "y": 12826.59,
+      "height": 882,
+      "dark": false,
+      "art": "assets/figma/rodape.svg",
+      "blocks": [
+        {
+          "source": "Home",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Home",
+              "x": 933.0,
+              "y": 96.40999999999985,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_2",
+            "Navigation - NavegaÃ§Ã£o principal",
+            "header",
+            "Container_68",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "ServiÃ§os",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Serviços",
+              "x": 1005.0,
+              "y": 96.40999999999985,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_3",
+            "Navigation - NavegaÃ§Ã£o principal",
+            "header",
+            "Container_68",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "Cases_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Cases",
+              "x": 1094.0,
+              "y": 96.40999999999985,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_4",
+            "Navigation - NavegaÃ§Ã£o principal",
+            "header",
+            "Container_68",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "Processo",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Processo",
+              "x": 1168.0,
+              "y": 96.40999999999985,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_5",
+            "Navigation - NavegaÃ§Ã£o principal",
+            "header",
+            "Container_68",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "Contato",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Contato",
+              "x": 1262.0,
+              "y": 96.40999999999985,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_6",
+            "Navigation - NavegaÃ§Ã£o principal",
+            "header",
+            "Container_68",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "Impulsionando empresas e surpreendendo usuÃ¡rios.",
+          "role": "h3",
+          "runs": [
+            {
+              "text": "Impulsionando empresas e",
+              "x": 269.801,
+              "y": 270.2099999999991,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "surpreendendo usuários.",
+              "x": 310.273,
+              "y": 342.2099999999991,
+              "size": 72.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "-4px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "text",
+            "Container_68",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "Rua Cardeal Arcoverde, 745 Pinheiros, SÃ£o Paulo - ",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Rua Cardeal Arcoverde, 745",
+              "x": 594.835,
+              "y": 524.8099999999995,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            },
+            {
+              "text": "Pinheiros, São Paulo - SP",
+              "x": 610.471,
+              "y": 551.8099999999995,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Container_76",
+            "Container_74",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "+ Mostrar mais_3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Agende uma visita presencial",
+              "x": 628.5,
+              "y": 598.4099999999999,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_78",
+            "",
+            "primary_7",
+            "Container_76",
+            "Container_74",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ],
+          "actionBox": [
+            584.5,
+            575.0100000000002,
+            271.0,
+            37.0
+          ]
+        },
+        {
+          "source": "Ver a rota no Maps",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Ver a rota no Maps",
+              "x": 665.0,
+              "y": 652.4099999999999,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-accent",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_81",
+            "",
+            "secondary_3",
+            "Container_76",
+            "Container_74",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "+55 (11) 93618-2404",
+          "role": "p",
+          "runs": [
+            {
+              "text": "+55 (11) 93618-2404",
+              "x": 1202.94,
+              "y": 524.8099999999995,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_7",
+            "Container_77",
+            "Container_74",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        },
+        {
+          "source": "contato@beyondthebytes.com.br",
+          "role": "p",
+          "runs": [
+            {
+              "text": "contato@beyondthebytes.com.br",
+              "x": 1076.27,
+              "y": 559.8099999999995,
+              "size": 18.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0em",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_8",
+            "Container_77",
+            "Container_74",
+            "Container_67",
+            "Container:margin_10",
+            "Footer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cabecalho",
+      "label": "Navegação principal",
+      "y": 0,
+      "height": 87,
+      "dark": false,
+      "art": "assets/figma/cabecalho.svg",
+      "blocks": [
+        {
+          "source": "Cases_3",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Cases",
+              "x": 455.5,
+              "y": 48.4,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_9",
+            "Navigation - NavegaÃ§Ã£o principal_2",
+            "Header"
+          ]
+        },
+        {
+          "source": "ServiÃ§os_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Serviços",
+              "x": 529.5,
+              "y": 48.4,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_10",
+            "Navigation - NavegaÃ§Ã£o principal_2",
+            "Header"
+          ]
+        },
+        {
+          "source": "Processo_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Processo",
+              "x": 618.5,
+              "y": 48.4,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_11",
+            "Navigation - NavegaÃ§Ã£o principal_2",
+            "Header"
+          ]
+        },
+        {
+          "source": "App Beyond",
+          "role": "p",
+          "runs": [
+            {
+              "text": "App Beyond",
+              "x": 712.5,
+              "y": 48.4,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_12",
+            "Navigation - NavegaÃ§Ã£o principal_2",
+            "Header"
+          ]
+        },
+        {
+          "source": "Blog",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Blog",
+              "x": 827.5,
+              "y": 48.4,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_13",
+            "Navigation - NavegaÃ§Ã£o principal_2",
+            "Header"
+          ]
+        },
+        {
+          "source": "Contato_2",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Contato",
+              "x": 888.5,
+              "y": 48.4,
+              "size": 14.0,
+              "weight": "400",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-black",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Link_14",
+            "Navigation - NavegaÃ§Ã£o principal_2",
+            "Header"
+          ]
+        },
+        {
+          "source": "Fale com um especialista_6",
+          "role": "p",
+          "runs": [
+            {
+              "text": "Fale com um especialista",
+              "x": 1043.73,
+              "y": 48.4,
+              "size": 14.0,
+              "weight": "500",
+              "italic": false,
+              "tracking": "0px",
+              "color": "--color-white",
+              "angle": 0,
+              "origin": null
+            }
+          ],
+          "ancestors": [
+            "Text_86",
+            "",
+            "primary_8",
+            "Header"
+          ],
+          "actionBox": [
+            1017.0,
+            19.5,
+            259.0,
+            48.0
+          ]
+        }
+      ]
+    }
+  ]
+}

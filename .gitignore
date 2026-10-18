@@ -1,0 +1,15 @@
+# Only the active site and repository documentation are versioned.
+/*
+!/.gitignore
+!/AGENTS.md
+!/README.md
+!/prototype/
+
+node_modules/
+.next/
+.npm-cache/
+.vercel/
+*.tsbuildinfo
+.env*
+!.env.example
+*.log
