@@ -14,6 +14,9 @@ import { MotionRoot } from '@/components/motion/motion-root';
 export default async function Home() {
   const {sections}=layout as DesignData;
   const processArtwork=await readProcessArtwork();
+  const footerArtwork=(await readFile(path.join(process.cwd(),'public/assets/figma/rodape-bleed.svg'),'utf8')).replace(/<\?xml[^>]*\?>/,'')
+    .replace('<rect width="1440" height="882" transform="translate(0 12826.6)" fill="url(#pattern46_15857_1601)" />',
+      '<svg x="0" y="12826.6" width="1440" height="882" viewBox="0 0 1440 882" overflow="hidden"><rect class="footer-background-drift" width="1440" height="882" fill="url(#pattern46_15857_1601)" /></svg>');
   const aboutIcons=await Promise.all([16,17,18].map(async id=>{
     let svg=await readFile(path.join(process.cwd(),`public/assets/figma/about-${id}.svg`),'utf8');
     if(id===17)svg=svg.replace(/(<g id="lucide\/blocks">)[\s\S]*?(<\/g>)/,'$1<g fill="none" stroke="#2F43FC" stroke-width="2"><rect x="564.667" y="8961.25" width="10.667" height="10.667" rx="2"/><rect x="564.667" y="8971.92" width="10.667" height="10.667" rx="1"/><rect x="575.334" y="8971.92" width="10.667" height="10.667" rx="1"/><rect x="580.667" y="8955.92" width="10.667" height="10.667" rx="1.333"/></g>$2');
@@ -32,7 +35,7 @@ export default async function Home() {
         {section.id==='sobre' ? <AboutSection section={section} icons={aboutIcons}/> : section.id==='processo' ? <ProcessSection section={section} artwork={processArtwork}/> : section.id==='metricas' ? <MetricsSection /> : <DesignSection section={section} contactArtwork={section.id==='contato'?contactArtwork:undefined} faqArtwork={section.id==='faq'?faqArtwork:undefined} appArtwork={section.id==='aplicativo'?appArtwork:undefined} conversationOverlay={section.id==='conversa'?overlay:undefined} conversationArtwork={section.id==='conversa'?conversationArtwork:undefined} />}
       </div>)}
     </main>
-    <div className="footer-frame mx-auto"><DesignSection section={sections.find(s=>s.id==='rodape')!} /></div>
-    <a className="floating-whatsapp fixed z-30 rounded-full" href={WHATSAPP} tabIndex={-1} aria-hidden="true" aria-label="Conversar com a Beyond pelo WhatsApp"><Artwork src="assets/figma/whatsapp.svg" width={76} height={76} lazy={false} /></a>
+    <div className="footer-frame mx-auto"><DesignSection section={sections.find(s=>s.id==='rodape')!} footerArtwork={footerArtwork} /></div>
+    <a className="floating-whatsapp button fixed z-30 rounded-full" href={WHATSAPP} tabIndex={-1} aria-hidden="true" aria-label="Conversar com a Beyond pelo WhatsApp"><Artwork src="assets/figma/whatsapp-icon.svg" className="figma-art button-icon" width={76} height={76} lazy={false} /></a>
   </MotionRoot>;
 }

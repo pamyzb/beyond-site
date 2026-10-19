@@ -13,9 +13,9 @@ export function AppTitleWord({text}:{text:string}) {
       // Animate SVG attributes in real path units. CSSPlugin can round the
       // former normalized 0–1px offsets, turning the draw into an on/off jump.
       gsap.set(path,{attr:{'stroke-dasharray':`${length} ${length}`,'stroke-dashoffset':length}});
-      // Draw after the title is comfortably visible, and replay on re-entry.
+      // Draw once after the title is comfortably visible; retain the finished stroke.
       gsap.timeline({scrollTrigger:{trigger:target.closest('h3')??target,
-        start:'top 78%',end:'bottom top',toggleActions:'restart complete restart reset'}})
+        start:'top 78%',toggleActions:'play none none none'}})
         .fromTo(path,{attr:{'stroke-dashoffset':length}},{attr:{'stroke-dashoffset':length*.62},duration:.19,ease:'none'})
         .to(path,{attr:{'stroke-dashoffset':length*.60},duration:.035,ease:'none'})
         .to(path,{attr:{'stroke-dashoffset':length*.29},duration:.125,ease:'none'})

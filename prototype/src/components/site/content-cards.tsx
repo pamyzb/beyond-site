@@ -5,6 +5,9 @@ import { TextBlock } from './text-block';
 
 import { AppArtwork } from './app-artwork';
 import { ReflowArtwork } from './artwork';
+import layout from '../../../figma-layout.json';
+
+const headerSection = layout.sections.find(section => section.id === 'cabecalho') as SectionData;
 
 const art: Record<string,string> = {Article:'client-usp',Article_2:'client-pasteur',Article_3:'client-superpet',Article_10:'ai-visual',Article_11:'case-screen',container1:'phone-project','container 2':'phone-cases',Container_43:'testimonial-photo',Article_16:'about-16',Article_17:'about-17',Article_18:'about-18'};
 const blog: Record<string,string> = {Article_19:'blog-19',Article_20:'blog-20',Sidebar:'blog-sidebar',Article_21:'blog-21',Article_23:'blog-19'};
@@ -19,12 +22,17 @@ export function ContentCards({ section, appArtwork }: { section: SectionData; ap
   const items: { key: string; card: boolean; blocks: DesignBlock[] }[] = [];
   const cards = new Map<string, typeof items[number]>();
   section.blocks.forEach((block,i)=>{
+    if (section.id === 'rodape' && block.ancestors.some(name => name.startsWith('Navigation'))) return;
     const key = groupKey(block,section.id);
     if (!key) {items.push({key:`text-${i}`,card:false,blocks:[block]});return;}
     if (!cards.has(key)) {const card={key,card:true,blocks:[] as DesignBlock[]};cards.set(key,card);items.push(card);}
     cards.get(key)!.blocks.push(block);
   });
-  return <><div className="section-content">{items.map(item=>{
+  return <><div className="section-content">
+    {section.id === 'rodape' && <nav className="footer-nav" aria-label="Navegação do rodapé">
+      {headerSection.blocks.filter(block => !block.actionBox).map(block => <TextBlock key={block.source} block={block} section={headerSection} />)}
+    </nav>}
+    {items.map(item=>{
     if (!item.card && section.id==='clientes') return <h2 className="client-heading" key={item.key}><img src="/assets/figma/section-title-icon.svg" width="18" height="18" alt="" /><span>Empresas que crescem com a Beyond</span></h2>;
     if (!item.card) return <TextBlock key={item.key} block={item.blocks[0]} section={section} />;
     const style: Style = {};

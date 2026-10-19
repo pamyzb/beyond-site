@@ -11,6 +11,16 @@ export function ConversationArtwork({svg,variant='conversation'}:{svg:string;var
     const media=gsap.matchMedia();
     media.add({desktop:'(min-width:1440px)',mobile:'(max-width:1439px)',pointer:'(hover:hover) and (pointer:fine)',motion:'(prefers-reduced-motion:no-preference)'},context=>{
       if(!context.conditions?.motion)return;
+      if(variant==='conversation'&&context.conditions.desktop){
+        const logo=section.querySelector<SVGPathElement>('.conversation-overlay [id="Vector_40"]');
+        if(logo){
+          const length=logo.getTotalLength();
+          gsap.fromTo(logo,
+            {attr:{'stroke-dasharray':`${length} ${length}`,'stroke-dashoffset':length}},
+            {attr:{'stroke-dashoffset':0},duration:2.2,ease:'power1.inOut',
+              scrollTrigger:{trigger:section.querySelector('h2')??section,start:'top 85%',toggleActions:'play none none none'}});
+        }
+      }
       const targets=context.conditions.desktop
         ? Array.from(desktop.current!.querySelectorAll<SVGGElement>(variant==='contact' ? '[id="contact-art-contact-image"]' : variant==='faq' ? '[id="faq-art-Image-faq"]' : '[id="conversation-art-Container_21"],[id="conversation-art-Container_23"],[id="conversation-art-Container_24"],[id="conversation-art-Container_22"]'))
         : mobile?[mobile]:[];
@@ -55,7 +65,7 @@ export function ConversationArtwork({svg,variant='conversation'}:{svg:string;var
       const visibility=ScrollTrigger.create({trigger:section,start:'top bottom',end:'bottom top',
         onToggle:self=>floats.forEach(tween=>{if(self.isActive&&entered)tween.resume();else tween.pause();}),
       });
-      ScrollTrigger.create({trigger:context.conditions.desktop?section:mobile,start:context.conditions.desktop&&variant!=='conversation'?(variant==='faq'?'top+=288 82%':'top+=225 82%'):'top 82%',once:true,onEnter:()=>entry.play()});
+      ScrollTrigger.create({trigger:context.conditions.desktop?section:mobile,start:context.conditions.desktop&&variant!=='conversation'?(variant==='faq'?'top+=288 82%':'top+=225 82%'):'top 82%',toggleActions:'play none none none',onEnter:()=>entry.play()});
       return ()=>{
         section.removeEventListener('pointermove',move);
         section.removeEventListener('pointerleave',reset);

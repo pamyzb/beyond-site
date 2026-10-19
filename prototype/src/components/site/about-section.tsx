@@ -12,7 +12,7 @@ export function AboutSection({section,icons}:{section:SectionData;icons:string[]
     const media=gsap.matchMedia();
     media.add('(prefers-reduced-motion:no-preference)',()=>{
       const bodies=root.querySelectorAll('.about-card-body');
-      bodies.forEach((body,index)=>gsap.fromTo(body,{y:20,opacity:0},{y:0,opacity:1,duration:.8,ease:'power3.out',delay:index*.14,scrollTrigger:{trigger:body,start:'top 88%',once:true}}));
+      bodies.forEach((body,index)=>gsap.fromTo(body,{y:20,opacity:0},{y:0,opacity:1,duration:.8,ease:'power3.out',delay:index*.14,scrollTrigger:{trigger:body,start:'top 88%',toggleActions:'play none none none'}}));
     });
     media.add('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)',()=>{
       const cleanups=Array.from(root.querySelectorAll('.about-panel-card')).map((card,index)=>{

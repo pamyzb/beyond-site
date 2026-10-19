@@ -1,0 +1,27 @@
+.footer-original-art>svg{display:block;width:100%;height:100%}
+.footer-background-drift{transform-box:fill-box;transform-origin:center;animation:footer-background-drift 24s ease-in-out infinite;will-change:transform}
+@keyframes footer-background-drift{
+  0%,100%{transform:translate(-18px,-10px) scale(1.1) rotate(-1deg)}
+  50%{transform:translate(18px,10px) scale(1.16) rotate(1deg)}
+}
+@media(prefers-reduced-motion:reduce){.footer-background-drift{animation:none;transform:none;will-change:auto}}
+.footer-brand-link{position:absolute;left:120px;top:75px;width:220px;height:32px;z-index:1;border-radius:4px;cursor:pointer}
+@media(max-width:1439px){.footer-brand-link{display:none}}
+.footer-original-art [id='Redes sociais']{display:none}
+.footer-socials{position:absolute;left:588px;top:385.01px;z-index:1;display:flex;gap:16px}
+.section-rodape .footer-social.button{--button-fill:#071A3D;--button-depth:transparent;display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:#000;box-shadow:none;cursor:pointer}
+.section-rodape .footer-social.button::before{z-index:4;border:0;box-shadow:none;pointer-events:none}
+.footer-social .button-icon{display:block;width:40px;height:40px}
+@media(max-width:1439px){.footer-socials{display:none}}
+.footer-badge-hit{position:absolute;left:60px;z-index:1;width:161px;padding:0;border:0;border-radius:8px;background:transparent;cursor:pointer}
+.footer-badge-softex{top:505.01px;height:47px}
+.footer-badge-google{top:568.01px;height:51px;border-radius:11px}
+.footer-badge-hit:focus-visible{outline:2px solid var(--color-accent);outline-offset:4px}
+@media(max-width:1439px){.footer-badge-hit{display:none}}
+.footer-runner-stage{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden;visibility:hidden}
+.footer-runner-pixel,.footer-runner-particle{position:absolute;top:0;left:0;display:block;background:#aaed35;will-change:transform,opacity}
+.footer-runner-pixel{width:24px;height:23px;border-radius:3px;box-shadow:0 0 12px #aaed3526}
+.footer-runner-particle{width:6px;height:6px;border-radius:1px;opacity:0}
+.footer-runner-particle:nth-child(3n){background:#fff}
+@media(min-width:1440px){.footer-runner-stage{left:calc(-1 * var(--bleed-offset));right:auto;width:var(--bleed-width)}}
+@media(prefers-reduced-motion:reduce){.footer-runner-stage{display:none}}

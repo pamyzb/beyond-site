@@ -62,13 +62,22 @@ export function AppArtwork({svg,className}:{svg:string;className:string}) {
     const desktop=className.includes('figma-art');
     media.add(`(prefers-reduced-motion: no-preference) and (${desktop?'min-width:1440px':'max-width:1439px'})`,()=>{
       const cleanup:Array<()=>void>=[];
+      // Both theme artworks share this background outline and the same trigger.
+      host.querySelectorAll<SVGPathElement>('[id$="-Vector_42"]').forEach(logo=>{
+        const length=logo.getTotalLength();
+        gsap.fromTo(logo,
+          {attr:{'stroke-dasharray':`${length} ${length}`,'stroke-dashoffset':length}},
+          {attr:{'stroke-dashoffset':0},duration:2.2,ease:'power1.inOut',
+            scrollTrigger:{trigger:host.closest('section')?.querySelector('h2'),
+              start:'top 85%',toggleActions:'play none none none'}});
+      });
       host.querySelectorAll<SVGPathElement>('[id$="-qrcode-cta"] [id$="-beyond"] path').forEach(logo=>{
         const length=logo.getTotalLength();
         gsap.set(logo,{attr:{'stroke-dasharray':`${length} ${length}`,'stroke-dashoffset':length}});
         gsap.fromTo(logo,{attr:{'stroke-dashoffset':length}},
           {attr:{'stroke-dashoffset':0},duration:1.4,ease:'power1.inOut',
             scrollTrigger:{trigger:host.closest('section')?.querySelector('.qr-instructions'),
-              start:'top 85%',end:'bottom top',toggleActions:'restart complete restart reset'}});
+              start:'top 85%',toggleActions:'play none none none'}});
       });
       host.querySelectorAll<SVGGElement>('[id$="Container_26"],[id$="Container_34"]').forEach((phone,index)=>{
         const frame=phone.querySelector<SVGRectElement>(':scope > rect')!;
@@ -97,7 +106,7 @@ export function AppArtwork({svg,className}:{svg:string;className:string}) {
         content.setAttribute('clip-path',`url(#${clip.id})`);
         screen.appendChild(content);
         gsap.set([frame,camera,shadow],{opacity:0});
-        const timeline=gsap.timeline({scrollTrigger:{trigger:phone,start:'top 85%',once:true}})
+        const timeline=gsap.timeline({scrollTrigger:{trigger:phone,start:'top 85%',toggleActions:'play none none none'}})
           .to(outline,{attr:{'stroke-dashoffset':0},duration:1.15,ease:'power1.inOut'})
           .to(frame,{opacity:1,duration:.45},.8)
           .to(reveal,{attr:{height:809},duration:.65,ease:'power2.inOut'},.95)

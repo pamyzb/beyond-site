@@ -4,11 +4,45 @@ import { createPortal } from 'react-dom';
 import { gsap } from '@/lib/gsap';
 
 type Client = {key:string;name:string;summary:string;image:string};
+type FeaturedClient = Client & {photo:string;photoAlt:string};
 const descriptions: Record<string,string> = {
   Article:'A Universidade de São Paulo (USP) é uma universidade pública dedicada ao ensino, à pesquisa e à extensão, com atuação em diversas áreas do conhecimento.',
   Article_2:'O Institut Pasteur atua na pesquisa científica em saúde, com foco em doenças infecciosas, microbiologia e no desenvolvimento do conhecimento para a prevenção de doenças.',
   Article_3:'A Superpet é uma feira do setor pet que reúne empresas, marcas e profissionais para apresentar produtos, compartilhar conhecimento e criar oportunidades de negócios.',
 };
+
+/** Inline variant of the client carousel, sharing the tooltip's content styles. */
+export function ClientDetailsCarousel({clients}:{clients:FeaturedClient[]}) {
+  const [active,setActive]=useState<FeaturedClient|null>(null);
+  const [expanded,setExpanded]=useState(false);
+  const closeTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+  const cancelClose=()=>{if(closeTimer.current)clearTimeout(closeTimer.current);};
+  const open=(client:FeaturedClient)=>{cancelClose();setActive(client);setExpanded(true);};
+  const close=()=>{cancelClose();closeTimer.current=setTimeout(()=>setExpanded(false),260);};
+  useEffect(()=>()=>{if(closeTimer.current)clearTimeout(closeTimer.current);},[]);
+  return <div className="client-inline-carousel" onPointerEnter={cancelClose} onPointerLeave={close}
+    onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget))close();}}
+    onKeyDown={event=>{if(event.key==='Escape'){cancelClose();setExpanded(false);}}}>
+    <div className={`client-strip${expanded?' is-paused':''}`}>
+      <div className="client-track">
+        {Array.from({length:4},(_,repeat)=>[...clients,...clients].map((client,index)=><button
+          type="button" className="client-strip-item impact-brand" key={`${repeat}-${index}`}
+          tabIndex={repeat===0&&index<clients.length?0:-1} aria-hidden={repeat>0||index>=clients.length?true:undefined}
+          aria-label={`Conhecer ${client.name}`} aria-expanded={expanded&&active?.key===client.key} aria-controls="client-inline-details"
+          onPointerEnter={event=>{if(event.pointerType!=='touch')open(client);}} onFocus={()=>open(client)}
+          onClick={()=>open(client)}>
+          <img src={client.image} alt="" width="160" height="48" />
+        </button>))}
+      </div>
+    </div>
+    <div id="client-inline-details" className="client-inline-details" data-open={expanded} aria-hidden={!expanded} inert={!expanded}>
+      <div className="client-inline-reveal">{active&&<div className="client-tooltip-content client-inline-card">
+        <img className="client-inline-photo" src={active.photo} alt={active.photoAlt} width="480" height="300" />
+        <div className="client-tooltip-body"><h3>{active.name}</h3><p>{descriptions[active.key]||active.summary}</p></div>
+      </div>}</div>
+    </div>
+  </div>;
+}
 
 export function ClientCarousel({clients}:{clients:Client[]}) {
   const [active,setActive]=useState<{client:Client;trigger:HTMLButtonElement;id:string}|null>(null);

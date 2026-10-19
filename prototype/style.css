@@ -252,7 +252,7 @@ button{cursor:pointer}
 .section-band>.design-section{margin-inline:auto}
 /* A single reversible scroll state paints the page canvas. */
 @property --theme-dark-progress{syntax:'<number>';inherits:true;initial-value:0}
-:root{--theme-dark-progress:0;--theme-dark-canvas:#0E121D;--scroll-canvas:color-mix(in srgb,#fff calc((1 - var(--theme-dark-progress))*100%),var(--theme-dark-canvas));--scroll-ink:#000;--scroll-muted:#4b5563;--theme-duration:500ms;--theme-ease:ease;transition:--theme-dark-progress var(--theme-duration) var(--theme-ease)}
+:root{--theme-dark-progress:0;--theme-dark-canvas:#000000;--scroll-canvas:color-mix(in srgb,#fff calc((1 - var(--theme-dark-progress))*100%),var(--theme-dark-canvas));--scroll-ink:#000;--scroll-muted:#4b5563;--theme-duration:500ms;--theme-ease:ease;transition:--theme-dark-progress var(--theme-duration) var(--theme-ease)}
 :root[data-scroll-theme=dark]{--theme-dark-progress:1;--scroll-ink:#fff;--scroll-muted:#d1d5db}
 body{background-color:var(--scroll-canvas)}
 .section-band,.section-band>.design-section{background-color:transparent}

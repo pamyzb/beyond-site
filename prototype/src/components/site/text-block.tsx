@@ -8,6 +8,9 @@ import { AppTitleWord } from './app-title-word';
 export function TextBlock({ block, section }: { block: DesignBlock; section: SectionData }) {
   if(section.id==='inicio' && block.role==='h1') return <h1 className="hero-grid-title"><span>Tecnologia que</span><span className="hero-grid-title-bottom">move <HeroVideoWord /></span></h1>;
   const text = block.runs.map(r => r.text.trim()).join(' ');
+  const mapsButton = section.id === 'rodape' && text === 'Ver a rota no Maps';
+  // This secondary CTA's hit box is missing from the exported text metadata.
+  if (mapsButton) block = { ...block, actionBox: [584.5, 628.01, 271, 39] };
   const href = actionFor(text, section.id);
   const menuItem = section.id === 'cabecalho' && href && !block.actionBox;
   const buttonIcon = block.actionBox && block.ancestors.find(name=>/^primary(?:_\d+)?$/.test(name));
@@ -23,7 +26,7 @@ export function TextBlock({ block, section }: { block: DesignBlock; section: Sec
     Object.assign(style, {'--hit-x':`${bx-x}px`, '--hit-y':`${by-y}px`, '--hit-width':`${bw}px`, '--hit-height':`${bh}px`});
   }
   const classes = ['text-block',block.role==='label'&&'section-label',qr&&'qr-instructions',href&&'action-link',href&&block.actionBox&&'button-link',offstage&&'offstage-quote',badge&&'step-badge'].filter(Boolean).join(' ');
-  return <Tag href={href} className={classes} style={style} data-source={block.source} data-role={block.role} aria-label={menuItem?text:undefined} aria-hidden={offstage || undefined}>
+  return <Tag href={href} className={classes} style={style} data-source={block.source} data-role={block.role} data-motion={block.role==='p' && block.ancestors.some(name=>name.startsWith('section-title'))?'section-description':undefined} aria-label={menuItem?text:undefined} aria-hidden={offstage || undefined}>
     {block.runs.map((run,i) => {
       const runStyle: Style = {left:run.x-x, top:run.y-y-run.size*.85,
         '--run-size': TYPE_TOKENS[run.size] ? `var(--text-${TYPE_TOKENS[run.size]})` : `${run.size}px`,
@@ -36,6 +39,7 @@ export function TextBlock({ block, section }: { block: DesignBlock; section: Sec
       </>}</span>{' '}</Fragment>;
     })}
     {buttonIcon && section.id!=='cabecalho' && <img className="button-art-icon" src={`/assets/figma/button-icon-${buttonIcon}.svg`} alt="" aria-hidden="true" />}
+    {mapsButton && <img className="button-art-icon" src="/assets/figma/button-icon-maps.svg" alt="" aria-hidden="true" />}
     {qr && <Artwork src="assets/figma/app-qr.svg" width={156} height={156} alt="QR Code para baixar o aplicativo Beyond" className="mobile-qr" />}
   </Tag>;
 }

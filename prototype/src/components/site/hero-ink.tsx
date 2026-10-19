@@ -47,7 +47,7 @@ export function HeroInk() {
     let points: {x:number;y:number;time:number;phase:number}[]=[];
     const copyHost=layer.querySelector<HTMLElement>('.hero-ink-copy')!;
     const syncControls=(original:Element,copy:Element)=>{
-      const selector='.action-link,.button,.menu-toggle';
+      const selector='.action-link,.button,.menu-toggle,.hero-scroll-cue';
       const sources=Array.from(original.querySelectorAll<HTMLElement>(selector)).filter(node=>!copyHost.contains(node));
       copy.querySelectorAll<HTMLElement>(selector).forEach((control,index)=>{
         const source=sources[index];
@@ -153,12 +153,16 @@ export function HeroInk() {
     const clear=()=>{points=[];cancelAnimationFrame(frame);frame=0;pauseVideos();layer.style.visibility='hidden';if(headerReveal)headerReveal.style.visibility='hidden';resetHeaderMask();};
     const visibility=()=>{if(document.hidden)clear();};
     const resize=new ResizeObserver(rebuild);resize.observe(hero);
+    // React can update the cue without resizing the hero. Keep the dark copy in sync.
+    const cueObserver=new MutationObserver(rebuild);
+    const cue=hero.querySelector(':scope > .hero-scroll-cue');
+    if(cue)cueObserver.observe(cue,{childList:true,subtree:true,attributes:true,attributeFilter:['viewBox','width','height','d']});
     void document.fonts.ready.then(rebuild);
     hero.addEventListener('pointermove',move);
     header?.addEventListener('pointermove',move);
     document.addEventListener('visibilitychange',visibility);
     fine.addEventListener('change',clear);
-    return ()=>{disposed=true;clear();headerObserver.disconnect();header?.removeEventListener('pointermove',move);headerReveal?.remove();resize.disconnect();hero.removeEventListener('pointermove',move);document.removeEventListener('visibilitychange',visibility);fine.removeEventListener('change',clear);};
+    return ()=>{disposed=true;clear();headerObserver.disconnect();cueObserver.disconnect();header?.removeEventListener('pointermove',move);headerReveal?.remove();resize.disconnect();hero.removeEventListener('pointermove',move);document.removeEventListener('visibilitychange',visibility);fine.removeEventListener('change',clear);};
   },[]);
   return <div ref={ref} className="hero-ink" aria-hidden="true"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260629_021419_291eb2af-5ed4-45a0-a1d6-3ef58f4bca0b.mp4" muted loop playsInline preload="metadata" /><div className="hero-ink-shade" /><div className="hero-ink-copy" /></div>;
 }

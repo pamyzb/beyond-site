@@ -117,6 +117,7 @@ export function TestimonialCarousel({ section, videoSrc }: { section: SectionDat
     };
     const observer = new ResizeObserver(resize);
     observer.observe(rail);
+    if(!media.matches)gsap.set(rail,{opacity:0,y:36});
     const visibility = new IntersectionObserver(([entry])=>{
       paused.current.visible=entry.isIntersecting;
       if(entry.isIntersecting&&!introduced) {
@@ -124,13 +125,13 @@ export function TestimonialCarousel({ section, videoSrc }: { section: SectionDat
         if(!media.matches) {
           state.intro=1.8;
           intro=gsap.to(state,{intro:1,duration:1.3,ease:'power2.out'});
-          gsap.fromTo(rail,{y:36},{y:0,duration:1.3,ease:'power2.out'});
+          gsap.fromTo(rail,{y:36,opacity:0},{y:0,opacity:1,duration:1.3,ease:'power2.out'});
         }
       }
     },{threshold:.25});
     visibility.observe(root);
     const preferenceChanged=()=>{
-      if(media.matches){tween?.kill();intro?.kill();state.pos=state.target;state.speed=0;state.velocity=0;state.intro=1;gsap.set(rail,{y:0});}
+      if(media.matches){tween?.kill();intro?.kill();gsap.killTweensOf(rail);state.pos=state.target;state.speed=0;state.velocity=0;state.intro=1;gsap.set(rail,{y:0,opacity:1});}
       render();
     };
     media.addEventListener('change',preferenceChanged);

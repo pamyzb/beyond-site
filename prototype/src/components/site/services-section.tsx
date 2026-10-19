@@ -89,10 +89,12 @@ export function ServicesSection({section}:{section:SectionData}) {
       const cards=Array.from(rail.current?.children??[]);
       const revealObserver=new IntersectionObserver(entries=>{
         entries.forEach(entry=>{
-          if(entry.intersectionRatio>=0.08)entry.target.classList.add('is-visible');
+          if(entry.intersectionRatio>=0.18)entry.target.classList.add('is-visible');
           else if(!entry.isIntersecting)entry.target.classList.remove('is-visible');
         });
-      },{root:viewport.current,threshold:[0,0.08]});
+      // Observe the page viewport as well as the carousel's clipping bounds,
+      // so cards reveal when scrolling down to services, not while offscreen.
+      },{rootMargin:'0px 0px -18% 0px',threshold:[0,0.18]});
       rail.current?.classList.add('services-fade-ready');
       cards.forEach(card=>revealObserver.observe(card));
       const work=gsap.timeline({repeat:-1,yoyo:true,repeatDelay:0.1,scrollTrigger:{trigger:scope.current,start:'top bottom',end:'bottom top',toggleActions:'play pause resume pause'}});

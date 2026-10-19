@@ -3,6 +3,7 @@ import { useRef, type ReactNode } from 'react';
 import { ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { measureType } from '@/lib/measure-type';
 import { ButtonMotion } from './button-motion';
+import { animateSectionTitles } from './section-title-motion';
 
 /** Owns page-level motion. Section timelines should use their own scoped useGSAP. */
 export function MotionRoot({ children }: {children: ReactNode}) {
@@ -16,11 +17,13 @@ export function MotionRoot({ children }: {children: ReactNode}) {
     if(!appSection || !contextSafe)return;
     let disposed=false;
     let refreshFrame=0;
+    let cleanupTitles: (() => void) | undefined;
     const syncTheme=(trigger:ScrollTrigger)=>{
       root.dataset.scrollTheme=trigger.scroll()>=trigger.start?'dark':'light';
     };
     const createTrigger=contextSafe(()=>{
       measureType(element);
+      cleanupTitles=animateSectionTitles(element);
       if(metricsCounter&&whatsapp){
         const syncWhatsApp=()=>{
           const visible=metricsCounter.getBoundingClientRect().top<window.innerHeight;
@@ -54,6 +57,7 @@ export function MotionRoot({ children }: {children: ReactNode}) {
     window.addEventListener('pageshow',refresh);
     return ()=>{
       disposed=true;cancelAnimationFrame(refreshFrame);observer.disconnect();
+      cleanupTitles?.();
       window.removeEventListener('pageshow',refresh);
       delete root.dataset.scrollTheme;delete root.dataset.ready;
       if(whatsapp){delete whatsapp.dataset.visible;whatsapp.tabIndex=-1;whatsapp.setAttribute('aria-hidden','true');}

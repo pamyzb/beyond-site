@@ -80,7 +80,7 @@ export function ProcessSection({section,artwork}:{section:SectionData;artwork:{t
       targets.forEach((target,index)=>{
         gsap.fromTo(target,{x:wide?(index%2?440:-440):0,y:wide?120:80,rotation:wide?(index%2?12:-12):-5,scale:.82,opacity:0},
           {x:0,y:0,rotation:0,scale:1,opacity:1,duration:1.65,ease:'power4.out',delay:wide?index*.2:0,
-            scrollTrigger:{trigger:wide?root:target,start:wide?'top 82%':'top 92%',once:true}});
+            scrollTrigger:{trigger:wide?root:target,start:wide?'top 82%':'top 92%',toggleActions:'play none none none'}});
       });
       return ()=>{route.remove();svg.setAttribute('viewBox','0 7449.59 1440 1148');markerSvg.setAttribute('viewBox','0 7449.59 1440 1148');};
     });
