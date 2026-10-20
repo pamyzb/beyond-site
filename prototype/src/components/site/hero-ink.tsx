@@ -61,7 +61,9 @@ export function HeroInk() {
     const rebuild=()=>{
       if(disposed)return;
       const copy=hero.cloneNode(true) as HTMLElement;
-      copy.querySelectorAll('.hero-ink,.hero-glass,.hero-glass-filters,.hero-three').forEach(n=>n.remove());
+      // The cursor-following mark belongs to the real hero only. Including it
+      // in this ink-reveal copy leaves a second, fixed badge on the dark layer.
+      copy.querySelectorAll('.hero-ink,.hero-glass,.hero-glass-filters,.hero-three,.hero-flat-logo,.hero-glass-badge').forEach(n=>n.remove());
       copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
       copy.dataset.ink='true';copy.inert=true;
       const arrow=document.createElement('img');

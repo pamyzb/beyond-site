@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Bot, Hammer, Wrench } from 'lucide-react';
-import { gsap, useGSAP } from '@/lib/gsap';
+import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { actionFor, type SectionData } from '@/lib/design';
 import { SectionHeading } from './section-heading';
 import { ButtonLink } from './button';
@@ -23,10 +23,12 @@ export function ServicesSection({section}:{section:SectionData}) {
   const scope=useRef<HTMLElement>(null);
   const viewport=useRef<HTMLDivElement>(null);
   const rail=useRef<HTMLDivElement>(null);
+  const paintJourney=useRef<()=>void>(()=>{});
+  const scrollJourney=useRef<ScrollTrigger|null>(null);
   const copy=section.blocks.map(block=>block.runs.map(run=>run.text).join(' '));
   const titles=section.blocks.filter(block=>block.role==='h3').map(block=>block.runs.map(run=>run.text).join(' '));
   function groupPositions() {
-    const element=viewport.current,cards=rail.current?.children;
+    const element=viewport.current,cards=rail.current?.querySelectorAll<HTMLElement>(':scope > article');
     if(!element || !cards?.length)return [0,0,0];
     const first=cards[0].getBoundingClientRect().left;
     const max=Math.max(0,element.scrollWidth-element.clientWidth);
@@ -42,7 +44,7 @@ export function ServicesSection({section}:{section:SectionData}) {
   }
   function navigate(direction: number | 'first' | 'last' | {group:number}) {
     const windowElement=viewport.current;
-    const cards=rail.current?.children;
+    const cards=rail.current?.querySelectorAll<HTMLElement>(':scope > article');
     if(!windowElement || !cards?.length)return;
     const first=cards[0].getBoundingClientRect().left;
     const max=Math.max(0,windowElement.scrollWidth-windowElement.clientWidth);
@@ -64,29 +66,146 @@ export function ServicesSection({section}:{section:SectionData}) {
     const page=pages.reduce((nearest,position,index)=>Math.abs(position-current)<Math.abs(pages[nearest]-current)?index:nearest,0);
     const target=typeof direction==='object'?groupPositions()[direction.group]:direction==='first'?0:direction==='last'?max:pages[Math.max(0,Math.min(pages.length-1,page+direction))];
     destination.current=target;
+    if(scrollJourney.current){
+      const trigger=scrollJourney.current;
+      window.scrollTo({top:trigger.start+(target/max)*(trigger.end-trigger.start),behavior:'smooth'});
+      return;
+    }
     windowElement.scrollTo({left:target,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
   }
   useGSAP(()=>{
-    const outline=scope.current?.querySelector<SVGSVGElement>('.agent-assembly');
-    const updateOutline=()=>{
-      if(!outline)return;
-      const width=outline.clientWidth-2;
-      const height=outline.clientHeight-2;
-      const radius=Math.min(30,width/2,height/2);
-      const middle=1+height/2;
-      const right=1+width;
-      const bottom=1+height;
-      const paths=outline.querySelectorAll('path');
-      paths[0]?.setAttribute('d',`M 1 ${middle} V ${1+radius} Q 1 1 ${1+radius} 1 H ${right-radius} Q ${right} 1 ${right} ${1+radius} V ${middle}`);
-      paths[1]?.setAttribute('d',`M 1 ${middle} V ${bottom-radius} Q 1 ${bottom} ${1+radius} ${bottom} H ${right-radius} Q ${right} ${bottom} ${right} ${bottom-radius} V ${middle}`);
+    const track=rail.current!;
+    const element=viewport.current!;
+    const path=track.querySelector<SVGPathElement>('.services-route path')!;
+    const svg=path.ownerSVGElement!;
+    const robots=Array.from(track.querySelectorAll<HTMLElement>(':scope > .builder'));
+    const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+    let length=0;
+    let outlineLength=0;
+    let construction:gsap.core.Timeline|undefined;
+    let traveling=false;
+    let cardBounds:{left:number;right:number;top:number;bottom:number}[]=[];
+    const journey={distance:0};
+    let robotStartDistances=[0,0];
+    const robotOffset=(point:DOMPoint)=>{
+      const card=cardBounds.find(bounds=>point.x>=bounds.left-24&&point.x<=bounds.right+24);
+      if(card&&point.y>card.bottom)return 30;
+      if(card&&point.y<card.top)return -30;
+      return -26;
     };
-    updateOutline();
-    const observer=new ResizeObserver(()=>{updateOutline();updatePagination();});
-    if(outline)observer.observe(outline);
-    if(viewport.current)observer.observe(viewport.current);
+    const placeRobots=()=>{
+      const joining=journey.distance<robotStartDistances[1];
+      robots.forEach((robot,index)=>{
+        const distance=Math.max(0,Math.min(length,joining?(index===0?journey.distance:robotStartDistances[1]):journey.distance));
+        const point=path.getPointAtLength(distance);
+        gsap.set(robot,{left:0,top:0,x:point.x+index*44,y:point.y+robotOffset(point),xPercent:-50,yPercent:-50});
+      });
+    };
+    const followJourney=(distance:number)=>gsap.to(journey,{distance,duration:.45,ease:'power2.out',overwrite:'auto',onUpdate:placeRobots});
+    const paint=()=>{
+      if(!length)return;
+      const max=element.scrollWidth-element.clientWidth;
+      const progress=max>0?Math.max(0,Math.min(1,element.scrollLeft/max)):0;
+      if(progress<=.001){
+        path.style.strokeDasharray=String(length);
+        path.style.strokeDashoffset=String(reduced.matches?0:length);
+        if(traveling){
+          traveling=false;
+          gsap.killTweensOf(journey);
+          robots.forEach(robot=>{
+            gsap.killTweensOf(robot);
+          });
+          journey.distance=robotStartDistances[0];
+          placeRobots();
+          construction?.restart();
+        }
+        return;
+      }
+      if(!traveling){
+        traveling=true;
+        construction?.pause();
+        journey.distance=robotStartDistances[0];
+        placeRobots();
+      }
+      // Once the card outline is drawn, every bit of carousel progress advances
+      // directly into the route to the next service.
+      const joinProgress=.18;
+      const head=progress<joinProgress
+        ? robotStartDistances[0]+(robotStartDistances[1]-robotStartDistances[0])*(progress/joinProgress)
+        : robotStartDistances[1]+(length-robotStartDistances[1])*((progress-joinProgress)/(1-joinProgress));
+      path.style.strokeDasharray=String(length);
+      path.style.strokeDashoffset=String(reduced.matches?0:length-Math.max(outlineLength,head));
+      followJourney(head);
+    };
+    paintJourney.current=paint;
+    const measure=()=>{
+      const cards=Array.from(track.querySelectorAll<HTMLElement>(':scope > article'));
+      cardBounds=cards.map(card=>({left:card.offsetLeft,right:card.offsetLeft+card.offsetWidth,top:card.offsetTop,bottom:card.offsetTop+card.offsetHeight}));
+      const agentCard=cards[0];
+      if(!agentCard)return;
+      const radius=Math.min(28,agentCard.offsetWidth/2,agentCard.offsetHeight/2);
+      const left=agentCard.offsetLeft-1,top=agentCard.offsetTop-1;
+      const right=agentCard.offsetLeft+agentCard.offsetWidth+1,bottom=agentCard.offsetTop+agentCard.offsetHeight+1;
+      const middle=(top+bottom)/2;
+      // A single line closes the agent card before continuing through every other card.
+      let d=`M ${right} ${middle} V ${bottom-radius} Q ${right} ${bottom} ${right-radius} ${bottom} H ${left+radius} Q ${left} ${bottom} ${left} ${bottom-radius} V ${top+radius} Q ${left} ${top} ${left+radius} ${top} H ${right-radius} Q ${right} ${top} ${right} ${top+radius} V ${middle}`;
+      outlineLength=2*((right-left)+(bottom-top))-(8-2*Math.PI)*radius;
+      let previous={x:right,y:middle};
+      const routePoints=[previous];
+      cards.slice(1).forEach((card,index)=>{
+        const x=card.offsetLeft-12;
+        const cardRight=card.offsetLeft+card.offsetWidth+12;
+        const y=(index+1)%2===0?card.offsetTop-42:card.offsetTop+card.offsetHeight+42;
+        const turn=(previous.x+x)/2;
+        routePoints.push({x:turn,y:previous.y},{x:turn,y},{x,y},{x:cardRight,y});
+        previous={x:cardRight,y};
+      });
+      for(let index=1;index<routePoints.length-1;index++){
+        const previousPoint=routePoints[index-1],point=routePoints[index],next=routePoints[index+1];
+        const before=Math.hypot(point.x-previousPoint.x,point.y-previousPoint.y);
+        const after=Math.hypot(next.x-point.x,next.y-point.y);
+        const corner=Math.min(22,before/2,after/2);
+        if(!before||!after)continue;
+        d+=` L ${point.x-(point.x-previousPoint.x)/before*corner} ${point.y-(point.y-previousPoint.y)/before*corner} Q ${point.x} ${point.y} ${point.x+(next.x-point.x)/after*corner} ${point.y+(next.y-point.y)/after*corner}`;
+      }
+      const finalPoint=routePoints[routePoints.length-1];
+      d+=` L ${finalPoint.x} ${finalPoint.y}`;
+      svg.setAttribute('width',String(track.scrollWidth));svg.setAttribute('height',String(track.offsetHeight));
+      path.setAttribute('d',d);length=path.getTotalLength();
+      const nearestDistance=(target:{x:number;y:number})=>{
+        let closest=0,closestDistance=Infinity;
+        for(let index=0;index<=360;index++){
+          const distance=outlineLength*index/360;
+          const point=path.getPointAtLength(distance);
+          const squared=(point.x-target.x)**2+(point.y-target.y)**2;
+          if(squared<closestDistance){closestDistance=squared;closest=distance;}
+        }
+        return closest;
+      };
+      robotStartDistances=[
+        nearestDistance({x:left+(right-left)*.78,y:top}),
+        Math.max(0,outlineLength-64),
+      ];
+      if(!traveling){journey.distance=robotStartDistances[0];placeRobots();}
+      paint();updatePagination();
+    };
+    measure();
+    const observer=new ResizeObserver(measure);
+    observer.observe(track);observer.observe(element);
+    track.querySelectorAll(':scope > article').forEach(card=>observer.observe(card));
+    reduced.addEventListener('change',paint);
     const mm=gsap.matchMedia();
+    mm.add('(min-width: 768px) and (min-height: 650px) and (prefers-reduced-motion: no-preference)',()=>{
+      const element=viewport.current!;
+      element.classList.add('is-scroll-driven');
+      const tween=gsap.to(element,{scrollLeft:()=>element.scrollWidth-element.clientWidth,ease:'none',onUpdate:paint,
+        scrollTrigger:{trigger:'.services-stage',start:'top 96px',end:()=>`+=${element.scrollWidth-element.clientWidth}`,
+          pin:true,scrub:.6,invalidateOnRefresh:true}});
+      scrollJourney.current=tween.scrollTrigger!;
+      return ()=>{scrollJourney.current=null;element.classList.remove('is-scroll-driven');};
+    });
     mm.add('(prefers-reduced-motion: no-preference)',()=>{
-      const cards=Array.from(rail.current?.children??[]);
+      const cards=Array.from(rail.current?.querySelectorAll<HTMLElement>(':scope > article')??[]);
       const revealObserver=new IntersectionObserver(entries=>{
         entries.forEach(entry=>{
           if(entry.intersectionRatio>=0.18)entry.target.classList.add('is-visible');
@@ -97,23 +216,24 @@ export function ServicesSection({section}:{section:SectionData}) {
       },{rootMargin:'0px 0px -18% 0px',threshold:[0,0.18]});
       rail.current?.classList.add('services-fade-ready');
       cards.forEach(card=>revealObserver.observe(card));
-      const work=gsap.timeline({repeat:-1,yoyo:true,repeatDelay:0.1,scrollTrigger:{trigger:scope.current,start:'top bottom',end:'bottom top',toggleActions:'play pause resume pause'}});
-      work.fromTo('.agent-assembly path',{strokeDashoffset:1000},{strokeDashoffset:0,duration:3.6,ease:'power2.inOut',autoRound:false})
-        .fromTo('.builder-one',{x:0},{x:100,duration:3,ease:'power1.inOut'},0)
-        .fromTo('.builder-two',{y:18},{y:-26,duration:1.5,yoyo:true,repeat:1,ease:'sine.inOut'},0)
-        .to('.builder-tool',{rotation:-35,transformOrigin:'bottom left',duration:0.18,yoyo:true,repeat:15},0);
+      const tools=robots.flatMap(robot=>Array.from(robot.querySelectorAll<SVGElement>('.builder-tool')));
+      gsap.to(tools,{rotation:-35,transformOrigin:'bottom left',duration:.18,yoyo:true,repeat:-1,ease:'sine.inOut'});
+      construction=gsap.timeline({repeat:-1,yoyo:true,repeatDelay:.15,
+        scrollTrigger:{trigger:'.service-agents',start:'top bottom',end:'bottom top',toggleActions:'play pause resume pause'}});
+      construction
+        .fromTo(path,{strokeDasharray:()=>length,strokeDashoffset:()=>length},{strokeDashoffset:()=>length-outlineLength,duration:3.6,ease:'power2.inOut',autoRound:false});
       return ()=>{
         revealObserver.disconnect();
         rail.current?.classList.remove('services-fade-ready');
         cards.forEach(card=>card.classList.remove('is-visible'));
       };
     });
-    return ()=>{observer.disconnect();mm.revert();};
+    return ()=>{observer.disconnect();reduced.removeEventListener('change',paint);paintJourney.current=()=>{};mm.revert();};
   },{scope});
   return <section ref={scope} id="servicos" className="services-editorial" aria-label={section.label}>
     <SectionHeading label={copy[0]} title={<>Problemas que a gente <em>{'{resolve}'}</em></>} subtitle={copy[2]}/>
     <div className="services-stage">
-      <div ref={viewport} id="services-carousel" className="services-window" tabIndex={0} role="region" aria-roledescription="carrossel" aria-label="Serviços" onScroll={event=>{updatePagination();if(destination.current!==null && Math.abs(event.currentTarget.scrollLeft-destination.current)<2)destination.current=null;}} onPointerDown={()=>{destination.current=null;}} onWheel={()=>{destination.current=null;}} onKeyDown={event=>{
+      <div ref={viewport} id="services-carousel" className="services-window" tabIndex={0} role="region" aria-roledescription="carrossel" aria-label="Serviços" onScroll={event=>{updatePagination();paintJourney.current();if(destination.current!==null && Math.abs(event.currentTarget.scrollLeft-destination.current)<2)destination.current=null;}} onPointerDown={()=>{destination.current=null;}} onWheel={()=>{destination.current=null;}} onKeyDown={event=>{
         if(event.target!==event.currentTarget)return;
         if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
         event.preventDefault();
@@ -124,14 +244,14 @@ export function ServicesSection({section}:{section:SectionData}) {
             <div className={`service-image service-image-${index}`}><img src={images[index]} alt="" loading="lazy"/></div>
             <div className="service-caption"><h3>{titles[index]}</h3><p>{descriptions[index]}</p></div>
           </article>:<article className="service-editorial-card service-agents" key={titles[index]}>
-            <svg className="agent-assembly" aria-hidden="true"><path pathLength="1000"/><path pathLength="1000"/></svg>
-            <div className="builder builder-one" aria-hidden="true"><Bot size={49} strokeWidth={1.5}/><Hammer className="builder-tool" size={27}/></div>
-            <div className="builder builder-two" aria-hidden="true"><Bot size={43} strokeWidth={1.5}/><Wrench className="builder-tool" size={24}/></div>
             <div className="agent-construction" aria-hidden="true">
               <img className="agent-art" src="/assets/service-agents-team.png" alt="" loading="lazy"/>
             </div>
             <div className="service-caption"><h3>{titles[index]}</h3><p>{copy[9]}</p><ButtonLink className="service-details" href={actionFor(copy[10],section.id)}>{copy[10]}<img className="button-icon" src="/assets/figma/header-button-arrow.svg" width={18} height={18} alt="" /></ButtonLink></div>
           </article>)}
+          <svg className="services-route" aria-hidden="true"><path/></svg>
+          <div className="builder builder-one" aria-hidden="true"><Bot size={49} strokeWidth={1.5}/><Hammer className="builder-tool" size={27}/></div>
+          <div className="builder builder-two" aria-hidden="true"><Bot size={43} strokeWidth={1.5}/><Wrench className="builder-tool" size={24}/></div>
         </div>
       </div>
       <div className="services-controls">
@@ -142,7 +262,6 @@ export function ServicesSection({section}:{section:SectionData}) {
         {[0,1,2].map(group=><button key={group} type="button" aria-label={`Ir para o grupo ${group+1} de 3 de serviços`} aria-current={activeGroup===group?'true':undefined} aria-controls="services-carousel" onClick={()=>navigate({group})}><span/></button>)}
       </div>
     </div>
-    <div className="services-contact"><ButtonLink className="services-contact-button" href={actionFor(copy[11],section.id)}><img className="button-icon" src="/assets/figma/whatsapp-button-icon.svg" width={24} height={24} alt="" />{copy[11]}</ButtonLink><p>{copy[12]}</p></div>
   </section>;
 }
 

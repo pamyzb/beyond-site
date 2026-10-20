@@ -595,6 +595,7 @@
 /* Glass depth study: crisp beveled rim, restrained shadow and fine surface grain. */
 .hero-glass{mask:none;-webkit-mask:none;overflow:visible;contain:layout;background:none;filter:drop-shadow(2px 4px 2px rgb(52 69 113 / .2)) drop-shadow(12px 22px 24px rgb(26 43 85 / .24))}
 .hero-glass-material{position:absolute;inset:0;overflow:hidden;mask:url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;-webkit-mask:url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;background:rgb(220 232 255 / .22)}
+.hero-glass-tint{position:absolute;inset:0;pointer-events:none;background:linear-gradient(132deg,#7187ff80 4%,#2f43fc52 38%,#1731bc66 72%,#abc9ff73);mix-blend-mode:normal;opacity:.72}
 .hero-glass-sheen{background:url('/assets/figma/hero-glass-rim-depth.svg') center/100% 100% no-repeat,linear-gradient(118deg,transparent 20%,#ffffff30 32%,#ffffff05 43%,transparent 54%),linear-gradient(132deg,#ffffffd9,#dde8ff30 16%,#ffffff08 46%,#6f97ff38 86%,#ffffffe0)}
 .hero-glass-grain{position:absolute;inset:0;background:url('/assets/figma/hero-glass-grain.svg') repeat;opacity:0;mix-blend-mode:soft-light;pointer-events:none}
 
@@ -663,8 +664,10 @@
 
 /* Keep application title strokes attached to their words across breakpoints. */
 .app-drawn-art :is([id$="-Line-1"],[id$="-Line-6"]){display:none}
-.app-title-word{position:relative;display:inline-block;line-height:1}
+.app-title-word{position:relative;display:inline-block;line-height:1;z-index:1;color:var(--color-accent)}
 .app-title-scribble{position:absolute;left:-3%;top:calc(100% - .08em);width:106%;height:.45em;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
+.app-feature-title{width:540px!important;height:auto!important;color:#fff;font-size:44px;font-weight:500;letter-spacing:-2px;line-height:1.27;text-align:center}
+.app-feature-title-line{display:block;white-space:nowrap}
 
 
 @media(prefers-reduced-motion:reduce){.app-title-scribble path{animation:none!important;stroke-dashoffset:0}}
@@ -1075,3 +1078,210 @@
  :root .impact-figma .impact-press-logos img[src$="/valor.png"]{max-width:105px;height:38px}
  :root .impact-figma .impact-press-logos img[src$="/pegn.png"]{max-width:110px}
 }
+/* Client feedback: flat brand, shared proof section and local scroll journeys. */
+.hero-flat-logo{position:absolute;width:clamp(110px,17vw,245px);height:auto;right:7%;top:43%;z-index:8;pointer-events:none;transform:rotate(-12deg)}
+:root .impact-figma{background:color-mix(in srgb,#edf1f6 calc((1 - var(--theme-dark-progress))*100%),#15191f);border-radius:32px}
+.impact-figma .impact-metrics-wrap{padding-top:0}
+.impact-figma .impact-panel{background:transparent;padding-top:48px}
+.impact-figma .impact-patterns{opacity:.35}
+.impact-figma .client-strip,.impact-figma .client-track{height:146px}
+.impact-figma .client-strip .impact-brand{height:146px;flex-basis:240px;flex-direction:column;gap:16px;padding:12px 24px;justify-content:flex-start}
+.impact-figma .client-strip .impact-brand img{height:58px!important;max-width:170px;object-fit:contain}
+.client-visible-summary{font-size:12px;line-height:1.5;font-weight:400;color:var(--scroll-muted);text-align:center;max-width:195px;white-space:normal}
+.impact-intro{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;margin:0 0 40px;padding-top:32px;border-top:1px solid #8796b233}
+.impact-intro>span{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#2f43fc;padding-top:10px}
+.impact-intro h2{margin:0;font-size:clamp(30px,4vw,56px);line-height:1.12;letter-spacing:-.055em;font-weight:500}
+.impact-intro h2 em{color:#2f43fc;font-style:normal}
+.impact-figma .impact-grid{gap:16px;align-items:stretch}
+.impact-figma .impact-stat{padding:28px 24px 32px;border-radius:24px;background:#fff;text-align:left;overflow:hidden;border:1px solid #dfe5ef;display:flex;flex-direction:column;min-height:238px}
+.impact-stat-label{font-size:11px;text-transform:uppercase;letter-spacing:.09em;margin-bottom:40px;color:#5d6880}
+.impact-figma .impact-stat h3{font-size:clamp(42px,5.7vw,82px);justify-content:flex-start;gap:6px;letter-spacing:-.07em}
+.impact-figma .impact-stat h3>.impact-count{font-size:inherit;color:inherit;letter-spacing:inherit}
+.impact-figma .impact-stat h3>span:not(.impact-count){font-size:.65em}
+.impact-figma .impact-stat>p{text-align:left;font-size:14px;line-height:1.6;margin-top:12px}
+.impact-figma .impact-stat:first-child{background:#2f43fc;color:white;border-color:#2f43fc}
+.impact-figma .impact-stat:first-child :is(p,.impact-stat-label){color:#e2e6ff}
+.impact-figma .impact-stat:nth-child(3){background:#d5edb9;color:#172719;border-color:#d5edb9}
+.impact-figma .impact-stat:nth-child(3) :is(p,.impact-stat-label){color:#365138}
+.impact-figma .impact-stat+.impact-stat::before{display:none}
+.impact-figma .impact-press{margin-top:24px;padding:28px 32px;border:1px solid #c6cfdd;border-radius:20px;gap:32px;background:#ffffff70}
+.impact-figma .impact-press>p{max-width:125px;font-size:13px;line-height:1.5;color:#26344b}
+:root[data-scroll-theme=dark] .impact-stat:nth-child(2){background:#232932;border-color:#354054}
+:root[data-scroll-theme=dark] .impact-press{background:#dfe5ef}
+:root[data-scroll-theme=dark] .impact-press-link{color:#2f43fc}
+.services-progress-label{font-size:12px;letter-spacing:.06em;margin-right:12px;color:var(--scroll-muted)}
+.services-traveler{display:none;position:absolute;top:12px;left:4.2%;z-index:3;gap:8px;align-items:flex-end;color:#2f43fc;pointer-events:none}
+.services-window.is-scroll-driven{scroll-snap-type:none;scroll-behavior:auto}
+@media(min-width:1000px) and (min-height:650px) and (prefers-reduced-motion:no-preference){
+ .services-traveler{display:flex}
+ .services-stage{min-height:0}
+ .services-rail{padding-top:52px;padding-bottom:48px;gap:5vw}
+ .service-image,.agent-construction{height:clamp(160px,27vh,300px)}
+ .service-caption h3{font-size:clamp(22px,2vw,30px)}
+ .service-caption p{font-size:14px;line-height:1.5}
+ .service-editorial-card:nth-child(even){margin-top:28px}
+ .services-pagination{padding-block:12px}
+ .case-browser-main{min-height:0;height:clamp(290px,45vh,500px);padding:24px 32px}
+ .case-project-image,.case-demo-screen{height:100%;max-height:40vh;min-height:0}
+ .case-story h3{font-size:32px}
+ .case-description{font-size:14px}
+ .case-result{margin-block:16px}
+ .case-testimonial{min-height:0;padding:20px 32px}
+ .case-testimonial blockquote{font-size:18px}
+ .case-quote-author p,.case-quote-author strong{font-size:13px}
+ .case-demo-content{padding:16px 24px}
+ .case-demo-content h4{font-size:28px;margin:0 0 16px}
+}
+.app-drawn-art [id$='-qrcode-cta']{display:none}
+.app-download-card{display:grid;grid-template-columns:minmax(0,1fr) 180px;align-items:center;gap:28px;padding:32px;border:1px solid #a4afc6;border-radius:24px;background:#edf1f9;color:#14213b;max-width:600px;box-shadow:0 16px 48px #0000000d;text-align:left}
+.app-download-eyebrow{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#2f43fc}
+.app-download-copy h3{font-size:28px;line-height:1.15;letter-spacing:-.04em;margin:18px 0 14px;color:inherit}
+.app-download-copy p{font-size:13px;line-height:1.6;margin:0;color:#536079}
+.app-download-hint{display:block;margin-top:24px;color:#2f43fc;font-size:12px;font-weight:600}
+.app-download-code{padding:12px;border-radius:16px;background:white;text-align:center;box-shadow:0 5px 16px #16265110}
+.app-download-code img{display:block;width:156px;height:156px;max-width:100%}
+.app-download-code span{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-top:8px;color:#2f43fc}
+@media(min-width:1440px){.section-aplicativo [data-source='container 2']>.app-download-card{position:absolute;left:278px;top:calc(1150px + var(--app-block-gap));width:505px}}
+:root[data-scroll-theme=dark] .app-download-card{background:#1c2434;border-color:#3b4963;color:#fff}
+:root[data-scroll-theme=dark] .app-download-copy p{color:#bcc7dc}
+:root[data-scroll-theme=dark] .app-download-eyebrow,:root[data-scroll-theme=dark] .app-download-hint{color:#8e9bff}
+:root[data-scroll-theme=dark] .conversation-overlay [id=Vector_40]{stroke:#1F2937}
+.app-drawn-art [id$='-Vector_42']{stroke:#1F2937}
+@media(max-width:700px){
+ .hero-flat-logo{width:100px;top:62%;right:5%}
+ .impact-intro{display:block}.impact-intro h2{margin-top:20px}
+ .impact-figma .impact-stat{min-height:210px;padding:24px;border-top:0}
+ .impact-figma .impact-stat h3{font-size:64px}.impact-stat-label{margin-bottom:28px}
+ .impact-figma .impact-press{padding:24px;gap:20px}.impact-figma .impact-press>p{max-width:none}
+ .app-download-card{grid-template-columns:1fr;padding:24px;gap:24px;max-width:100%;width:100%}
+ .app-download-code{width:180px;justify-self:center}.app-download-code img{margin:auto}
+ .app-download-copy h3{font-size:30px}
+}
+.hero-flat-logo{top:100px;bottom:auto;right:7%;width:100px}
+@media(max-width:700px){.hero-flat-logo{top:90px;right:7%;width:60px}}
+.services-traveler{top:40px}
+@media(min-width:1000px) and (min-height:650px) and (prefers-reduced-motion:no-preference){.services-rail{padding-top:90px}}
+.case-tab[hidden]{display:none}
+.section-heading-icon{background:#2f43fc}
+@media(min-width:1000px) and (min-height:650px) and (prefers-reduced-motion:no-preference){.case-testimonial{height:120px;box-sizing:border-box}.case-browser{height:calc(clamp(290px,45vh,500px) + 184px)}}
+
+/* A single scroll-drawn route connects all service cards. */
+.services-route{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;z-index:2}
+.services-route path{fill:none;stroke:#2f43fc;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.route-builder{position:absolute;left:0;top:0;display:flex;align-items:center;color:#2f43fc;background:var(--scroll-canvas,#fff);border-radius:12px;padding:4px;z-index:3;pointer-events:none;will-change:transform}
+.services-rail>.builder{right:auto}
+@media(min-width:768px) and (min-height:650px) and (prefers-reduced-motion:no-preference){
+ .services-stage{min-height:0}
+ .services-rail{padding-top:120px;padding-bottom:120px;gap:7vw}
+ .service-image,.agent-construction{height:clamp(160px,26vh,280px)}
+ .service-caption h3{font-size:clamp(22px,2vw,30px)}
+ .service-caption p{font-size:14px;line-height:1.5}
+ .service-editorial-card:nth-child(even){margin-top:32px}
+}
+@media(prefers-reduced-motion:reduce){.route-builder{display:none}}
+/* Flat glass version of the Beyond mark in the hero. */
+.hero-flat-logo{display:none}
+.hero-glass-badge{--glass-x:50%;--glass-y:50%;position:absolute;top:100px;right:7%;width:100px;aspect-ratio:1;z-index:8;pointer-events:none;transform:rotate(-12deg);will-change:transform;filter:drop-shadow(0 3px 2px #152b8250) drop-shadow(9px 16px 20px #183ca344)}
+.hero-glass-badge-content{position:absolute;inset:0;width:100%;height:100%}
+.hero-glass-badge img,.hero-glass-badge-lens,.hero-glass-badge-sheen,.hero-glass-badge-content::after{position:absolute;inset:0;width:100%;height:100%;mask:url('/assets/beyond-symbol.svg') center/contain no-repeat;-webkit-mask:url('/assets/beyond-symbol.svg') center/contain no-repeat}
+.hero-glass-badge img{object-fit:contain;filter:none;opacity:.46}
+/* Keep the vector edge intact; the lens lives inside the mask instead of warping its silhouette. */
+.hero-glass-badge-lens{background:linear-gradient(124deg,#fff9 0 6%,#bcd4ff80 22%,#2f43fc44 48%,#061f9870 100%);backdrop-filter:blur(10px) saturate(1.75) contrast(1.08);-webkit-backdrop-filter:blur(10px) saturate(1.75) contrast(1.08);opacity:.9}
+.hero-glass-badge-sheen{background:radial-gradient(circle at var(--glass-x) var(--glass-y),#ffffff 0 2.4%,#ffffffb8 7%,#bcd4ff58 21%,transparent 45%),linear-gradient(132deg,#ffffffa8 2%,transparent 29% 67%,#001d8280);mix-blend-mode:screen}
+.hero-glass-badge-content::after{content:'';inset:2.2%;background:linear-gradient(135deg,#fff9 2%,transparent 20% 72%,#8eb2ff85);opacity:.88}
+@media(max-width:700px){.hero-glass-badge{top:90px;right:7%;width:60px}}
+@media(prefers-reduced-motion:reduce){.hero-glass-badge{will-change:auto}}
+/* The mark travels with the pointer over the full desktop hero. */
+@media(min-width:701px){.hero-glass-badge{top:0;right:auto;left:0;width:136px}}
+@media(max-width:700px){.hero-glass-badge{transform:translate(-50%,-50%) rotate(-12deg)!important}}
+/* Restore the original hero-scale mark while keeping the cursor follower. */
+@media(min-width:701px){.hero-glass-badge{width:360px}}
+@media(max-width:700px){.hero-glass-badge{width:170px}}
+
+/* Metric feedback: the values carry the hierarchy without framing strokes or labels. */
+.impact-figma .impact-stat{border:0}
+.impact-figma .impact-press{border:0}
+
+/* Anchor the four decorative marks to the complete impact section. */
+.impact-figma{border-radius:0;overflow:hidden}
+.impact-figma .impact-panel{border-radius:0}
+.impact-figma>.impact-patterns{z-index:0}
+.impact-figma>:is(.impact-brands,.impact-metrics-wrap){position:relative;z-index:1}
+
+:root .impact-figma{border-radius:0}
+
+/* Corner marks use the requested pure white. */
+.impact-figma>.impact-patterns{opacity:1}
+.impact-figma>.impact-patterns .impact-pattern{filter:brightness(0) invert(1)}
+
+/* Final spacing and balance for the metrics ribbon. */
+.impact-figma .impact-pattern-top-right{top:32px}
+.impact-figma .impact-brands{padding-top:88px}
+.impact-figma .impact-stat{align-items:center;justify-content:center;text-align:center}
+.impact-figma .impact-stat h3{justify-content:center}
+.impact-figma .impact-stat>p{text-align:center}
+@media(max-width:639px){.impact-figma .impact-brands{padding-top:56px}.impact-figma .impact-pattern-top-right{top:20px}}
+
+/* Use matching clear space around the complete supplied corner vectors. */
+.impact-figma .impact-brands{padding-top:120px}
+.impact-figma .impact-metrics-wrap{padding-bottom:48px}
+@media(max-width:639px){.impact-figma .impact-brands{padding-top:72px}.impact-figma .impact-metrics-wrap{padding-bottom:32px}}
+
+/* A light wash reveals the new palette from the viewport center without snapshotting the page. */
+.theme-wash{position:fixed;inset:-1px;z-index:100;pointer-events:none;opacity:0;clip-path:circle(0 at 50% 50%);will-change:clip-path,opacity}
+:root[data-scroll-theme=dark] .theme-wash{background:#000;animation:theme-wash-dark 620ms cubic-bezier(.22,1,.36,1) both}
+:root[data-scroll-theme=light] .theme-wash{background:#fff;animation:theme-wash-light 620ms cubic-bezier(.22,1,.36,1) both}
+@keyframes theme-wash-dark{0%{clip-path:circle(0 at 50% 50%);opacity:.18}62%{opacity:.12}100%{clip-path:circle(75vmax at 50% 50%);opacity:0}}
+@keyframes theme-wash-light{0%{clip-path:circle(0 at 50% 50%);opacity:.22}62%{opacity:.14}100%{clip-path:circle(75vmax at 50% 50%);opacity:0}}
+@media(prefers-reduced-motion:reduce){.theme-wash{display:none}}
+
+/* App download card follows the primary CTA treatment without its former label or border. */
+.app-download-card{border:0}
+.app-download-copy h3{margin:0 0 14px}
+.app-download-button{--button-fill:var(--primary-dark-hover);--button-depth:var(--primary-dark-depth);display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:24px;padding:12px 20px;border-radius:var(--radius-pill);background:var(--color-accent);color:#000;font-size:14px;font-weight:500;line-height:20px;white-space:nowrap}
+.app-download-button>span{position:relative;z-index:3}
+
+/* Restore the animated QR composition while retaining the approved QR treatment and instruction copy. */
+:root .app-drawn-art [id$='-qrcode-cta']{display:block}
+:root .app-drawn-art [id$='-image 55']{display:none}
+.section-aplicativo .qr-instructions{isolation:isolate}
+.section-aplicativo .app-qr-surface{position:absolute;z-index:2;width:156px;height:156px;object-fit:contain}
+.section-aplicativo .qr-instructions>p{margin:0;color:#000;font-size:16px;font-weight:500;line-height:1.45}
+@media(min-width:1440px){
+ .section-aplicativo [data-source='container 2']>.qr-instructions{position:absolute;left:258px;top:calc(1108.24px + var(--app-block-gap));width:508px;height:220px}
+ .section-aplicativo [data-source='container 2']>.qr-instructions .app-qr-surface{left:40px;top:32px}
+ .section-aplicativo [data-source='container 2']>.qr-instructions>p{position:absolute;left:222px;top:80px;width:246px}
+}
+@media(max-width:1439px){
+ .section-aplicativo .qr-instructions{display:grid;grid-template-columns:156px minmax(0,1fr);align-items:center;gap:28px;min-height:220px;padding:32px;border-radius:24px;background:var(--color-accent);overflow:hidden}
+ .section-aplicativo .qr-instructions .app-qr-surface{position:relative;left:auto;top:auto}
+ .section-aplicativo .qr-instructions>p{position:relative;z-index:1;font-size:18px}
+}
+@media(max-width:639px){.section-aplicativo .qr-instructions{grid-template-columns:1fr;padding:24px}.section-aplicativo .qr-instructions .app-qr-surface{justify-self:center}.section-aplicativo .qr-instructions>p{text-align:center}}
+
+/* The QR sits in the approved white app card, including its compact Beyond caption. */
+.section-aplicativo .app-qr-surface{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;width:156px;height:188px;padding:12px;border-radius:16px;background:#fff;color:#2f43fc;text-align:center}
+.section-aplicativo .app-qr-surface .app-qr-image{display:block;width:132px;height:132px;object-fit:contain}
+.section-aplicativo .app-qr-surface>span{display:block;margin-top:7px;font-size:9px;font-weight:500;letter-spacing:.1em;line-height:1;text-transform:uppercase}
+@media(min-width:1440px){.section-aplicativo [data-source='container 2']>.qr-instructions .app-qr-surface{top:16px}}
+
+/* QR callout: the code projects from the lime panel, matching the approved composition. */
+@media(min-width:1440px){
+ .section-aplicativo [data-source='container 2']>.qr-instructions .app-qr-surface{left:-172px;top:15px;width:190px;height:190px;padding:20px;border-radius:10px}
+ .section-aplicativo [data-source='container 2']>.qr-instructions .app-qr-surface .app-qr-image{width:150px;height:150px}
+ .section-aplicativo [data-source='container 2']>.qr-instructions>p{left:58px;top:70px;width:390px;font-size:26px;font-weight:600;line-height:1.23}
+}
+
+/* Figma node 15957:270 — 540 × 156 QR callout with an overflowing code card. */
+:root .app-drawn-art [id$='-qrcode-cta']{display:none}
+@media(min-width:1440px){
+ .section-aplicativo [data-source='container 2']>.qr-instructions{left:258px;top:calc(1148.24px + var(--app-block-gap));width:540px;height:156px;background:#AAED35;border-radius:24px;overflow:visible}
+ .section-aplicativo [data-source='container 2']>.qr-instructions::before,.section-aplicativo [data-source='container 2']>.qr-instructions::after{content:'';position:absolute;border:2px solid #000;pointer-events:none}
+ .section-aplicativo [data-source='container 2']>.qr-instructions::before{left:208px;top:-66px;width:108px;height:108px;border-radius:0 0 28px 28px;clip-path:inset(66px 0 0)}
+ .section-aplicativo [data-source='container 2']>.qr-instructions::after{right:34px;bottom:-66px;width:122px;height:108px;border-radius:28px 28px 0 0;clip-path:inset(0 0 66px)}
+ .section-aplicativo [data-source='container 2']>.qr-instructions .app-qr-surface{left:0;top:-27px;width:210px;height:210px;padding:30px;border-radius:8px;box-shadow:4px 4px 0 #597e18;animation:qr-callout-reveal 620ms cubic-bezier(.22,1,.36,1) both}
+ .section-aplicativo [data-source='container 2']>.qr-instructions .app-qr-surface .app-qr-image{width:150px;height:150px}
+ .section-aplicativo [data-source='container 2']>.qr-instructions>p{left:240px;top:50px;width:270px;font-size:26px;font-weight:600;line-height:1.23}
+}
+@keyframes qr-callout-reveal{from{opacity:0;transform:translate(-14px,10px) scale(.94)}to{opacity:1;transform:translate(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.section-aplicativo .app-qr-surface{animation:none!important}}

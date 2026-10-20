@@ -16,6 +16,16 @@ export function TextBlock({ block, section }: { block: DesignBlock; section: Sec
   const buttonIcon = block.actionBox && block.ancestors.find(name=>/^primary(?:_\d+)?$/.test(name));
   const Tag = href ? 'a' : text.startsWith('“') ? 'blockquote' : block.role === 'label' ? 'p' : block.role;
   const qr = block.ancestors.includes('qrcode-cta');
+  if(qr)return <div className="qr-instructions" data-source={block.source} aria-label="Instruções para baixar o aplicativo"><div className="app-qr-surface"><Artwork src="assets/figma/app-qr.svg" width={156} height={156} alt="QR Code para baixar o aplicativo Beyond" className="app-qr-image"/></div><p>Escaneie o QR Code <br/>para baixar o app!</p></div>;
+  const appFeatureTitle = section.id==='aplicativo' && block.role==='h3' && ['Seu projeto na palma da mão','Experimente o nosso trabalho'].includes(text);
+  if (appFeatureTitle) {
+    const x = Math.min(...block.runs.map(r => r.origin?.[0] ?? r.x));
+    const y = Math.min(...block.runs.map(r => r.origin?.[1] ?? r.y-r.size*.85));
+    const style: Style = {'--x':`${x}px`, '--y':`${y}px`, '--mobile-size':`${Math.min(Math.max(block.runs[0].size,14),28)}px`};
+    return <h3 className="text-block app-feature-title" style={style} data-source={block.source} data-role="h3">
+      {text === 'Seu projeto na palma da mão' ? <><span className="app-feature-title-line">Seu projeto na <AppTitleWord text="palma"/> da</span><span className="app-feature-title-line">mão</span></> : <><span className="app-feature-title-line"><AppTitleWord text="Experimente"/> o nosso</span><span className="app-feature-title-line">trabalho</span></>}
+    </h3>;
+  }
   const offstage = section.id === 'depoimentos' && block.runs.some(r => r.x < 0 || r.x > 1400);
   const badge = section.id === 'processo' && /^0[1-4]$/.test(text);
   const x = Math.min(...block.runs.map(r => r.origin?.[0] ?? r.x));
@@ -32,7 +42,7 @@ export function TextBlock({ block, section }: { block: DesignBlock; section: Sec
         '--run-size': TYPE_TOKENS[run.size] ? `var(--text-${TYPE_TOKENS[run.size]})` : `${run.size}px`,
         fontWeight:block.role==='label'?'var(--weight-semibold)':href&&block.actionBox?500:Number(run.weight), fontStyle:run.italic?'italic':'normal', letterSpacing:run.tracking, color:color(run.color)};
       if (run.origin) Object.assign(runStyle, {transformOrigin:`${run.origin[0]-run.x}px ${run.origin[1]-run.y+run.size*.85}px`, transform:`rotate(${run.angle}deg)`});
-      return <Fragment key={i}><span className={`text-run${section.id==='inicio'&&run.text==='negócios'?' textured-word':''}${menuItem?' menu-ink':''}`} style={runStyle} data-size={run.size}>{section.id==='inicio' && /software house/i.test(run.text) && /anos/i.test(run.text)?<HeroTypewriter text={run.text}/>:section.id==='aplicativo' && block.role==='h3' && ['palma','Experimente'].includes(run.text.trim())?<AppTitleWord text={run.text}/>:run.text}{menuItem && <>
+      return <Fragment key={i}><span className={`text-run${section.id==='inicio'&&run.text==='negócios'?' textured-word':''}${menuItem?' menu-ink':''}`} style={runStyle} data-size={run.size}>{section.id==='inicio' && /software house/i.test(run.text) && /anos/i.test(run.text)?<HeroTypewriter text={run.text}/>:section.id==='aplicativo' && block.role==='h3' && ['palma','Experimente'].includes(run.text.trim())?<AppTitleWord text={run.text.trim()}/>:run.text.replaceAll('[','{').replaceAll(']','}')}{menuItem && <>
         <span className="menu-bracket menu-bracket-left" aria-hidden="true" />
         <span className="menu-bracket menu-bracket-right" aria-hidden="true" />
         <svg className="menu-scribble" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M3 7 C22 2 65 2 96 4 C78 5 41 7 20 9 C44 7 72 8 92 9" /></svg>

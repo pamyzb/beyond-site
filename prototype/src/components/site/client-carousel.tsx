@@ -28,10 +28,11 @@ export function ClientDetailsCarousel({clients}:{clients:FeaturedClient[]}) {
         {Array.from({length:4},(_,repeat)=>[...clients,...clients].map((client,index)=><button
           type="button" className="client-strip-item impact-brand" key={`${repeat}-${index}`}
           tabIndex={repeat===0&&index<clients.length?0:-1} aria-hidden={repeat>0||index>=clients.length?true:undefined}
-          aria-label={`Conhecer ${client.name}`} aria-expanded={expanded&&active?.key===client.key} aria-controls="client-inline-details"
+          aria-label={`${client.name}: ${client.summary}`} aria-expanded={expanded&&active?.key===client.key} aria-controls="client-inline-details"
           onPointerEnter={event=>{if(event.pointerType!=='touch')open(client);}} onFocus={()=>open(client)}
           onClick={()=>open(client)}>
           <img src={client.image} alt="" width="160" height="48" />
+          <span className="client-visible-summary">{client.summary}</span>
         </button>))}
       </div>
     </div>

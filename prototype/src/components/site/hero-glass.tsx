@@ -29,7 +29,7 @@ export function HeroGlass() {
       const content=surface.firstElementChild as HTMLElement | null;
       if(content){
         content.style.transformOrigin=`${x+cx}px ${y+cy}px`;
-        content.style.transform='scale(1.38)';
+        content.style.transform='scale(1.26)';
       }
       // Cancel the lens rotation for the sampled scene: only the glass turns.
       surface.style.transform = `translate(${cx}px,${cy}px) rotate(${-angle}deg) translate3d(${-x-cx}px,${-y-cy}px,0)`;
@@ -145,7 +145,7 @@ export function HeroGlass() {
         <feGaussianBlur in="refracted" stdDeviation="0.2" />
       </filter>
     </defs></svg>
-    <div ref={lens} className="hero-glass" aria-hidden="true"><div className="hero-glass-material"><div ref={scene} className="hero-glass-scene" /><div className="hero-glass-sheen" /><div className="hero-glass-grain" /></div></div>
+    <div ref={lens} className="hero-glass" aria-hidden="true"><div className="hero-glass-material"><div ref={scene} className="hero-glass-scene" /><div className="hero-glass-tint" /><div className="hero-glass-sheen" /><div className="hero-glass-grain" /></div></div>
   </>;
 }
 

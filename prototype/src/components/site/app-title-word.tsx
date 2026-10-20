@@ -24,7 +24,7 @@ export function AppTitleWord({text}:{text:string}) {
     });
     return ()=>media.revert();
   },{scope:word});
-  return <span ref={word} className="app-title-word">{text}
+  return <span ref={word} className="app-title-word">{'{' + text + '}'}
     <svg className="app-title-scribble" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true" focusable="false">
       <path d="M2 10 C24 3 66 1 98 4 C80 8 39 12 12 17 C34 12 70 11 94 14" />
     </svg>

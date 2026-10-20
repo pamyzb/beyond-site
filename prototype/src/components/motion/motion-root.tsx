@@ -18,8 +18,11 @@ export function MotionRoot({ children }: {children: ReactNode}) {
     let disposed=false;
     let refreshFrame=0;
     let cleanupTitles: (() => void) | undefined;
-    const syncTheme=(trigger:ScrollTrigger)=>{
-      root.dataset.scrollTheme=trigger.scroll()>=trigger.start?'dark':'light';
+    let desiredTheme='';
+    const setTheme=(theme:string)=>{
+      if(desiredTheme===theme)return;
+      desiredTheme=theme;
+      root.dataset.scrollTheme=theme;
     };
     const createTrigger=contextSafe(()=>{
       measureType(element);
@@ -35,15 +38,11 @@ export function MotionRoot({ children }: {children: ReactNode}) {
           onEnter:syncWhatsApp,onLeaveBack:syncWhatsApp,onRefresh:syncWhatsApp});
         syncWhatsApp();
       }
-      const themeTrigger=ScrollTrigger.create({id:'app-scroll-theme',trigger:appSection,
-        start:()=>{
-          const heading=appSection.querySelector<HTMLElement>('h2');
-          const offset=heading?heading.getBoundingClientRect().top-appSection.getBoundingClientRect().top:0;
-          return `top+=${offset} bottom`;
-        },end:'max',onUpdate:syncTheme,
-        onEnter:()=>{root.dataset.scrollTheme='dark';},
-        onLeaveBack:()=>{root.dataset.scrollTheme='light';},onRefresh:syncTheme});
-      syncTheme(themeTrigger);
+      const heading=appSection.querySelector<HTMLElement>('h2')??appSection;
+      const themeTrigger=ScrollTrigger.create({id:'app-scroll-theme',trigger:heading,start:'top 90%',end:'max',
+        onEnter:()=>setTheme('dark'),onLeaveBack:()=>setTheme('light'),
+        onRefresh:self=>setTheme(self.scroll()>=self.start?'dark':'light')});
+      setTheme(themeTrigger.scroll()>=themeTrigger.start?'dark':'light');
       root.dataset.ready='true';
     });
     // Fonts can change both text bounds and responsive section heights.
@@ -64,5 +63,5 @@ export function MotionRoot({ children }: {children: ReactNode}) {
       // useGSAP's context reverts its own triggers/timelines, including Strict Mode remounts.
     };
   },{scope});
-  return <div ref={scope} id="site" className="min-h-screen"><ButtonMotion />{children}</div>;
+  return <div ref={scope} id="site" className="min-h-screen"><div className="theme-wash" aria-hidden="true" /><ButtonMotion />{children}</div>;
 }

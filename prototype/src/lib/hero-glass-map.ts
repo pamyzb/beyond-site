@@ -1,8 +1,8 @@
 // A continuous lens field for the hero, without a flat central reading area.
 export function createHeroGlassMap(width:number,height:number) {
   const canvas=document.createElement('canvas');
-  canvas.width=1024;
-  canvas.height=1024;
+  canvas.width=1536;
+  canvas.height=1536;
   const context=canvas.getContext('2d');
   if(!context)return null;
   const regionWidth=width*2,regionHeight=height*2;

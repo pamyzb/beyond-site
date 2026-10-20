@@ -9,8 +9,8 @@ import { CasesSection } from './cases-section';
 import { ServicesSection } from './services-section';
 import { TestimonialCarousel } from './testimonial-carousel';
 import { MetricsSection } from './metrics-section';
-import { HeroGlass } from './hero-three';
 import { HeroInk } from './hero-ink';
+import { HeroGlass } from './hero-glass';
 import { AppArtwork } from './app-artwork';
 import { ConversationArtwork } from './conversation-artwork';
 
