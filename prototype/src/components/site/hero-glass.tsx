@@ -55,8 +55,11 @@ export function HeroGlass() {
     };
     const wake = () => { if (!frame) frame=requestAnimationFrame(tick); };
     const home = () => {
-      targetX=(hero.clientWidth-glass.offsetWidth)/2;
-      targetY=(hero.clientHeight-glass.offsetHeight)/2;
+      const compact=hero.clientWidth<640;
+      // Keep the existing lens in the hero composition on narrow screens,
+      // without covering the stacked CTA and supporting copy.
+      targetX=compact?0:(hero.clientWidth-glass.offsetWidth)/2;
+      targetY=compact?80:(hero.clientHeight-glass.offsetHeight)/2;
     };
     const rebuild = () => {
       if(disposed)return;

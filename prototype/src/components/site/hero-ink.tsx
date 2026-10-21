@@ -148,6 +148,17 @@ export function HeroInk() {
       playVideos();
       if(!frame)frame=requestAnimationFrame(paint);
     };
+    const autoBrush=()=>{
+      if(fine.matches||reduced.matches||document.hidden)return;
+      const bounds=hero.getBoundingClientRect();
+      if(bounds.bottom<=0||bounds.top>=innerHeight)return;
+      const now=performance.now(),y=layer.clientHeight*.42;
+      for(let index=0;index<9;index++){
+        points.push({x:layer.clientWidth*(.18+index*.08),y,time:now-index*22,phase:now/600});
+      }
+      points=points.slice(-90);playVideos();
+      if(!frame)frame=requestAnimationFrame(paint);
+    };
     const resetHeaderMask=()=>{
       header?.removeAttribute('data-dark-area-visible');
       for(const property of ['mask-image','mask-composite','mask-size','mask-position','mask-repeat'])header?.style.removeProperty(property);
@@ -164,7 +175,9 @@ export function HeroInk() {
     header?.addEventListener('pointermove',move);
     document.addEventListener('visibilitychange',visibility);
     fine.addEventListener('change',clear);
-    return ()=>{disposed=true;clear();headerObserver.disconnect();cueObserver.disconnect();header?.removeEventListener('pointermove',move);headerReveal?.remove();resize.disconnect();hero.removeEventListener('pointermove',move);document.removeEventListener('visibilitychange',visibility);fine.removeEventListener('change',clear);};
+    const autoBrushDelay=window.setTimeout(autoBrush,900);
+    const autoBrushInterval=window.setInterval(autoBrush,5200);
+    return ()=>{disposed=true;window.clearTimeout(autoBrushDelay);window.clearInterval(autoBrushInterval);clear();headerObserver.disconnect();cueObserver.disconnect();header?.removeEventListener('pointermove',move);headerReveal?.remove();resize.disconnect();hero.removeEventListener('pointermove',move);document.removeEventListener('visibilitychange',visibility);fine.removeEventListener('change',clear);};
   },[]);
   return <div ref={ref} className="hero-ink" aria-hidden="true"><video src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260629_021419_291eb2af-5ed4-45a0-a1d6-3ef58f4bca0b.mp4" muted loop playsInline preload="metadata" /><div className="hero-ink-shade" /><div className="hero-ink-copy" /></div>;
 }

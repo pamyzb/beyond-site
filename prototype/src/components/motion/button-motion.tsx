@@ -10,11 +10,15 @@ export function ButtonMotion() {
       const button = event.target.closest<HTMLElement>(selector);
       if (!button || (event.relatedTarget instanceof Node && button.contains(event.relatedTarget))) return;
       const rect = button.getBoundingClientRect();
-      const surface = getComputedStyle(button, '::after');
-      const left = parseFloat(surface.left) || 0;
-      const top = parseFloat(surface.top) || 0;
-      const width = parseFloat(surface.width) || rect.width;
-      const height = parseFloat(surface.height) || rect.height;
+      // The QR callout uses ::after for a decorative line, while its hover
+      // fill is a real child. Measure the card itself so the reveal starts at
+      // the pointer rather than getting constrained to that small line.
+      const isQrCallout = button.matches('.qr-instructions');
+      const surface = isQrCallout ? null : getComputedStyle(button, '::after');
+      const left = surface ? parseFloat(surface.left) || 0 : 0;
+      const top = surface ? parseFloat(surface.top) || 0 : 0;
+      const width = surface ? parseFloat(surface.width) || rect.width : rect.width;
+      const height = surface ? parseFloat(surface.height) || rect.height : rect.height;
       const x = Math.max(0, Math.min(width, event.clientX - rect.left - left));
       const y = Math.max(0, Math.min(height, event.clientY - rect.top - top));
       button.style.setProperty('--fill-x', `${x}px`);

@@ -32,7 +32,7 @@ const cards = [
   {id:'Article_15',x:135,y:720,width:530,height:355},
   {id:'Article_14',x:798,y:835,width:530,height:355},
 ];
-export function ProcessSection({section,artwork}:{section:SectionData;artwork:{track:string;marker:string;cards:Record<string,string>}}) {
+export function ProcessSection({section,artwork}:{section:SectionData;artwork:{track:string;marker:string;cards:Record<string,string>;mobileCards:Record<string,string>}}) {
   const scope=useRef<HTMLElement>(null);
   useGSAP(()=>{
     const root=scope.current!;
@@ -112,9 +112,10 @@ export function ProcessSection({section,artwork}:{section:SectionData;artwork:{t
     <div className="process-marker-layer" aria-hidden="true" dangerouslySetInnerHTML={{__html:artwork.marker}} />
     <div className="section-content">
       {section.blocks.filter(b=>!b.ancestors.some(a=>cards.some(c=>c.id===a))).map((block,i)=><TextBlock key={i} block={block} section={section}/>)}
-      {cards.map((card,index)=><div className="process-card-entry" key={card.id} style={{'--card-x':`${card.x}px`,'--card-y':`${card.y}px`,'--card-width':`${card.width}px`,'--card-height':`${card.height}px`,'--hover-angle':index%2?'2deg':'-2deg'} as Style}>
+      {cards.map((card,index)=><div className="process-card-entry" key={card.id} style={{aspectRatio:`${card.width} / ${card.height}`,'--card-x':`${card.x}px`,'--card-y':`${card.y}px`,'--card-width':`${card.width}px`,'--card-height':`${card.height}px`,'--hover-angle':index%2?'2deg':'-2deg'} as Style}>
         <article className="content-card process-card" data-motion="card" data-source={card.id}>
           <div className="process-card-art" aria-hidden="true" dangerouslySetInnerHTML={{__html:artwork.cards[card.id]}}/>
+          <div className="process-card-art process-card-art-mobile" aria-hidden="true" dangerouslySetInnerHTML={{__html:artwork.mobileCards[card.id]}}/>
           {section.blocks.filter(b=>b.ancestors.includes(card.id)).map((block,i)=><TextBlock key={i} block={block} section={section}/>)}
         </article>
       </div>)}

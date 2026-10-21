@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
+import { Menu as MenuIcon } from 'lucide-react';
 import type { SectionData } from '@/lib/design';
 import { actionFor } from '@/lib/design';
 import { Artwork } from './artwork';
@@ -17,7 +18,7 @@ export function SiteHeader({ section }: {section: SectionData}) {
       const progress=Math.min(1,Math.max(0,window.scrollY/180));
       header.current?.style.setProperty('--header-collapse',String(progress));
     };
-    const onScroll=()=>{if(!frame)frame=requestAnimationFrame(sync);};
+    const onScroll=()=>{setOpen(false);if(!frame)frame=requestAnimationFrame(sync);};
     sync();
     window.addEventListener('scroll',onScroll,{passive:true});
     window.addEventListener('pageshow',sync);
@@ -42,6 +43,6 @@ export function SiteHeader({ section }: {section: SectionData}) {
       </nav>
     </div>
     <a className="mobile-brand" href="#top" aria-label="Beyond the Bytes — voltar ao topo" onClick={()=>setOpen(false)}><Artwork src="assets/figma/brand.svg" width={220} height={23} alt="Beyond the Bytes" className="brand-logo header-logo-light" lazy={false} /><Artwork src="assets/figma/brand-dark.svg" width={220} height={23} className="brand-logo header-logo-dark" lazy={false} /></a>
-    <button ref={toggle} className="menu-toggle" type="button" aria-expanded={open} aria-controls="mobile-navigation" onClick={()=>setOpen(!open)}><span className="button-label">Menu</span></button>
+    <button ref={toggle} className="menu-toggle" type="button" aria-label={open?'Fechar menu':'Abrir menu'} aria-expanded={open} aria-controls="mobile-navigation" onClick={event=>{event.stopPropagation();if(event.isTrusted)setOpen(current=>!current);}}><MenuIcon className="menu-icon" size={24} aria-hidden="true" /></button>
   </header>;
 }

@@ -15,7 +15,8 @@ export function AppTitleWord({text}:{text:string}) {
       gsap.set(path,{attr:{'stroke-dasharray':`${length} ${length}`,'stroke-dashoffset':length}});
       // Draw once after the title is comfortably visible; retain the finished stroke.
       gsap.timeline({scrollTrigger:{trigger:target.closest('h3')??target,
-        start:'top 78%',toggleActions:'play none none none'}})
+        start:'top 82%',toggleActions:'play none none none'}})
+        .to({}, {duration:.34})
         .fromTo(path,{attr:{'stroke-dashoffset':length}},{attr:{'stroke-dashoffset':length*.62},duration:.19,ease:'none'})
         .to(path,{attr:{'stroke-dashoffset':length*.60},duration:.035,ease:'none'})
         .to(path,{attr:{'stroke-dashoffset':length*.29},duration:.125,ease:'none'})

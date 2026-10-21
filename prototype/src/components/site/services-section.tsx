@@ -98,7 +98,7 @@ export function ServicesSection({section}:{section:SectionData}) {
       robots.forEach((robot,index)=>{
         const distance=Math.max(0,Math.min(length,joining?(index===0?journey.distance:robotStartDistances[1]):journey.distance));
         const point=path.getPointAtLength(distance);
-        gsap.set(robot,{left:0,top:0,x:point.x+index*44,y:point.y+robotOffset(point),xPercent:-50,yPercent:-50});
+        gsap.set(robot,{left:0,top:0,x:point.x+index*72,y:point.y+robotOffset(point),xPercent:-50,yPercent:-50});
       });
     };
     const followJourney=(distance:number)=>gsap.to(journey,{distance,duration:.45,ease:'power2.out',overwrite:'auto',onUpdate:placeRobots});
@@ -130,11 +130,18 @@ export function ServicesSection({section}:{section:SectionData}) {
       // Once the card outline is drawn, every bit of carousel progress advances
       // directly into the route to the next service.
       const joinProgress=.18;
-      const head=progress<joinProgress
-        ? robotStartDistances[0]+(robotStartDistances[1]-robotStartDistances[0])*(progress/joinProgress)
-        : robotStartDistances[1]+(length-robotStartDistances[1])*((progress-joinProgress)/(1-joinProgress));
+      const compact=matchMedia('(max-width: 999px)').matches;
+      const head=compact
+        ? outlineLength+(length-outlineLength)*progress
+        : progress<joinProgress
+          ? robotStartDistances[0]+(robotStartDistances[1]-robotStartDistances[0])*(progress/joinProgress)
+          : robotStartDistances[1]+(length-robotStartDistances[1])*((progress-joinProgress)/(1-joinProgress));
       path.style.strokeDasharray=String(length);
-      path.style.strokeDashoffset=String(reduced.matches?0:length-Math.max(outlineLength,head));
+      const dashOffset=reduced.matches?0:length-Math.max(outlineLength,head);
+      // Native horizontal scrolling can move several cards between frames.
+      // Tween the drawn segment so the route visibly grows into each contour.
+      if(compact&&!reduced.matches)gsap.to(path,{strokeDashoffset:dashOffset,duration:.48,ease:'power2.out',overwrite:'auto'});
+      else path.style.strokeDashoffset=String(dashOffset);
       followJourney(head);
     };
     paintJourney.current=paint;
@@ -151,25 +158,29 @@ export function ServicesSection({section}:{section:SectionData}) {
       let d=`M ${right} ${middle} V ${bottom-radius} Q ${right} ${bottom} ${right-radius} ${bottom} H ${left+radius} Q ${left} ${bottom} ${left} ${bottom-radius} V ${top+radius} Q ${left} ${top} ${left+radius} ${top} H ${right-radius} Q ${right} ${top} ${right} ${top+radius} V ${middle}`;
       outlineLength=2*((right-left)+(bottom-top))-(8-2*Math.PI)*radius;
       let previous={x:right,y:middle};
-      const routePoints=[previous];
-      cards.slice(1).forEach((card,index)=>{
-        const x=card.offsetLeft-12;
-        const cardRight=card.offsetLeft+card.offsetWidth+12;
-        const y=(index+1)%2===0?card.offsetTop-42:card.offsetTop+card.offsetHeight+42;
-        const turn=(previous.x+x)/2;
-        routePoints.push({x:turn,y:previous.y},{x:turn,y},{x,y},{x:cardRight,y});
-        previous={x:cardRight,y};
-      });
-      for(let index=1;index<routePoints.length-1;index++){
-        const previousPoint=routePoints[index-1],point=routePoints[index],next=routePoints[index+1];
-        const before=Math.hypot(point.x-previousPoint.x,point.y-previousPoint.y);
-        const after=Math.hypot(next.x-point.x,next.y-point.y);
-        const corner=Math.min(22,before/2,after/2);
-        if(!before||!after)continue;
-        d+=` L ${point.x-(point.x-previousPoint.x)/before*corner} ${point.y-(point.y-previousPoint.y)/before*corner} Q ${point.x} ${point.y} ${point.x+(next.x-point.x)/after*corner} ${point.y+(next.y-point.y)/after*corner}`;
+      // Small screens retain the agent-card outline only. The longer route is
+      // reserved for the spacious desktop canvas.
+      if(!matchMedia('(max-width: 999px)').matches){
+        const routePoints=[previous];
+        cards.slice(1).forEach((card,index)=>{
+          const x=card.offsetLeft-12;
+          const cardRight=card.offsetLeft+card.offsetWidth+12;
+          const y=(index+1)%2===0?card.offsetTop-42:card.offsetTop+card.offsetHeight+42;
+          const turn=(previous.x+x)/2;
+          routePoints.push({x:turn,y:previous.y},{x:turn,y},{x,y},{x:cardRight,y});
+          previous={x:cardRight,y};
+        });
+        for(let index=1;index<routePoints.length-1;index++){
+          const previousPoint=routePoints[index-1],point=routePoints[index],next=routePoints[index+1];
+          const before=Math.hypot(point.x-previousPoint.x,point.y-previousPoint.y);
+          const after=Math.hypot(next.x-point.x,next.y-point.y);
+          const corner=Math.min(22,before/2,after/2);
+          if(!before||!after)continue;
+          d+=` L ${point.x-(point.x-previousPoint.x)/before*corner} ${point.y-(point.y-previousPoint.y)/before*corner} Q ${point.x} ${point.y} ${point.x+(next.x-point.x)/after*corner} ${point.y+(next.y-point.y)/after*corner}`;
+        }
+        const finalPoint=routePoints[routePoints.length-1];
+        d+=` L ${finalPoint.x} ${finalPoint.y}`;
       }
-      const finalPoint=routePoints[routePoints.length-1];
-      d+=` L ${finalPoint.x} ${finalPoint.y}`;
       svg.setAttribute('width',String(track.scrollWidth));svg.setAttribute('height',String(track.offsetHeight));
       path.setAttribute('d',d);length=path.getTotalLength();
       const nearestDistance=(target:{x:number;y:number})=>{
@@ -195,7 +206,9 @@ export function ServicesSection({section}:{section:SectionData}) {
     track.querySelectorAll(':scope > article').forEach(card=>observer.observe(card));
     reduced.addEventListener('change',paint);
     const mm=gsap.matchMedia();
-    mm.add('(min-width: 768px) and (min-height: 650px) and (prefers-reduced-motion: no-preference)',()=>{
+    // The scroll-pinned journey needs enough horizontal and vertical room to
+    // read the cards. Tablets and smaller screens retain native scrolling.
+    mm.add('(min-width: 1000px) and (min-height: 650px) and (prefers-reduced-motion: no-preference)',()=>{
       const element=viewport.current!;
       element.classList.add('is-scroll-driven');
       const tween=gsap.to(element,{scrollLeft:()=>element.scrollWidth-element.clientWidth,ease:'none',onUpdate:paint,
@@ -204,7 +217,15 @@ export function ServicesSection({section}:{section:SectionData}) {
       scrollJourney.current=tween.scrollTrigger!;
       return ()=>{scrollJourney.current=null;element.classList.remove('is-scroll-driven');};
     });
+    // This first segment introduces the agent card on every motion-enabled
+    // layout. On touch devices it is driven by the user's horizontal swipe;
+    // desktop adds the pinned page-scroll controller above.
     mm.add('(prefers-reduced-motion: no-preference)',()=>{
+      construction=gsap.timeline({repeat:-1,yoyo:true,repeatDelay:.15,
+        scrollTrigger:{trigger:'.service-agents',start:'top bottom',end:'bottom top',toggleActions:'play pause resume pause'}});
+      construction.fromTo(path,{strokeDasharray:()=>length,strokeDashoffset:()=>length},{strokeDashoffset:()=>length-outlineLength,duration:3.6,ease:'power2.inOut',autoRound:false});
+    });
+    mm.add('(min-width: 1000px) and (min-height: 650px) and (prefers-reduced-motion: no-preference)',()=>{
       const cards=Array.from(rail.current?.querySelectorAll<HTMLElement>(':scope > article')??[]);
       const revealObserver=new IntersectionObserver(entries=>{
         entries.forEach(entry=>{
@@ -218,10 +239,6 @@ export function ServicesSection({section}:{section:SectionData}) {
       cards.forEach(card=>revealObserver.observe(card));
       const tools=robots.flatMap(robot=>Array.from(robot.querySelectorAll<SVGElement>('.builder-tool')));
       gsap.to(tools,{rotation:-35,transformOrigin:'bottom left',duration:.18,yoyo:true,repeat:-1,ease:'sine.inOut'});
-      construction=gsap.timeline({repeat:-1,yoyo:true,repeatDelay:.15,
-        scrollTrigger:{trigger:'.service-agents',start:'top bottom',end:'bottom top',toggleActions:'play pause resume pause'}});
-      construction
-        .fromTo(path,{strokeDasharray:()=>length,strokeDashoffset:()=>length},{strokeDashoffset:()=>length-outlineLength,duration:3.6,ease:'power2.inOut',autoRound:false});
       return ()=>{
         revealObserver.disconnect();
         rail.current?.classList.remove('services-fade-ready');
@@ -254,12 +271,14 @@ export function ServicesSection({section}:{section:SectionData}) {
           <div className="builder builder-two" aria-hidden="true"><Bot size={43} strokeWidth={1.5}/><Wrench className="builder-tool" size={24}/></div>
         </div>
       </div>
-      <div className="services-controls">
-        <button type="button" className="button testimonial-arrow services-arrow" aria-label="Serviço anterior" disabled={!canGoBack} aria-hidden={!canGoBack} aria-controls="services-carousel" onClick={()=>navigate(-1)}><ArrowLeft className="button-icon" size={24}/></button>
-        <button type="button" className="button testimonial-arrow services-arrow" aria-label="Próximo serviço" disabled={atEnd} aria-hidden={atEnd} aria-controls="services-carousel" onClick={()=>navigate(1)}><ArrowRight className="button-icon" size={24}/></button>
-      </div>
-      <div className="services-pagination" role="group" aria-label="Páginas de serviços">
-        {[0,1,2].map(group=><button key={group} type="button" aria-label={`Ir para o grupo ${group+1} de 3 de serviços`} aria-current={activeGroup===group?'true':undefined} aria-controls="services-carousel" onClick={()=>navigate({group})}><span/></button>)}
+      <div className="services-navigation">
+        <div className="services-controls">
+          <button type="button" className="button testimonial-arrow services-arrow" aria-label="Serviço anterior" disabled={!canGoBack} aria-hidden={!canGoBack} aria-controls="services-carousel" onClick={()=>navigate(-1)}><ArrowLeft className="button-icon" size={24}/></button>
+          <button type="button" className="button testimonial-arrow services-arrow" aria-label="Próximo serviço" disabled={atEnd} aria-hidden={atEnd} aria-controls="services-carousel" onClick={()=>navigate(1)}><ArrowRight className="button-icon" size={24}/></button>
+        </div>
+        <div className="services-pagination" role="group" aria-label="Páginas de serviços">
+          {[0,1,2].map(group=><button key={group} type="button" aria-label={`Ir para o grupo ${group+1} de 3 de serviços`} aria-current={activeGroup===group?'true':undefined} aria-controls="services-carousel" onClick={()=>navigate({group})}><span/></button>)}
+        </div>
       </div>
     </div>
   </section>;

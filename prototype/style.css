@@ -299,3 +299,96 @@ body{background-color:var(--scroll-canvas)}
  .client-strip-item p{margin:0;font-size:16px;font-weight:600;white-space:nowrap}
  .client-strip-item p+p{margin-top:3px;font-size:12px;font-weight:400;letter-spacing:1px;color:var(--color-gray-300)}
 }
+
+/* Mobile conversation keeps the desktop artwork in a compact edge composition. */
+.conversation-mobile-artwork{display:none}
+@media(max-width:639px){
+ .section-conversa{min-height:579px;padding:181px 20px 190px}
+ .section-conversa .section-content{gap:16px;position:relative;z-index:1}
+ .section-conversa h2{max-width:290px;font-size:22px;line-height:1.2;letter-spacing:-.045em}
+ .section-conversa .text-block[data-role=p]:not(.button-link){max-width:280px;font-size:16px;line-height:1.6}
+ .section-conversa .button-link{min-height:44px;padding:10px 22px;font-size:15px}
+ .section-conversa>.conversation-artwork{display:block;visibility:hidden}
+ .conversation-mobile-artwork{display:block;position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+ .conversation-photo{position:absolute;display:block;overflow:visible}
+ .conversation-photo-top-left{top:40px;left:-1px;width:104px;height:64px}
+ .conversation-photo-top-right{top:84px;right:-17px;width:70px;height:70px}
+ .conversation-photo-bottom-left{bottom:65px;left:-1px;width:70px;height:99px}
+ .conversation-photo-bottom-right{right:-60px;bottom:38px;width:180px;height:111px}
+}
+@media(max-width:639px){
+ .section-conversa h2{font-size:22px!important}
+ .section-conversa>.conversation-artwork{visibility:visible;opacity:0}
+}
+@media(max-width:639px){
+ .section-conversa>.component-art{display:none}
+ .section-conversa h2{width:290px!important;height:auto!important}
+}
+@media(max-width:639px){
+ .section-conversa .text-run{position:static!important;display:inline!important;white-space:normal!important;left:auto!important;top:auto!important;transform:none!important}
+}
+@media(max-width:639px){.section-conversa h2{clip-path:none!important}}
+@media(max-width:639px){
+ .section-conversa{min-height:700px;padding-top:184px;padding-bottom:240px}
+ .section-conversa h2{width:290px!important;max-width:290px;font-size:40px!important;line-height:1.14}
+ .section-conversa .section-content{gap:20px}
+ .section-conversa .button-link{padding-left:24px}
+ .conversation-mobile-button-icon{display:block;position:static;flex:none;width:24px;height:24px;margin-right:8px;filter:brightness(0) invert(1)}
+ .conversation-photo-top-left{top:32px;width:132px;height:81px}
+ .conversation-photo-top-right{top:76px;right:-24px;width:92px;height:92px}
+ .conversation-photo-bottom-left{bottom:74px;width:88px;height:124px}
+ .conversation-photo-bottom-right{right:-78px;bottom:40px;width:224px;height:138px}
+}
+@media(min-width:640px){.conversation-mobile-button-icon{display:none}}
+@media(max-width:639px){
+ .conversation-photo-top-left{top:24px;width:158px;height:97px}
+ .conversation-photo-top-right{top:66px;right:-34px;width:116px;height:116px}
+ .conversation-photo-bottom-left{bottom:66px;width:110px;height:155px}
+ .conversation-photo-bottom-right{right:-98px;bottom:30px;width:270px;height:166px}
+}
+@media(max-width:639px){
+ .conversation-photo-top-left{top:12px;left:-10px;width:220px!important;height:135px!important}
+ .conversation-photo-top-right{top:54px;right:-54px;width:165px!important;height:165px!important}
+ .conversation-photo-bottom-left{bottom:42px;left:-12px;width:150px!important;height:212px!important}
+ .conversation-photo-bottom-right{right:-132px;bottom:14px;width:340px!important;height:209px!important}
+}
+@media(max-width:639px){
+ .conversation-photo-top-left{top:24px;left:-6px;width:164px!important;height:101px!important}
+ .conversation-photo-top-right{top:68px;right:-30px;width:116px!important;height:116px!important}
+ .conversation-photo-bottom-left{bottom:56px;left:-6px;width:108px!important;height:152px!important}
+ .conversation-photo-bottom-right{right:-92px;bottom:28px;width:262px!important;height:161px!important}
+}
+@media(max-width:639px){
+ .conversation-photo-bottom-left{bottom:28px!important}
+ .conversation-photo-bottom-right{bottom:8px!important}
+}
+
+/* App feature copy and QR invitation preserve the desktop hierarchy on narrow screens. */
+@media(max-width:639px){
+ .section-aplicativo .app-feature-title{width:100%!important;max-width:100%!important;margin:0!important;font-size:clamp(30px,8.2vw,38px)!important;line-height:1.1!important;letter-spacing:-.055em!important;text-align:left}
+ .section-aplicativo .app-feature-title-line{white-space:normal!important}
+ .section-aplicativo .app-feature-title-line+ .app-feature-title-line{text-align:left}
+ .section-aplicativo .content-card .app-feature-title{order:0}
+ .section-aplicativo .qr-instructions{display:grid!important;grid-template-columns:116px minmax(0,1fr)!important;align-items:center!important;gap:20px!important;order:3;width:100%!important;min-height:168px!important;padding:20px!important;border-radius:24px!important;text-align:left!important}
+ .section-aplicativo .qr-instructions .app-qr-surface{width:116px!important;height:116px!important;padding:10px!important;justify-self:start!important}
+ .section-aplicativo .qr-instructions .app-qr-image{width:96px!important;height:96px!important}
+ .section-aplicativo .qr-instructions>p{width:auto!important;margin:0!important;font-size:17px!important;font-weight:600!important;line-height:1.35!important;text-align:left!important}
+}
+
+/* On phones, feature headings retain the centered treatment and QR card mirrors the desktop composition. */
+@media(max-width:639px){
+ .section-aplicativo .app-feature-title,.section-aplicativo .app-feature-title-line,.section-aplicativo .app-feature-title-line+.app-feature-title-line{text-align:center!important}
+ .section-aplicativo .qr-instructions{position:relative!important;display:block!important;width:100%!important;min-height:125px!important;height:125px!important;margin-top:42px!important;padding:0!important;border-radius:20px!important;overflow:visible!important}
+ .section-aplicativo .qr-instructions .app-qr-surface{position:absolute!important;left:0!important;top:-22px!important;width:168px!important;height:168px!important;padding:24px!important;border-radius:7px!important;box-shadow:3px 3px 0 #597e18!important;z-index:2!important}
+ .section-aplicativo .qr-instructions .app-qr-image{width:120px!important;height:120px!important}
+ .section-aplicativo .qr-instructions>p{position:absolute!important;left:192px!important;top:40px!important;width:calc(100% - 210px)!important;margin:0!important;font-size:20px!important;font-weight:600!important;line-height:1.23!important;text-align:left!important;z-index:1!important}
+}
+
+/* Touch devices download through the store; the QR remains a desktop-only affordance. */
+.app-mobile-download{display:none}
+@media(max-width:1024px), (hover:none) and (pointer:coarse){
+ .section-aplicativo .qr-instructions{display:flex!important;align-items:center!important;justify-content:center!important;min-height:64px!important;height:auto!important;margin-top:24px!important;padding:0!important;overflow:visible!important;background:transparent!important;box-shadow:none!important}
+ .section-aplicativo .qr-instructions .app-qr-surface,.section-aplicativo .qr-instructions>p,.section-aplicativo .qr-instructions>.qr-hover-fill{display:none!important}
+ .section-aplicativo .qr-instructions::before,.section-aplicativo .qr-instructions::after{content:none!important;display:none!important;background:transparent!important;box-shadow:none!important}
+ .section-aplicativo .app-mobile-download{display:inline-flex!important;width:100%;font-size:16px;text-decoration:none}
+}

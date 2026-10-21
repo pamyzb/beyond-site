@@ -86,6 +86,25 @@ export function animateSectionTitles(scope: HTMLElement) {
         });
         return;
       }
+      if (heading.matches('.app-feature-title')) {
+        // The app titles are deliberately authored as two fixed lines so their
+        // illustrated words retain their SVG scribbles. Reveal those lines as
+        // intact units instead of splitting and detaching the live SVG paths.
+        const lines = heading.querySelectorAll<HTMLElement>('.app-feature-title-line');
+        gsap.fromTo(lines, { y: 24, opacity: 0 }, {
+          y: 0,
+          opacity: 1,
+          stagger: 0.14,
+          duration: 0.62,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: heading,
+            start: 'top 82%',
+            toggleActions:'play none none none',
+          },
+        });
+        return;
+      }
       if (!heading.matches('h1,h2,h3,h4,h5,h6')) {
         gsap.fromTo(heading, { y: 8, opacity: 0 }, {
           y: 0,
@@ -132,6 +151,26 @@ export function animateSectionTitles(scope: HTMLElement) {
         },
       });
     });
+    const qrCallout = scope.querySelector<HTMLElement>('#aplicativo .qr-instructions');
+    if (qrCallout) {
+      // The QR callout's decorative paths are CSS pseudo-elements. Animate the
+      // clipping variables on their owning element so each line is drawn as
+      // the callout enters the viewport.
+      gsap.fromTo(qrCallout,
+        { '--qr-top-line-inset': '108px', '--qr-bottom-line-inset': '108px' },
+        {
+          '--qr-top-line-inset': '66px',
+          '--qr-bottom-line-inset': '66px',
+          duration: 0.7,
+          ease: 'power2.inOut',
+          scrollTrigger: {
+            trigger: qrCallout,
+            start: 'top 84%',
+            toggleActions:'play none none none',
+          },
+        },
+      );
+    }
     return () => splits.forEach(split => split.revert());
   });
   return () => media.revert();
