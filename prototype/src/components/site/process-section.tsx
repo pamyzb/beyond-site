@@ -1,29 +1,18 @@
 'use client';
-import { useRef } from 'react';
-import { gsap, useGSAP } from '@/lib/gsap';
+import { Fragment, useRef } from 'react';
+import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import type { SectionData, Style } from '@/lib/design';
 import { TextBlock } from './text-block';
+import { ProcessCard } from './process-card';
+import { SectionHeading } from './section-heading';
 
-// Actual card faces (excluding their shadow and artwork wrapper).
-const cardFaces = [
-  {x:206,y:7803.35,width:430,height:275,angle:-3.2},
-  {x:813.375,y:7918.34,width:430,height:249,angle:3},
-  {x:177,y:8211.85,width:430,height:233.171,angle:-2.2},
-  {x:852.825,y:8313.34,width:430,height:227,angle:3},
-];
-
-// Keep the centre of the icon on the edge when a dashed path runs under a card.
-function stopAtCardEdge(point:{x:number;y:number},face:typeof cardFaces[number]) {
-  const angle=face.angle*Math.PI/180,cos=Math.cos(angle),sin=Math.sin(angle);
-  const dx=point.x-face.x,dy=point.y-face.y;
-  let x=dx*cos+dy*sin,y=-dx*sin+dy*cos;
-  if(x<=0||x>=face.width||y<=0||y>=face.height)return point;
-  const distance=Math.min(x,face.width-x,y,face.height-y);
-  if(distance===x)x=0;
-  else if(distance===face.width-x)x=face.width;
-  else if(distance===y)y=0;
-  else y=face.height;
-  return {x:face.x+x*cos-y*sin,y:face.y+x*sin+y*cos};
+function headingRuns(runs: SectionData['blocks'][number]['runs']) {
+  let previousY: number | undefined;
+  return <>{runs.map((run,index)=>{
+    const nextLine=previousY!==undefined && Math.abs(run.y-previousY)>1;
+    previousY=run.y;
+    return <Fragment key={`${run.text}-${run.x}-${run.y}-${index}`}>{nextLine && <br/>}{run.italic?<em>{run.text}</em>:<span>{run.text}</span>}</Fragment>;
+  })}</>;
 }
 
 const cards = [
@@ -34,55 +23,76 @@ const cards = [
 ];
 export function ProcessSection({section,artwork}:{section:SectionData;artwork:{track:string;marker:string;cards:Record<string,string>;mobileCards:Record<string,string>}}) {
   const scope=useRef<HTMLElement>(null);
+  const headingBlocks=section.blocks.filter(block=>block.ancestors.some(ancestor=>ancestor.startsWith('section-title')));
+  const headingLabel=headingBlocks.find(block=>block.role==='label');
+  const headingTitle=headingBlocks.find(block=>block.role==='h2');
+  const headingSubtitle=headingBlocks.find(block=>block.role==='p');
   useGSAP(()=>{
     const root=scope.current!;
-    const media=gsap.matchMedia();
-    media.add({wide:'(min-width:1440px)',motion:'(prefers-reduced-motion:no-preference)'},context=>{
-      const wide=context.conditions?.wide;
-      const targets=Array.from(root.querySelectorAll<HTMLElement>('.process-card-entry'));
-      const svg=root.querySelector<SVGSVGElement>('.process-track svg')!;
-      const markerSvg=root.querySelector<SVGSVGElement>('.process-marker-layer svg')!;
-      const marker=markerSvg.querySelector<SVGGElement>('[id="process-Container_53-Container_53"]')!;
-      const route=document.createElementNS('http://www.w3.org/2000/svg','path');
-      route.setAttribute('fill','none');
-      route.setAttribute('stroke','none');
-      svg.appendChild(route);
-      let faces=cardFaces;
-      const measure=()=>{
-        if(wide){
-          svg.setAttribute('viewBox','0 7449.59 1440 1148');
-          route.setAttribute('d','M613 7905.34 C697.074 7905.34 769.926 8079.34 854 8079.34 L823 8076.34 C664.984 8076.34 748.016 8320.34 590 8320.34 L607 8331.34 C693.865 8331.34 769.135 8444.34 856 8444.34');
-        }else{
-          const box=root.getBoundingClientRect();
-          svg.setAttribute('viewBox',`0 0 ${box.width} ${box.height}`);
-          faces=targets.map(card=>({x:card.offsetLeft,y:card.offsetTop,width:card.offsetWidth,height:card.offsetHeight,angle:0}));
-          const points=targets.map(card=>{
-            return {x:card.offsetLeft+card.offsetWidth/2,y:card.offsetTop+card.offsetHeight/2};
-          });
-          route.setAttribute('d',points.map((p,i)=>i?`L${p.x} ${p.y}`:`M${p.x} ${p.y}`).join(' '));
-          route.setAttribute('stroke','#4B5563');
-          route.setAttribute('stroke-width','1.5');
-          route.setAttribute('stroke-dasharray','5 9');
-          svg.insertBefore(route,svg.firstChild);
-        }
-        markerSvg.setAttribute('viewBox',svg.getAttribute('viewBox')!);
-      };
-      measure();
-      if(!context.conditions?.motion)return ()=>{route.remove();svg.setAttribute('viewBox','0 7449.59 1440 1148');markerSvg.setAttribute('viewBox','0 7449.59 1440 1148');};
-      const position={progress:0};
-      const place=()=>{
-        const pathPoint=route.getPointAtLength(route.getTotalLength()*position.progress);
-        const point=faces.reduce((point,face)=>stopAtCardEdge(point,face),{x:pathPoint.x,y:pathPoint.y});
-        gsap.set(marker,{x:point.x-649.05,y:point.y-7913.4});
-      };
-      place();
-      gsap.to(position,{progress:1,ease:'none',scrollTrigger:{trigger:root,start:'top 25%',end:'bottom 65%',scrub:.65,invalidateOnRefresh:true,onRefresh:()=>{measure();place();}},onUpdate:place});
-      targets.forEach((target,index)=>{
-        gsap.fromTo(target,{x:wide?(index%2?440:-440):0,y:wide?120:80,rotation:wide?(index%2?12:-12):-5,scale:.82,opacity:0},
-          {x:0,y:0,rotation:0,scale:1,opacity:1,duration:1.65,ease:'power4.out',delay:wide?index*.2:0,
-            scrollTrigger:{trigger:wide?root:target,start:wide?'top 82%':'top 92%',toggleActions:'play none none none'}});
+    const targets=Array.from(root.querySelectorAll<HTMLElement>('.process-card-entry'))
+      .sort((first,second)=>Number(first.dataset.step)-Number(second.dataset.step));
+    const svg=root.querySelector<SVGSVGElement>('.process-route-layer svg')!;
+    const markerSvg=root.querySelector<SVGSVGElement>('.process-marker-layer svg')!;
+    const marker=markerSvg.querySelector<SVGGElement>('[id="process-Container_53-Container_53"]')!;
+    const route=document.createElementNS('http://www.w3.org/2000/svg','path');
+    route.setAttribute('class','process-route');
+    route.setAttribute('fill','none');
+    route.setAttribute('stroke','#4B5563');
+    route.setAttribute('stroke-width','1.5');
+    route.setAttribute('stroke-dasharray','5 9');
+    svg.appendChild(route);
+    const anchor=(box:DOMRect,side:'left'|'right',vertical:number)=>({
+      x:side==='left'?box.left:box.right,
+      y:box.top+box.height*vertical,
+    });
+    const measure=()=>{
+      const bounds=root.getBoundingClientRect();
+      svg.setAttribute('viewBox',`0 0 ${bounds.width} ${bounds.height}`);
+      markerSvg.setAttribute('viewBox',`0 0 ${bounds.width} ${bounds.height}`);
+      // The layout wrapper includes the exported SVG's transparent margins.
+      // Anchor to the painted card face instead, so the connector visibly
+      // meets the card even when the artwork is rotated or scaled.
+      const boxes=targets.map(target=>{
+        const face=target.querySelector<SVGGraphicsElement>('.process-card-surface rect');
+        return face?.getBoundingClientRect() ?? target.getBoundingClientRect();
       });
-      return ()=>{route.remove();svg.setAttribute('viewBox','0 7449.59 1440 1148');markerSvg.setAttribute('viewBox','0 7449.59 1440 1148');};
+      // These entry and exit points retain the intentional hand-drawn flow
+      // of the reference: 1 → 2 descends, 2 → 3 bends back, then 3 → 4 exits.
+      const connections=[
+        {from:'right',fromY:.35,to:'left',toY:.52},
+        {from:'left',fromY:.54,to:'right',toY:.38},
+        {from:'right',fromY:.48,to:'left',toY:.45},
+      ] as const;
+      const parts=boxes.slice(0,-1).map((box,index)=>{
+        const next=boxes[index+1];
+        const connection=connections[index];
+        const start=anchor(box,connection.from,connection.fromY);
+        const end=anchor(next,connection.to,connection.toY);
+        const sx=start.x-bounds.left,sy=start.y-bounds.top,ex=end.x-bounds.left,ey=end.y-bounds.top;
+        const bend=Math.max(56,Math.min(150,Math.abs(ex-sx)*.42));
+        const direction=connection.from==='right'?1:-1;
+        // Extend a fraction of a pixel into the painted face to avoid a seam
+        // caused by anti-aliasing between the SVG line and rotated card edge.
+        const overlap=1.25;
+        const startX=sx+direction*overlap,endX=ex-direction*overlap;
+        return `M${startX} ${sy} C${sx+bend*direction} ${sy},${ex-bend*direction} ${ey},${endX} ${ey}`;
+      });
+      route.setAttribute('d',parts.join(' '));
+    };
+    const place=(progress:number)=>{
+      const point=route.getPointAtLength(route.getTotalLength()*progress);
+      // The imported marker's centre is at these original Figma coordinates.
+      gsap.set(marker,{x:point.x-649.05,y:point.y-7913.4});
+    };
+    measure();
+    place(0);
+    const resize=new ResizeObserver(()=>{measure();ScrollTrigger.refresh();});
+    resize.observe(root);
+    const media=gsap.matchMedia();
+    media.add('(prefers-reduced-motion:no-preference)',()=>{
+      const position={progress:0};
+      const tween=gsap.to(position,{progress:1,ease:'none',scrollTrigger:{trigger:root,start:'top 25%',end:'bottom 65%',scrub:.65,invalidateOnRefresh:true,onRefresh:()=>{measure();place(position.progress);}},onUpdate:()=>place(position.progress)});
+      return ()=>tween.kill();
     });
     media.add('(min-width:1440px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)',()=>{
       const cleanups=Array.from(root.querySelectorAll<HTMLElement>('.process-card-entry')).map(target=>{
@@ -105,20 +115,19 @@ export function ProcessSection({section,artwork}:{section:SectionData;artwork:{t
       });
       return ()=>cleanups.forEach(cleanup=>cleanup());
     });
-    return ()=>media.revert();
+    return ()=>{resize.disconnect();route.remove();media.revert();};
   },{scope});
-  return <section ref={scope} id="processo" aria-label={section.label} data-motion="section" className="design-section relative isolate overflow-hidden section-processo process-animated" style={{'--section-height':`${section.height}px`} as Style}>
-    <div className="figma-art process-track" aria-hidden="true" dangerouslySetInnerHTML={{__html:artwork.track}} />
+  return <section ref={scope} id="processo" aria-label={section.label} data-motion="section" className={`design-section relative isolate overflow-hidden section-processo process-animated${section.dark?' theme-dark':''}`} style={{'--section-height':`${section.height}px`} as Style}>
+    <div className="process-route-layer" aria-hidden="true"><svg /></div>
     <div className="process-marker-layer" aria-hidden="true" dangerouslySetInnerHTML={{__html:artwork.marker}} />
-    <div className="section-content">
-      {section.blocks.filter(b=>!b.ancestors.some(a=>cards.some(c=>c.id===a))).map((block,i)=><TextBlock key={i} block={block} section={section}/>)}
-      {cards.map((card,index)=><div className="process-card-entry" key={card.id} style={{aspectRatio:`${card.width} / ${card.height}`,'--card-x':`${card.x}px`,'--card-y':`${card.y}px`,'--card-width':`${card.width}px`,'--card-height':`${card.height}px`,'--hover-angle':index%2?'2deg':'-2deg'} as Style}>
-        <article className="content-card process-card" data-motion="card" data-source={card.id}>
-          <div className="process-card-art" aria-hidden="true" dangerouslySetInnerHTML={{__html:artwork.cards[card.id]}}/>
-          <div className="process-card-art process-card-art-mobile" aria-hidden="true" dangerouslySetInnerHTML={{__html:artwork.mobileCards[card.id]}}/>
-          {section.blocks.filter(b=>b.ancestors.includes(card.id)).map((block,i)=><TextBlock key={i} block={block} section={section}/>)}
-        </article>
-      </div>)}
+    <div className="section-content section-content--processo">
+      {headingLabel && headingTitle && <SectionHeading className="process-section-heading" label={headingLabel.runs.map(run=>run.text.trim()).join(' ')} title={headingRuns(headingTitle.runs)} subtitle={headingSubtitle?.runs.map(run=>run.text.trim()).join(' ')} />}
+      <div className="process-card-column process-card-column--left">
+        {[0,2].map(index=>{const card=cards[index];return <ProcessCard key={card.id} card={card} index={index} section={section} artwork={artwork.cards[card.id]} mobileArtwork={artwork.mobileCards[card.id]} />;})}
+      </div>
+      <div className="process-card-column process-card-column--right">
+        {[1,3].map(index=>{const card=cards[index];return <ProcessCard key={card.id} card={card} index={index} section={section} artwork={artwork.cards[card.id]} mobileArtwork={artwork.mobileCards[card.id]} />;})}
+      </div>
     </div>
   </section>;
 }

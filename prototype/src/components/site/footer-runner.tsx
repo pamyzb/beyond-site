@@ -1,192 +1,268 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import './footer-runner.css';
+import { FooterContent } from './footer-content';
 
-const socialLinks = [
-  { name: 'email', label: 'E-mail', href: 'mailto:contato@beyondthebytes.com.br' },
-  { name: 'whatsapp', label: 'WhatsApp', href: 'https://api.whatsapp.com/send?phone=5511936191071' },
-  { name: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/company/beyond-the-bytes/' },
-  { name: 'instagram', label: 'Instagram', href: 'https://www.instagram.com/beyond.thebytes/' },
-  { name: 'x', label: 'X', href: 'https://x.com/beyondthebytes' },
-];
+type Obstacle = { left: number; right: number; top: number; width: number };
+type Point = [number, number];
+type TerrainPath = { polygons: Point[][]; rect: DOMRect; viewBox: [number, number, number, number] };
 
-/** Decorative runner: all coordinates are measured from the original footer art. */
-export function FooterRunner({ artwork }: { artwork: string }) {
-  const [art, setArt] = useState<HTMLDivElement | null>(null);
-  const [stage, setStage] = useState<HTMLDivElement | null>(null);
+function isBlackFill(element: SVGGeometryElement) {
+  const fill = element.getAttribute('fill') ?? getComputedStyle(element).fill;
+  return fill === 'black' || fill === '#000' || fill === '#000000' || fill === 'rgb(0, 0, 0)';
+}
+
+function parseSvgPath(d: string): Point[][] {
+  const tokens = d.match(/[A-Za-z]|-?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?/g) ?? [];
+  const polygons: Point[][] = [];
+  let cursor: Point = [0, 0];
+  let start: Point = [0, 0];
+  let polygon: Point[] = [];
+  let index = 0;
+  const number = () => Number(tokens[index++]);
+  const point = (): Point => [number(), number()];
+  const add = (next: Point) => { polygon.push(next); cursor = next; };
+  while (index < tokens.length) {
+    const command = tokens[index++];
+    if (command === 'M') {
+      if (polygon.length) polygons.push(polygon);
+      polygon = [point()]; cursor = polygon[0]; start = cursor;
+      while (index < tokens.length && !/[A-Za-z]/.test(tokens[index])) add(point());
+    } else if (command === 'L') {
+      while (index < tokens.length && !/[A-Za-z]/.test(tokens[index])) add(point());
+    } else if (command === 'H') {
+      while (index < tokens.length && !/[A-Za-z]/.test(tokens[index])) add([number(), cursor[1]]);
+    } else if (command === 'V') {
+      while (index < tokens.length && !/[A-Za-z]/.test(tokens[index])) add([cursor[0], number()]);
+    } else if (command === 'C') {
+      while (index < tokens.length && !/[A-Za-z]/.test(tokens[index])) {
+        const from = cursor, control1 = point(), control2 = point(), to = point();
+        for (let step = 1; step <= 8; step++) {
+          const t = step / 8, inverse = 1 - t;
+          add([inverse ** 3 * from[0] + 3 * inverse ** 2 * t * control1[0] + 3 * inverse * t ** 2 * control2[0] + t ** 3 * to[0], inverse ** 3 * from[1] + 3 * inverse ** 2 * t * control1[1] + t ** 3 * to[1]]);
+        }
+      }
+    } else if (command === 'Z') {
+      if (polygon.length && (cursor[0] !== start[0] || cursor[1] !== start[1])) polygon.push(start);
+    }
+  }
+  if (polygon.length) polygons.push(polygon);
+  return polygons;
+}
+
+function containsPoint(polygons: Point[][], x: number, y: number) {
+  return polygons.some(polygon => {
+    let inside = false;
+    for (let index = 0, previous = polygon.length - 1; index < polygon.length; previous = index++) {
+      const [x1, y1] = polygon[index], [x2, y2] = polygon[previous];
+      if ((y1 > y) !== (y2 > y) && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1) inside = !inside;
+    }
+    return inside;
+  });
+}
+
+/** A small autonomous runner that treats each bottom SVG as a hurdle. */
+export function FooterRunner({ bottomArtwork }: { bottomArtwork: string[] }) {
+  const stageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!art || !stage) return;
-    const root = stage;
-    const source = art.querySelector<SVGRectElement>('[id="Frame 34"] rect');
-    if (!source) return;
-    const runner = root.querySelector<HTMLElement>('.footer-runner-pixel')!;
-    const particles = Array.from(root.querySelectorAll<HTMLElement>('.footer-runner-particle'));
+    const stage = stageRef.current;
+    if (!stage) return;
+
+    const runner = stage.querySelector<HTMLElement>('.footer-runner-pixel');
+    const topMarker = stage.closest<HTMLElement>('.section-rodape')?.querySelector<HTMLElement>('.footer-decoration--top-left');
+    if (!runner || !topMarker) return;
+
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-    let frame = 0, last = 0, elapsed = 0, visible = false, previousStop = -1;
-    let width = 0, height = 0, startX = 39, startY = 73, size = 24;
-    let stop = 0, travel = 0, ground = 0;
-    let platforms: { x: number; y: number }[] = [];
+    let frame = 0;
+    let last = 0;
+    let visible = false;
+    let width = 0;
+    let ground = 0;
+    let startX = 0;
+    let startY = 0;
+    let size = 24;
+    let runnerHeight = 23;
+    let x = 0;
+    let y = 0;
+    let dropProgress = 0;
+    let landingPause = 0;
+    let jump: { elapsed: number; duration: number; height: number; fromY: number; landY: number } | null = null;
+    let obstacles: Obstacle[] = [];
     let terrain = new Float32Array(0);
-    let jumpHeights: number[] = [];
-    const surface = (x: number, rotation = 0) => {
-      // Rotation enlarges the square's footprint and lowers its bottom corner.
-      const radians = rotation * Math.PI / 180;
-      const overhang = size * (Math.abs(Math.cos(radians)) + Math.abs(Math.sin(radians)) - 1) / 2;
-      let top = ground;
-      const left = Math.max(0, Math.floor(x - overhang));
-      const right = Math.min(terrain.length - 1, Math.ceil(x + size + overhang));
-      for (let column = left; column <= right; column++) top = Math.min(top, terrain[column]);
-      return top - size - overhang - 1;
+
+    const place = (nextX: number, nextY: number, rotation = 0) => {
+      runner.style.transform = `translate3d(${nextX}px,${nextY}px,0) rotate(${rotation}deg)`;
     };
-    let debris: { vx: number; vy: number; spin: number }[] = [];
-    const position = (node: HTMLElement, x: number, y: number, rotation = 0) => {
-      node.style.transform = `translate3d(${x}px,${y}px,0) rotate(${rotation}deg)`;
-    };
-    const reset = () => {
-      elapsed = 0;
-      // Choose a different landing platform each round, including early failures.
-      const choices = platforms.length - 2;
-      let next = 2 + Math.floor(Math.random() * choices);
-      if (next === previousStop) next = 2 + ((next - 1) % choices);
-      previousStop = stop = next;
-      travel = (platforms[stop].x - startX) / Math.max(120, width * .16);
-      debris = particles.map((_, i) => {
-        const angle = Math.PI * 2 * i / particles.length;
-        const speed = 65 + Math.random() * 110;
-        return { vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 95, spin: (Math.random() - .5) * 700 };
-      });
-    };
+
     const measure = () => {
-      const bounds = root.getBoundingClientRect();
-      width = bounds.width; height = bounds.height;
-      const original = source.getBoundingClientRect();
-      const desktop = original.width > 0;
-      size = desktop ? original.width : 20;
-      startX = desktop ? original.left - bounds.left : 24;
-      startY = desktop ? original.top - bounds.top : 24;
-      ground = height - 30;
-      runner.style.width = `${size}px`; runner.style.height = `${size}px`;
-      // Build a one-pixel height map from every filled base vector, including
-      // the green squares. Cache it on resize, never scan SVG paths per frame.
-      const shapes = desktop ? Array.from(art.querySelectorAll<SVGGeometryElement>('[id="Container_78"] path, [id="Container_78"] rect, [id="Container_78"] circle, [id="Container_78"] polygon')) : [];
+      const bounds = stage.getBoundingClientRect();
+      const marker = topMarker.getBoundingClientRect();
+      width = bounds.width;
+      size = marker.width * 24 / 102;
+      runnerHeight = size * 23 / 24;
+      startX = marker.left - bounds.left + marker.width * 39 / 102;
+      startY = marker.top - bounds.top + marker.height * 73 / 96;
+      ground = bounds.height - 30 - runnerHeight;
+      const footer = stage.closest<HTMLElement>('.section-rodape');
+      obstacles = Array.from(footer?.querySelectorAll<HTMLElement>('.footer-bottom-art') ?? [])
+        .filter(item => getComputedStyle(item).display !== 'none')
+        .map(item => {
+          const rect = item.getBoundingClientRect();
+          return { left: rect.left - bounds.left, right: rect.right - bounds.left, top: rect.top - bounds.top, width: rect.width };
+        });
+      // Each exported SVG carries a 1,440 px black floor rectangle. It is
+      // represented by `ground`; only black paths raise the terrain so the
+      // runner lands on the actual silhouette of each obstacle.
       terrain = new Float32Array(Math.ceil(width) + 1).fill(ground);
-      for (const el of shapes) {
-        const style = getComputedStyle(el);
-        if (style.fill === 'none' || style.visibility === 'hidden' || style.display === 'none') continue;
-        const inverse = el.getScreenCTM()?.inverse();
-        if (!inverse) continue;
-        const box = el.getBoundingClientRect();
-        const left = Math.max(0, Math.floor(box.left - bounds.left));
-        const right = Math.min(terrain.length - 1, Math.ceil(box.right - bounds.left));
-        const top = Math.max(0, Math.floor(box.top - bounds.top));
-        const bottom = Math.min(height, Math.ceil(box.bottom - bounds.top));
-        for (let x = left; x <= right; x++) {
-          for (let y = top; y <= Math.min(bottom, terrain[x]); y++) {
-            if (el.isPointInFill(new DOMPoint(bounds.left + x, bounds.top + y).matrixTransform(inverse))) {
-              terrain[x] = y - 1;
+      const paths: TerrainPath[] = Array.from(footer?.querySelectorAll<SVGPathElement>('.footer-bottom-art path') ?? [])
+        .filter(path => isBlackFill(path))
+        .map(path => {
+          const svg = path.closest<SVGSVGElement>('svg');
+          const d = path.getAttribute('d');
+          if (!svg || !d) return null;
+          const viewBox = (svg.getAttribute('viewBox') ?? `0 0 ${svg.getAttribute('width')} ${svg.getAttribute('height')}`)
+            .trim().split(/[\s,]+/).map(Number);
+          if (viewBox.length !== 4 || viewBox.some(Number.isNaN)) return null;
+          return { polygons: parseSvgPath(d), rect: svg.getBoundingClientRect(), viewBox: viewBox as [number, number, number, number] };
+        })
+        .filter((path): path is TerrainPath => path !== null);
+      for (const terrainPath of paths) {
+        const left = Math.max(0, Math.floor(terrainPath.rect.left - bounds.left));
+        const right = Math.min(terrain.length - 1, Math.ceil(terrainPath.rect.right - bounds.left));
+        const top = Math.max(0, Math.floor(terrainPath.rect.top - bounds.top));
+        const bottom = Math.min(Math.ceil(ground + runnerHeight), Math.ceil(terrainPath.rect.bottom - bounds.top));
+        for (let column = left; column <= right; column++) {
+          for (let row = top; row <= Math.min(bottom, terrain[column] + runnerHeight); row++) {
+            const localX = terrainPath.viewBox[0] + (bounds.left + column - terrainPath.rect.left) / terrainPath.rect.width * terrainPath.viewBox[2];
+            const localY = terrainPath.viewBox[1] + (bounds.top + row - terrainPath.rect.top) / terrainPath.rect.height * terrainPath.viewBox[3];
+            if (containsPoint(terrainPath.polygons, localX, localY)) {
+              terrain[column] = Math.min(terrain[column], row - runnerHeight);
               break;
             }
           }
         }
       }
-      const count = Math.max(5, Math.round(width / 135));
-      platforms = Array.from({ length: count }, (_, i) => {
-        const x = startX + (width - size - 28 - startX) * i / (count - 1);
-        return { x, y: desktop ? surface(x) : ground - size - (i % 2 ? 16 : 0) };
+      // Keep the launch height tied to the highest black path of each SVG,
+      // not its element box (which also includes lime decoration and clipping).
+      obstacles = obstacles.map(obstacle => {
+        let top = ground + runnerHeight;
+        const left = Math.max(0, Math.floor(obstacle.left));
+        const right = Math.min(terrain.length - 1, Math.ceil(obstacle.right));
+        for (let column = left; column <= right; column++) top = Math.min(top, terrain[column] + runnerHeight);
+        return { ...obstacle, top };
       });
-      // Plan clearance across the whole jump, not only at the landing point.
-      jumpHeights = platforms.slice(0, -1).map((from, index) => {
-        const to = platforms[index + 1];
-        let lift = 100;
-        const samples = Math.ceil((to.x - from.x) / 2);
-        for (let step = 1; step < samples; step++) {
-          const t = step / samples;
-          const ceiling = surface(from.x + (to.x - from.x) * t, t * 90);
-          lift = Math.max(lift, (from.y + (to.y - from.y) * t - ceiling) / (4 * t * (1 - t)));
-        }
-        return lift;
-      });
-      reset();
-      position(runner, startX, startY);
+      runner.style.width = `${size}px`;
+      runner.style.height = `${runnerHeight}px`;
+      x = startX;
+      y = startY;
+      dropProgress = 0;
+      landingPause = 0;
+      jump = null;
       runner.style.opacity = '1';
-      particles.forEach(p => { p.style.opacity = '0'; });
+      place(x, y);
     };
-    const tick = (now: number) => {
-      const delta = last ? Math.min((now - last) / 1000, .05) : 0;
-      last = now;
-      elapsed += delta;
-      const dropStart = .65, dropEnd = 1.65, runStart = 1.9;
-      const death = runStart + travel;
-      let x = startX, y = startY, rotation = 0;
+
+    const reset = () => {
+      x = startX;
+      y = startY;
+      dropProgress = 0;
+      landingPause = 0;
+      jump = null;
       runner.style.opacity = '1';
-      particles.forEach(p => { p.style.opacity = '0'; });
-      if (elapsed >= dropStart && elapsed < dropEnd) {
-        const t = (elapsed - dropStart) / (dropEnd - dropStart);
-        y += (platforms[0].y - startY) * t * t;
-      } else if (elapsed >= dropEnd && elapsed < runStart) {
-        y = platforms[0].y - Math.sin((elapsed - dropEnd) / .25 * Math.PI) * 13;
-      } else if (elapsed >= runStart) {
-        const progress = Math.min(1, (elapsed - runStart) / travel) * stop;
-        const index = Math.min(stop - 1, Math.floor(progress));
-        const t = progress - index;
-        const from = platforms[index], to = platforms[index + 1];
-        x = from.x + (to.x - from.x) * t;
-        y = from.y + (to.y - from.y) * t - 4 * t * (1 - t) * jumpHeights[index];
-        rotation = t * 90;
-        y = Math.min(y, surface(x, rotation));
-      }
-      position(runner, x, y, rotation);
-      if (elapsed >= death) {
-        runner.style.opacity = '0';
-        const t = elapsed - death;
-        particles.forEach((p, i) => {
-          p.style.opacity = `${Math.max(0, 1 - t / .7)}`;
-          position(p, x + size / 2 + debris[i].vx * t, y + size / 2 + debris[i].vy * t + 250 * t * t, debris[i].spin * t);
-        });
-        if (t > 1.3) reset();
+      place(x, y);
+    };
+
+    // The black strip is the fallback floor; inline path data raises it where
+    // a real vector is filled, including the vector's internal gaps and steps.
+    const surfaceAt = (atX: number) => {
+      let surface = ground;
+      const left = Math.max(0, Math.floor(atX));
+      const right = Math.min(terrain.length - 1, Math.ceil(atX + size));
+      for (let column = left; column <= right; column++) surface = Math.min(surface, terrain[column]);
+      return surface;
+    };
+
+    const tick = (now: number) => {
+      const delta = last ? Math.min((now - last) / 1000, 0.04) : 0;
+      last = now;
+      if (dropProgress < 1) {
+        dropProgress = Math.min(1, dropProgress + delta / .85);
+        const landingSurface = surfaceAt(startX);
+        y = startY + (landingSurface - startY) * dropProgress * dropProgress;
+        if (dropProgress === 1) landingPause = .22;
+        place(x, y);
+      } else if (landingPause > 0) {
+        // Let the first contact read as a landing before horizontal motion
+        // begins; this removes the sideways skid at the top of the first SVG.
+        landingPause = Math.max(0, landingPause - delta);
+        y = surfaceAt(x) - Math.sin((1 - landingPause / .22) * Math.PI) * 4;
+        place(x, y);
+      } else {
+        const speed = Math.max(115, width * .12);
+        const next = obstacles.find(obstacle => obstacle.right > x && obstacle.left > x - size);
+        if (!jump && next && x + size >= next.left - 42) {
+          // Use one shared target for horizontal travel and the landing
+          // surface. Matching those values prevents a visible snap at the end
+          // of each arc.
+          const fromY = surfaceAt(x);
+          const landingX = Math.min(width - size, next.right + 42);
+          const landY = surfaceAt(landingX);
+          const distance = Math.max(1, landingX - x);
+          jump = {
+            elapsed: 0,
+            duration: distance / speed,
+            fromY,
+            landY,
+            height: Math.max(48, Math.min(fromY, landY) - next.top + runnerHeight + 8),
+          };
+        }
+        x += speed * delta;
+        let rotation = 0;
+        if (jump) {
+          jump.elapsed += delta;
+          const progress = Math.min(1, jump.elapsed / jump.duration);
+          y = jump.fromY + (jump.landY - jump.fromY) * progress - 4 * progress * (1 - progress) * jump.height;
+          rotation = progress * 360;
+          if (progress === 1) jump = null;
+        } else {
+          y = surfaceAt(x);
+        }
+        if (x > width + size) reset();
+        else place(x, y, rotation);
       }
       frame = requestAnimationFrame(tick);
     };
+
     const sync = () => {
-      cancelAnimationFrame(frame); last = 0;
-      const active = !reduced.matches;
-      source.style.opacity = active ? '0' : '';
-      root.style.visibility = active ? 'visible' : 'hidden';
-      if (active && visible && !document.hidden) frame = requestAnimationFrame(tick);
+      cancelAnimationFrame(frame);
+      last = 0;
+      if (reduced.matches) {
+        runner.style.opacity = '0';
+        return;
+      }
+      runner.style.opacity = '1';
+      if (visible && !document.hidden) frame = requestAnimationFrame(tick);
     };
+
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
-    observer.observe(root);
     const resize = new ResizeObserver(measure);
-    resize.observe(root);
+    observer.observe(stage);
+    resize.observe(stage);
     reduced.addEventListener('change', sync);
     document.addEventListener('visibilitychange', sync);
-    measure(); sync();
+    measure();
+    sync();
+
     return () => {
-      cancelAnimationFrame(frame); observer.disconnect(); resize.disconnect();
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      resize.disconnect();
       reduced.removeEventListener('change', sync);
       document.removeEventListener('visibilitychange', sync);
-      source.style.opacity = '';
     };
-  // Rebind when React replaces either surface, including during live edits.
-  }, [art, stage, artwork]);
+  }, []);
 
-  return <>
-    <div key="footer-art" ref={setArt} className="figma-art bleed-art footer-original-art" aria-hidden="true" dangerouslySetInnerHTML={{ __html: artwork }}/>
-    <a className="footer-brand-link" href="#inicio" aria-label="Beyond the Bytes — voltar ao início" />
-    <a className="footer-badge-hit footer-badge-softex" href="https://softdex.com.br/empresa/beyond-the-bytes" target="_blank" rel="noopener noreferrer" aria-label="Avalie-nos na Softdex (abre em nova aba)" />
-    <button type="button" className="footer-badge-hit footer-badge-google" aria-label="Adicionar como fonte preferida no Google" />
-    <div className="footer-socials" role="group" aria-label="Redes sociais">
-      {socialLinks.map(({ name, label, href }) =>
-        <a key={name} href={href} className="button footer-social" aria-label={label} target={name === 'email' ? undefined : '_blank'} rel={name === 'email' ? undefined : 'noopener noreferrer'}>
-          <img className="button-icon" src={`/assets/figma/footer-social-${name}.svg`} width={40} height={40} alt="" />
-        </a>
-      )}
-    </div>
-    <div key="footer-runner" ref={setStage} className="footer-runner-stage" aria-hidden="true">
-      <span className="footer-runner-pixel"/>
-      {Array.from({ length: 12 }, (_, i) => <span key={i} className="footer-runner-particle"/>)}
-    </div>
-  </>;
+  return <FooterContent stageRef={stageRef} bottomArtwork={bottomArtwork} />;
 }

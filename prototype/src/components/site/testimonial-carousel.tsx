@@ -1,9 +1,9 @@
 "use client";
 import { useId, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import type { SectionData } from '@/lib/design';
-import { Artwork } from './artwork';
+import { TestimonialTextCard, TestimonialVideoCard } from './testimonial-card';
 import { createCylinderMap } from '@/lib/testimonial-glass';
 
 export function TestimonialCarousel({ section, videoSrc }: { section: SectionData; videoSrc?: string }) {
@@ -185,16 +185,7 @@ export function TestimonialCarousel({ section, videoSrc }: { section: SectionDat
       onPointerCancel={e=>{if(drag.current){drag.current=null;delete e.currentTarget.dataset.dragging;select(Math.round(motion.current.pos));}}}>
       <div ref={track} className="testimonial-track">
         {labels.map((label,index)=><article key={index} className={`testimonial-slide ${index===1?'testimonial-video':'testimonial-text'}`} aria-label={`${index+1} de 3: ${label}${index===2?' (prévia repetida)':''}`} aria-hidden={active!==index} inert={active!==index}>
-          {index===1?<>
-            <Artwork src="assets/natalia-example.jpg" width={1168} height={613} className="testimonial-video-poster" alt=""/>
-            <div className="testimonial-video-copy"><blockquote>{quote}</blockquote><p><strong>{name}</strong><span>{role}</span></p></div>
-            <button className="button testimonial-play" type="button" aria-label={videoSrc?'Reproduzir depoimento em vídeo':'Ver disponibilidade do depoimento em vídeo'} onClick={()=>videoSrc?setPlaying(true):setNotice(true)}><Play className="button-icon" size={28} fill="currentColor"/></button>
-            {!videoSrc && notice && <span className="testimonial-video-status" role="status">Vídeo ainda não disponibilizado.</span>}
-            {playing && videoSrc && <video className="testimonial-player" src={videoSrc} controls autoPlay playsInline aria-label={`Depoimento de ${name}`} onEnded={()=>setPlaying(false)} />}
-          </>:<>
-            <blockquote>{quote}</blockquote>
-            <div className="testimonial-person"><div className="testimonial-portrait"><Artwork src="assets/natalia-example.jpg" width={323} height={379} className="testimonial-portrait-image" alt=""/></div><p><strong>{name}</strong><span>{role}</span></p></div>
-          </>}
+          {index===1?<TestimonialVideoCard quote={quote} name={name} role={role} videoSrc={videoSrc} playing={playing} notice={notice} onPlay={()=>videoSrc?setPlaying(true):setNotice(true)} onEnded={()=>setPlaying(false)} />:<TestimonialTextCard quote={quote} name={name} role={role} />}
         </article>)}
       </div>
     </div>

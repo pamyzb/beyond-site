@@ -2,6 +2,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { gsap } from '@/lib/gsap';
+import { Title } from './title';
 
 type Client = {key:string;name:string;summary:string;image:string};
 type FeaturedClient = Client & {photo:string;photoAlt:string};
@@ -39,7 +40,7 @@ export function ClientDetailsCarousel({clients}:{clients:FeaturedClient[]}) {
     <div id="client-inline-details" className="client-inline-details" data-open={expanded} aria-hidden={!expanded} inert={!expanded}>
       <div className="client-inline-reveal">{active&&<div className="client-tooltip-content client-inline-card">
         <img className="client-inline-photo" src={active.photo} alt={active.photoAlt} width="480" height="300" />
-        <div className="client-tooltip-body"><h3>{active.name}</h3><p>{descriptions[active.key]||active.summary}</p></div>
+        <div className="client-tooltip-body"><Title as="h3" variant="tooltip">{active.name}</Title><p>{descriptions[active.key]||active.summary}</p></div>
       </div>}</div>
     </div>
   </div>;
@@ -120,7 +121,7 @@ export function ClientCarousel({clients}:{clients:Client[]}) {
       <span className="client-tooltip-arrow" aria-hidden="true" style={{left:position.arrowLeft}} />
       <div className="client-tooltip-content">
       <div className="client-tooltip-image"><img src={active.client.image} alt="" /></div>
-      <div className="client-tooltip-body"><h3>{active.client.name}</h3><p>{descriptions[active.client.key]||active.client.summary}</p></div>
+      <div className="client-tooltip-body"><Title as="h3" variant="tooltip">{active.client.name}</Title><p>{descriptions[active.client.key]||active.client.summary}</p></div>
       </div>
     </div>,document.body)}
   </>;

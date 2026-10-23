@@ -1,7 +1,9 @@
 "use client";
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { CircleAlert, Check, LoaderCircle, RotateCcw } from 'lucide-react';
+import { Check, LoaderCircle, RotateCcw } from 'lucide-react';
 import { WHATSAPP } from '@/lib/design';
+import { ContactField } from './contact-field';
+import { Title } from './title';
 
 const fields = [
   {name:'name',title:'SEU NOME',placeholder:'Ex: João Souza',type:'text',autocomplete:'name'},
@@ -61,7 +63,7 @@ export function ContactForm() {
   }
   if(status==='success')return <div className="contact-form contact-success">
     <div className="contact-success-icon" aria-hidden="true"><span><Check size={28} strokeWidth={2}/></span></div>
-    <h3 ref={heading} tabIndex={-1}>Mensagem enviada!</h3>
+    <Title as="h3" variant="success" ref={heading} tabIndex={-1}>Mensagem enviada!</Title>
     <p className="contact-success-copy">Recebemos seu contato. Um sócio da Beyond vai falar com você em breve.</p>
     <div className="form-actions">
       <button type="button" className="button button-lime contact-submit contact-reset" onClick={()=>{returning.current=true;setStatus('idle');}}><RotateCcw className="button-icon" size={18} aria-hidden="true"/><span className="button-label">Enviar outra mensagem</span></button>
@@ -69,10 +71,7 @@ export function ContactForm() {
     </div>
   </div>;
   return <form className="contact-form" noValidate onSubmit={submit} aria-busy={status==='sending'}>
-    {fields.map((field,index)=><label className="field flex min-w-0 flex-col gap-[4.5px]" htmlFor={field.name} key={field.name}>
-      <span className="field-label">{field.title}</span>
-      <span className="contact-input-wrap">
-      <input ref={index===0?firstField:undefined} id={field.name} name={field.name} placeholder={field.placeholder} type={field.type} autoComplete={field.autocomplete} required disabled={status==='sending'}
+    {fields.map((field,index)=><ContactField key={field.name} kind="input" title={field.title} inputRef={index===0?firstField:undefined} id={field.name} name={field.name} placeholder={field.placeholder} type={field.type} autoComplete={field.autocomplete} required disabled={status==='sending'}
         aria-invalid={!!errors[field.name]} aria-describedby={errors[field.name]?`${field.name}-error`:undefined}
         inputMode={field.name==='phone'?'tel':field.name==='email'?'email':undefined}
         autoCapitalize={field.name==='email'?'none':undefined} spellCheck={field.name==='email'?false:undefined}
@@ -98,19 +97,8 @@ export function ContactForm() {
             while(to<input.value.length&&!/\d/.test(input.value[to]))to++;
             if(to!==start)input.setSelectionRange(start,Math.min(input.value.length,to+1));
           }
-        }}
-        />
-      {errors[field.name]&&<CircleAlert className="contact-field-alert" size={20} aria-hidden="true"/>}
-      </span>
-      {errors[field.name]&&<span className="contact-field-error" id={`${field.name}-error`}>{errors[field.name]}</span>}
-    </label>)}
-    <label className="field field-wide flex min-w-0 flex-col gap-[4.5px]" htmlFor="project"><span className="field-label">DESCRIÇÃO DO PROJETO</span>
-      <span className="contact-input-wrap">
-      <textarea id="project" name="project" placeholder="Conte sobre seu desafio, momento e objetivo." required rows={5} disabled={status==='sending'} aria-invalid={!!errors.project} aria-describedby={errors.project?'project-error':undefined} onInput={event=>updateError(event.currentTarget)} />
-      {errors.project&&<CircleAlert className="contact-field-alert" size={20} aria-hidden="true"/>}
-      </span>
-      {errors.project&&<span className="contact-field-error" id="project-error">{errors.project}</span>}
-    </label>
+        }} error={errors[field.name]} />)}
+    <ContactField kind="textarea" wide title="DESCRIÇÃO DO PROJETO" id="project" name="project" placeholder="Conte sobre seu desafio, momento e objetivo." required rows={5} disabled={status==='sending'} aria-invalid={!!errors.project} aria-describedby={errors.project?'project-error':undefined} onInput={event=>updateError(event.currentTarget)} error={errors.project} />
     <div className="form-actions">
       <button className="button button-lime contact-submit" type="submit" disabled={status==='sending'}><span className="button-label">{status==='sending'?'Enviando…':'Fale com um sócio da Beyond'}</span>{status==='sending'?<LoaderCircle className="button-icon contact-spinner" size={18} aria-hidden="true"/>:<img className="button-icon" src="/assets/figma/header-button-arrow.svg" width={18} height={18} alt="" />}</button>
       <a className="button whatsapp-link" href={WHATSAPP}><img className="button-icon" src="/assets/figma/form-whatsapp.svg" width={24} height={24} alt="" /><span className="button-label">Chame a gente no WhatsApp</span></a>

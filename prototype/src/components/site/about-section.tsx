@@ -1,8 +1,9 @@
 'use client';
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import type { SectionData, Style } from '@/lib/design';
-import { TextBlock } from './text-block';
+import { AboutCard } from './about-card';
+import { SecondarySectionHeading } from './secondary-section-heading';
 
 const ids=['Article_16','Article_17','Article_18'];
 export function AboutSection({section,icons}:{section:SectionData;icons:string[]}) {
@@ -36,16 +37,17 @@ export function AboutSection({section,icons}:{section:SectionData;icons:string[]
     });
     return ()=>media.revert();
   },{scope});
-  return <section ref={scope} id="sobre" aria-label={section.label} data-motion="section" className="design-section relative isolate overflow-hidden section-sobre about-animated" style={{'--section-height':`${section.height}px`} as Style}>
-    <div className="section-content">
-      {section.blocks.filter(b=>!b.ancestors.some(a=>ids.includes(a))).map((block,i)=><TextBlock key={i} block={block} section={section}/>)}
+  const heading=section.blocks.find(block=>block.role==='h2');
+  const description=section.blocks.find(block=>block.role==='p'&&!block.ancestors.some(ancestor=>ids.includes(ancestor)));
+  return <section ref={scope} id="sobre" aria-label={section.label} data-motion="section" className={`design-section relative isolate overflow-hidden section-sobre about-animated${section.dark?' theme-dark':''}`} style={{'--section-height':`${section.height}px`} as Style}>
+    <div className="section-content section-content--sobre">
+      {heading&&<SecondarySectionHeading
+        className="about-heading"
+        title={heading.runs.map((run,index)=><Fragment key={`${run.text}-${index}`}>{index>0 && ' '}{run.italic?<em>{run.text.trim()}</em>:run.text.trim()}</Fragment>)}
+        subtitle={description?.runs.map(run=>run.text.trim()).join(' ')}
+      />}
       <div className="about-panel">
-        {ids.map((id,index)=><article key={id} className="about-panel-card" style={{'--about-x':`${60+index*439.667}px`} as Style}>
-          <div className="about-card-body">
-            <div className="about-icon" aria-hidden="true" dangerouslySetInnerHTML={{__html:icons[index]}}/>
-            {section.blocks.filter(b=>b.ancestors.includes(id)).map((block,i)=><TextBlock key={i} block={block} section={section}/>)}
-          </div>
-        </article>)}
+        {ids.map((id,index)=><AboutCard key={id} id={id} index={index} section={section} icon={icons[index]} />)}
       </div>
     </div>
   </section>;

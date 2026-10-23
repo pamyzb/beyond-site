@@ -14,9 +14,7 @@ import { MotionRoot } from '@/components/motion/motion-root';
 export default async function Home() {
   const {sections}=layout as DesignData;
   const processArtwork=await readProcessArtwork();
-  const footerArtwork=(await readFile(path.join(process.cwd(),'public/assets/figma/rodape-bleed.svg'),'utf8')).replace(/<\?xml[^>]*\?>/,'')
-    .replace('<rect width="1440" height="882" transform="translate(0 12826.6)" fill="url(#pattern46_15857_1601)" />',
-      '<svg x="0" y="12826.6" width="1440" height="882" viewBox="0 0 1440 882" overflow="hidden"><rect class="footer-background-drift" width="1440" height="882" fill="url(#pattern46_15857_1601)" /></svg>');
+  const footerArtwork=await Promise.all(Array.from({length:10},(_,index)=>readFile(path.join(process.cwd(),'public/assets/footer',`bottom-${index+1}.svg`),'utf8').then(svg=>svg.replace(/<\?xml[^>]*\?>/,''))));
   const aboutIcons=await Promise.all([16,17,18].map(async id=>{
     let svg=await readFile(path.join(process.cwd(),`public/assets/figma/about-${id}.svg`),'utf8');
     if(id===17)svg=svg.replace(/(<g id="lucide\/blocks">)[\s\S]*?(<\/g>)/,'$1<g fill="none" stroke="#2F43FC" stroke-width="2"><rect x="564.667" y="8961.25" width="10.667" height="10.667" rx="2"/><rect x="564.667" y="8971.92" width="10.667" height="10.667" rx="1"/><rect x="575.334" y="8971.92" width="10.667" height="10.667" rx="1"/><rect x="580.667" y="8955.92" width="10.667" height="10.667" rx="1.333"/></g>$2');

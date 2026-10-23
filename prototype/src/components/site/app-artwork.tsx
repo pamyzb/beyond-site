@@ -59,8 +59,7 @@ export function AppArtwork({svg,className}:{svg:string;className:string}) {
   useGSAP(()=>{
     const host=root.current!;
     const media=gsap.matchMedia();
-    const desktop=className.includes('figma-art');
-    media.add(`(prefers-reduced-motion: no-preference) and (${desktop?'min-width:1440px':'max-width:1439px'})`,()=>{
+    media.add('(prefers-reduced-motion: no-preference)',()=>{
       const cleanup:Array<()=>void>=[];
       // Both theme artworks share this background outline and the same trigger.
       host.querySelectorAll<SVGPathElement>('[id$="-Vector_42"]').forEach(logo=>{

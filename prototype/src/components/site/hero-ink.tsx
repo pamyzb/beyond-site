@@ -66,9 +66,6 @@ export function HeroInk() {
       copy.querySelectorAll('.hero-ink,.hero-glass,.hero-glass-filters,.hero-three,.hero-flat-logo,.hero-glass-badge').forEach(n=>n.remove());
       copy.removeAttribute('id');copy.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
       copy.dataset.ink='true';copy.inert=true;
-      const arrow=document.createElement('img');
-      arrow.src='/assets/figma/hero-description-arrow.svg';arrow.alt='';arrow.className='hero-dark-description-arrow';
-      copy.appendChild(arrow);
       const wordVideo=copy.querySelector<HTMLVideoElement>('.hero-video-word video');
       if(wordVideo){wordVideo.src='/assets/hero-section/abstract_green_waves_web.mp4';wordVideo.muted=true;wordVideo.defaultMuted=true;wordVideo.preload='auto';}
       // The viewport can resize while the desktop hero stays 1440px wide.
@@ -168,7 +165,7 @@ export function HeroInk() {
     const resize=new ResizeObserver(rebuild);resize.observe(hero);
     // React can update the cue without resizing the hero. Keep the dark copy in sync.
     const cueObserver=new MutationObserver(rebuild);
-    const cue=hero.querySelector(':scope > .hero-scroll-cue');
+    const cue=hero.querySelector('.hero-scroll-cue');
     if(cue)cueObserver.observe(cue,{childList:true,subtree:true,attributes:true,attributeFilter:['viewBox','width','height','d']});
     void document.fonts.ready.then(rebuild);
     hero.addEventListener('pointermove',move);

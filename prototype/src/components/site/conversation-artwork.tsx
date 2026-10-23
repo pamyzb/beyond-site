@@ -10,7 +10,7 @@ export function ConversationArtwork({svg,variant='conversation'}:{svg:string;var
     const mobile=section.querySelector<HTMLImageElement>(':scope > .component-art');
     const mobilePhotos=Array.from(section.querySelectorAll<HTMLElement>('.conversation-mobile-artwork .conversation-photo'));
     const media=gsap.matchMedia();
-    media.add({desktop:'(min-width:1440px)',mobile:'(max-width:1439px)',compact:'(max-width:639px)',pointer:'(hover:hover) and (pointer:fine)',motion:'(prefers-reduced-motion:no-preference)'},context=>{
+    media.add({desktop:'all',pointer:'(hover:hover) and (pointer:fine)',motion:'(prefers-reduced-motion:no-preference)'},context=>{
       if(!context.conditions?.motion)return;
       if(variant==='conversation'&&context.conditions.desktop){
         const logo=section.querySelector<SVGPathElement>('.conversation-overlay [id="Vector_40"]');

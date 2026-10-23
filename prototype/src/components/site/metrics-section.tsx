@@ -2,6 +2,7 @@
 import {ClientDetailsCarousel} from './client-carousel';
 import {ButtonLink} from './button';
 import {CountUp} from './count-up';
+import {Title} from './title';
 
 const clients = [
   {key:'Article_2',name:'Institut Pasteur',summary:'Pesquisa científica em saúde',image:'/assets/clients/pasteur-logo.png',photo:'/assets/clients/pasteur-photo.jpg',photoAlt:'Fachada do Institut Pasteur'},
@@ -18,23 +19,23 @@ export function MetricsSection() {
       {['top-left', 'top-right', 'bottom-left', 'bottom-right'].map(corner =>
 <img key={corner} className={`impact-pattern impact-pattern-${corner}`} src={corner==='top-right'?'/assets/vectors/vector 2.svg':corner==='bottom-left'?'/assets/vectors/vector 1.svg':`/assets/figma/metrics-pattern-${corner}.svg`} alt="" />
       )}
-    </div>    <div className="impact-brands" id="clientes">
-      <h2 data-motion="static">Empresas que <em>{'{crescem}'}</em> com a Beyond</h2>
+    </div>    <section className="impact-brands" id="clientes" aria-labelledby="clients-heading">
+      <Title id="clients-heading" variant="metrics-label" data-motion="static">Empresas que <em>{'{crescem}'}</em> com a Beyond</Title>
       <ClientDetailsCarousel clients={clients}/>
-    </div>
-    <div className="impact-metrics-wrap">
+    </section>
+    <section className="impact-metrics-wrap" aria-label="Indicadores e destaque na mídia">
       <div className="impact-panel">
         <div className="impact-inner">          <div className="impact-grid">
             <article className="impact-stat">
-              <h3 aria-label="214.126"><span className="impact-live-dot" aria-hidden="true" /><CountUp value={214126}/></h3>
+              <Title as="h3" variant="metric-stat" aria-label="214.126"><span className="impact-live-dot" aria-hidden="true" /><CountUp value={214126}/></Title>
               <p>Usuários ativos nas nossas plataformas</p>
             </article>
             <article className="impact-stat">
-              <h3 aria-label="Mais de 200"><span aria-hidden="true">+</span><CountUp value={200}/></h3>
+              <Title as="h3" variant="metric-stat" aria-label="Mais de 200"><span aria-hidden="true">+</span><CountUp value={200}/></Title>
               <p>Negócios transformados por tecnologia</p>
             </article>
             <article className="impact-stat">
-              <h3 aria-label="Mais de 50 milhões"><span aria-hidden="true">+</span><CountUp value={50} suffix="M"/></h3>
+              <Title as="h3" variant="metric-stat" aria-label="Mais de 50 milhões"><span aria-hidden="true">+</span><CountUp value={50} suffix="M"/></Title>
               <p>Em valor recuperado através de eficiência<br className="impact-desktop-break" /> operacional</p>
             </article>
           </div>
@@ -52,6 +53,6 @@ export function MetricsSection() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </section>;
 }

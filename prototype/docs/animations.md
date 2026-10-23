@@ -4,7 +4,10 @@ A V1 usa GSAP + ScrollTrigger + @gsap/react. Importe sempre de `@/lib/gsap` para
 
 ## Tema por scroll
 
-`MotionRoot` controla somente a geometria inicial do texto e o trigger `app-scroll-theme`. Ele começa em `#aplicativo h2`, com `start: "top bottom"`. O título entrando na tela ativa `data-scroll-theme="dark"`; ao retornar acima desse ponto, volta para `light`. O estado permanece dark nas seções seguintes. As cores usam os tokens CSS e respeitam `prefers-reduced-motion`.
+As regras de cor e os contratos de componentes estão em
+[`themes.md`](./themes.md).
+
+`MotionRoot` controla somente a geometria inicial do texto e o trigger `app-scroll-theme`. Ele começa em `#aplicativo h2`, com `start: "top 90%"`. O título entrando na tela ativa `data-scroll-theme="dark"`; ao retornar acima desse ponto, volta para `light`. O estado permanece dark nas seções seguintes. As cores usam os tokens CSS e respeitam `prefers-reduced-motion`.
 
 O hook espera as fontes locais, mede os textos e recalcula os triggers após mudanças de altura (inclusive expansão do blog), resize e restauração da página. `useGSAP` reverte os triggers do próprio contexto ao desmontar, inclusive no ciclo duplo do Strict Mode. Não use `ScrollTrigger.killAll()`, pois isso destruiria animações de outros componentes.
 

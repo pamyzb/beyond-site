@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight, Bot, Hammer, Wrench } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/gsap';
 import { actionFor, type SectionData } from '@/lib/design';
 import { SectionHeading } from './section-heading';
-import { ButtonLink } from './button';
+import { ServiceCard } from './service-card';
 
 const images=['/assets/figma/blog-19.svg','/assets/figma/blog-20.svg','/assets/figma/case-editorial-screen.svg','/assets/service-ai-team.png','/assets/figma/conversation-photo.svg'];
 const descriptions=[
@@ -98,7 +98,11 @@ export function ServicesSection({section}:{section:SectionData}) {
       robots.forEach((robot,index)=>{
         const distance=Math.max(0,Math.min(length,joining?(index===0?journey.distance:robotStartDistances[1]):journey.distance));
         const point=path.getPointAtLength(distance);
-        gsap.set(robot,{left:0,top:0,x:point.x+index*72,y:point.y+robotOffset(point),xPercent:-50,yPercent:-50});
+        const spacing=joining?39:72;
+        const before=path.getPointAtLength(Math.max(0,distance-12));
+        const after=path.getPointAtLength(Math.min(length,distance+12));
+        const onVerticalSegment=!joining&&Math.abs(after.y-before.y)>Math.abs(after.x-before.x);
+        gsap.set(robot,{left:0,top:0,x:point.x+(onVerticalSegment?0:index*spacing),y:point.y+robotOffset(point)+(onVerticalSegment?index*spacing:0),xPercent:-50,yPercent:-50});
       });
     };
     const followJourney=(distance:number)=>gsap.to(journey,{distance,duration:.45,ease:'power2.out',overwrite:'auto',onUpdate:placeRobots});
@@ -130,7 +134,7 @@ export function ServicesSection({section}:{section:SectionData}) {
       // Once the card outline is drawn, every bit of carousel progress advances
       // directly into the route to the next service.
       const joinProgress=.18;
-      const compact=matchMedia('(max-width: 999px)').matches;
+      const compact=false;
       const head=compact
         ? outlineLength+(length-outlineLength)*progress
         : progress<joinProgress
@@ -160,7 +164,7 @@ export function ServicesSection({section}:{section:SectionData}) {
       let previous={x:right,y:middle};
       // Small screens retain the agent-card outline only. The longer route is
       // reserved for the spacious desktop canvas.
-      if(!matchMedia('(max-width: 999px)').matches){
+      if(true){
         const routePoints=[previous];
         cards.slice(1).forEach((card,index)=>{
           const x=card.offsetLeft-12;
@@ -208,7 +212,7 @@ export function ServicesSection({section}:{section:SectionData}) {
     const mm=gsap.matchMedia();
     // The scroll-pinned journey needs enough horizontal and vertical room to
     // read the cards. Tablets and smaller screens retain native scrolling.
-    mm.add('(min-width: 1000px) and (min-height: 650px) and (prefers-reduced-motion: no-preference)',()=>{
+    mm.add('(prefers-reduced-motion: no-preference)',()=>{
       const element=viewport.current!;
       element.classList.add('is-scroll-driven');
       const tween=gsap.to(element,{scrollLeft:()=>element.scrollWidth-element.clientWidth,ease:'none',onUpdate:paint,
@@ -225,7 +229,7 @@ export function ServicesSection({section}:{section:SectionData}) {
         scrollTrigger:{trigger:'.service-agents',start:'top bottom',end:'bottom top',toggleActions:'play pause resume pause'}});
       construction.fromTo(path,{strokeDasharray:()=>length,strokeDashoffset:()=>length},{strokeDashoffset:()=>length-outlineLength,duration:3.6,ease:'power2.inOut',autoRound:false});
     });
-    mm.add('(min-width: 1000px) and (min-height: 650px) and (prefers-reduced-motion: no-preference)',()=>{
+    mm.add('(prefers-reduced-motion: no-preference)',()=>{
       const cards=Array.from(rail.current?.querySelectorAll<HTMLElement>(':scope > article')??[]);
       const revealObserver=new IntersectionObserver(entries=>{
         entries.forEach(entry=>{
@@ -257,15 +261,7 @@ export function ServicesSection({section}:{section:SectionData}) {
         navigate(event.key==='Home'?'first':event.key==='End'?'last':event.key==='ArrowRight'?1:-1);
       }}>
         <div ref={rail} className="services-rail">
-          {[5,0,1,2,3,4].map(index=>index<5?<article className="service-editorial-card" key={titles[index]}>
-            <div className={`service-image service-image-${index}`}><img src={images[index]} alt="" loading="lazy"/></div>
-            <div className="service-caption"><h3>{titles[index]}</h3><p>{descriptions[index]}</p></div>
-          </article>:<article className="service-editorial-card service-agents" key={titles[index]}>
-            <div className="agent-construction" aria-hidden="true">
-              <img className="agent-art" src="/assets/service-agents-team.png" alt="" loading="lazy"/>
-            </div>
-            <div className="service-caption"><h3>{titles[index]}</h3><p>{copy[9]}</p><ButtonLink className="service-details" href={actionFor(copy[10],section.id)}>{copy[10]}<img className="button-icon" src="/assets/figma/header-button-arrow.svg" width={18} height={18} alt="" /></ButtonLink></div>
-          </article>)}
+          {[5,0,1,2,3,4].map(index=>index<5?<ServiceCard key={titles[index]} title={titles[index]} description={descriptions[index]} image={images[index]} imageClass={`service-image-${index}`} />:<ServiceCard key={titles[index]} agent title={titles[index]} description={copy[9]} cta={copy[10]} href={actionFor(copy[10],section.id)} />)}
           <svg className="services-route" aria-hidden="true"><path/></svg>
           <div className="builder builder-one" aria-hidden="true"><Bot size={49} strokeWidth={1.5}/><Hammer className="builder-tool" size={27}/></div>
           <div className="builder builder-two" aria-hidden="true"><Bot size={43} strokeWidth={1.5}/><Wrench className="builder-tool" size={24}/></div>

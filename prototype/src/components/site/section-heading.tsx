@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
+import { Title } from './title';
 
 
 
-export function SectionHeading({ label, title, subtitle }: { label: string; title: ReactNode; subtitle?: string }) {
-  return <header className="section-heading">
-    <p className="section-heading-label"><span>{label}</span><span className="section-heading-icon" aria-hidden="true" /></p>
-    <div><h2 className="section-heading-title">{title}</h2>{subtitle && <p className="section-heading-subtitle" data-motion="section-description">{subtitle}</p>}</div>
+export function SectionHeading({ label, title, subtitle, className, showIcon = true }: { label: string; title: ReactNode; subtitle?: string; className?: string; showIcon?: boolean }) {
+  return <header className={['section-heading', className].filter(Boolean).join(' ')}>
+    <p className="section-heading-label"><span className="section-heading-label-text">{label}</span>{showIcon && <span className="section-heading-icon" aria-hidden="true" />}</p>
+    <Title variant="section" className="section-heading-title">{title}</Title>
+    {subtitle && <p className="section-heading-subtitle" data-motion="section-description">{subtitle}</p>}
   </header>;
 }
 
