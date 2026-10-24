@@ -1,0 +1,279 @@
+/* V1 services: staggered editorial carousel with native horizontal scrolling. */
+.services-editorial {
+  position: relative;
+  padding: 6.25rem 0 4.5rem;
+  background: var(--color-page);
+  color: var(--color-text);
+  width: 100%;
+}
+.services-editorial > .section-heading {
+  margin: 0 4.2% 0;
+}
+.services-stage {
+  position: relative;
+  height: auto;
+  min-height: 34.375rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  overflow: hidden;
+  background: var(--color-page);
+}
+.services-window {
+  grid-column: 1;
+  grid-row: 1;
+}
+.services-window {
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 4.2vw;
+  scrollbar-width: none;
+}
+.services-window::-webkit-scrollbar {
+  display: none;
+}
+.services-rail {
+  display: flex;
+  align-items: flex-start;
+  gap: 7.2vw;
+  width: max-content;
+  padding: 3.75rem 4.2vw 4.875rem;
+  position: relative;
+}
+.service-editorial-card {
+  width: clamp(23.125rem, 45vw, 41.875rem);
+  flex: none;
+  margin: 0;
+  scroll-snap-align: start;
+}
+.service-editorial-card:nth-child(even) {
+  margin-top: 4.5rem;
+  width: clamp(21.875rem, 38vw, 35.3125rem);
+}
+.service-image,
+.agent-construction {
+  height: clamp(12.5rem, 32svh, 22.5rem);
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: #e5eafa;
+}
+.service-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+.service-editorial-card:hover .service-image img {
+  transform: scale(1.025);
+}
+.service-caption {
+  padding-top: 1.5rem;
+}
+.title--service {
+  line-height: var(--leading-card);
+  letter-spacing: var(--tracking-card-em);
+  font-weight: var(--weight-medium);
+  max-width: 29.375rem;
+  margin: 0;
+}
+.service-editorial-card.service-agents {
+  width: clamp(35.625rem, 52vw, 47.5rem);
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+  margin-top: 0;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: 1.75rem;
+  padding: 1.5rem 1.75rem 1.75rem;
+}
+.agent-assembly {
+  position: absolute;
+  inset: -0.1875rem;
+  width: calc(100% + 0.375rem);
+  height: calc(100% + 0.375rem);
+  overflow: visible;
+  pointer-events: none;
+}
+.agent-assembly path {
+  fill: none;
+  stroke: var(--color-action);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+}
+.agent-construction {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+}
+.agent-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 40%;
+}
+.builder {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  color: var(--color-action);
+  background: transparent;
+  padding: 0.3125rem;
+  pointer-events: none;
+}
+.builder-one {
+  left: 12%;
+  top: -3.5rem;
+}
+.builder-two {
+  right: -2.875rem;
+  top: 42%;
+  transform: rotate(-10deg);
+}
+.builder-tool {
+  margin-left: -0.3125rem;
+  align-self: flex-start;
+}
+.service-agents .service-caption {
+  padding-top: 1rem;
+}
+.service-agents h3 {
+  font-size: var(--text-card);
+  font-weight: var(--weight-medium);
+  max-width: none;
+  margin: 0;
+  color: var(--color-text);
+}
+.service-agents p {
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body);
+  max-width: 42.5rem;
+  margin: 0.875rem 0 1.25rem;
+  color: var(--color-text);
+  font-weight: var(--weight-regular);
+}
+.services-navigation {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  z-index: 3;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  pointer-events: none;
+}
+.services-controls {
+  position: relative;
+  inset: auto;
+  align-self: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-inline: calc(4.2% - 1.75rem);
+  transform: translateY(2.4375rem);
+  pointer-events: none;
+}
+.services-controls .services-arrow {
+  position: relative;
+  inset: auto;
+  flex: none;
+  pointer-events: auto;
+}
+.services-controls .services-arrow:disabled {
+  visibility: hidden;
+  pointer-events: none;
+}
+.services-pagination {
+  display: flex;
+  align-self: end;
+  justify-content: center;
+  gap: 0;
+  margin: 0 0 2rem;
+  position: relative;
+  pointer-events: auto;
+}
+.services-pagination button {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  pointer-events: auto;
+}
+.services-pagination button span {
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border-radius: 50%;
+  background: var(--color-action);
+  opacity: 0.25;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+}
+.services-pagination button[aria-current] span {
+  opacity: 1;
+  transform: scale(1.25);
+}
+.services-pagination button:hover span {
+  opacity: 0.7;
+}
+.services-pagination button:focus-visible {
+  outline: 2px solid var(--color-action);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-stage {
+    position: relative;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+  }
+  .services-window {
+    overflow-x: auto;
+  }
+  .services-rail {
+    will-change: auto;
+  }
+  .service-image img {
+    transition: none;
+  }
+}
+
+.service-caption > p {
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  margin: 1rem 0 0;
+  max-width: 35rem;
+}
+.service-agents .service-caption > p {
+  margin: 1rem 0 1.5rem;
+  max-width: 42.5rem;
+}
+.service-details .button-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.service-details {
+  font-size: var(--text-body);
+  background: var(--color-action);
+  color: var(--color-white);
+  --button-fill: var(--color-action-hover);
+  --color-focus: var(--color-action);
+}
+
+/* Fill only the face in the Lucide robot; keep antenna and tools transparent. */
+.builder .lucide-bot rect {
+  fill: var(--color-white);
+}

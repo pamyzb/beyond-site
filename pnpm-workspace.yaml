@@ -1,0 +1,8 @@
+# Allow the native build steps used by Next.js and Tailwind.
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - sharp
+
+# Keep the local static preview on the patched compression release.
+overrides:
+  'serve>compression': '^1.8.2'

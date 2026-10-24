@@ -1,0 +1,121 @@
+/* Application section -----------------------------------------------------
+   The phone exports remain one decorative layer. The heading, both feature
+   narratives and the QR invitation now establish their vertical rhythm in a
+   content grid instead of inheriting Figma canvas coordinates. */
+.section-aplicativo .section-content--aplicativo {
+  position: relative;
+  inset: auto;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-20);
+  width: 100%;
+  min-height: inherit;
+  margin-inline: auto;
+}
+.section-aplicativo .aplicativo-section-heading {
+  align-self: stretch;
+  width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
+  min-width: 0;
+  min-height: var(--app-heading-track);
+  margin: 0 auto;
+}
+.section-aplicativo .app-feature-card {
+  display: flex;
+  /* The text stack shares the visible vertical center of its phone artwork. */
+  align-items: center;
+  flex: none;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+}
+.section-aplicativo .app-feature-card[data-source='container1'] {
+  width: 59.1875rem;
+  gap: var(--app-project-column-gap);
+}
+.section-aplicativo .app-feature-card[data-source='container 2'] {
+  width: 64.375rem;
+  gap: var(--app-cases-column-gap);
+}
+.section-aplicativo .app-feature-card > .component-art.app-drawn-art {
+  display: block;
+  position: relative;
+  z-index: 0;
+  flex: none;
+  height: auto;
+  margin: 0;
+  pointer-events: none;
+}
+.section-aplicativo .app-feature-card[data-source='container1'] > .component-art {
+  width: 21.875rem;
+  margin-left: var(--app-project-art-offset);
+}
+.section-aplicativo .app-feature-card[data-source='container 2'] > .component-art {
+  width: 26.875rem;
+}
+.section-aplicativo .app-feature-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 33.75rem;
+  min-width: 0;
+  text-align: center;
+}
+.section-aplicativo .app-feature-copy > .text-block {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+}
+.section-aplicativo .app-feature-copy > .app-feature-title {
+  width: 33.75rem !important;
+  flex: none;
+}
+.section-aplicativo .app-feature-copy > .text-block:not(.app-feature-title) {
+  display: flex;
+  flex-direction: column;
+  width: 31rem;
+  margin-top: 2rem;
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-regular);
+  line-height: 1.6875rem;
+}
+.section-aplicativo .app-feature-copy > .text-block .text-run {
+  position: static;
+  display: block;
+  white-space: normal;
+}
+.section-aplicativo
+  .app-feature-card[data-source='container 2']
+  .app-feature-copy
+  > .text-block:not(.app-feature-title) {
+  width: 33.5rem;
+}
+.section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 9.75rem;
+  width: 33.75rem;
+  height: 9.75rem;
+  margin-top: var(--app-qr-top-gap);
+}
+.section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions .app-qr-surface {
+  position: relative;
+  align-self: center;
+}
+.section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions > p {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin: 0;
+  text-align: center;
+}

@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+.generated/
+public/
+design/
+figma-layout.json
+next-env.d.ts
+pnpm-lock.yaml

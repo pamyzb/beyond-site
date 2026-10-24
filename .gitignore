@@ -1,15 +1,16 @@
-# Only the active site and repository documentation are versioned.
-/*
-!/.gitignore
-!/AGENTS.md
-!/README.md
-!/prototype/
-
+# Dependencies and generated build files.
 node_modules/
 .next/
-.npm-cache/
-.vercel/
+out/
+.generated/
+/public/assets/generated/
 *.tsbuildinfo
+
+# Local configuration, caches and logs.
+.npm-cache/
+.pnpm-store/
+.vercel/
 .env*
 !.env.example
 *.log
+/tmp/

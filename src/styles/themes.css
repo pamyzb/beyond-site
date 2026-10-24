@@ -1,0 +1,88 @@
+/* Earlier sections share the active page theme when the app boundary is crossed. */
+:root[data-scroll-theme='dark']
+  :is(.section-inicio, .impact-section, .services-editorial, .cases-editorial) {
+  --color-page: transparent;
+  --color-surface: #15191f;
+  --color-text: #fff;
+  --color-text-subtle: #d1d5db;
+  --color-action: var(--color-accent);
+  --color-focus: var(--color-accent);
+  --section-heading-ink: #fff;
+  --section-heading-accent: var(--color-accent);
+  --section-heading-muted: #d1d5db;
+  color: #fff;
+}
+/* All large surfaces read one animated value, including when scroll reverses mid-fade. */
+.services-editorial,
+.services-stage {
+  background: transparent;
+}
+:root :is(.section-band:has(> .section-cases), .section-cases.cases-editorial) {
+  background: color-mix(
+    in srgb,
+    #f6f8fb calc((1 - var(--theme-dark-progress)) * 100%),
+    var(--theme-dark-canvas)
+  );
+}
+:root :is(.impact-section, .impact-panel) {
+  background: color-mix(
+    in srgb,
+    #edf1f9 calc((1 - var(--theme-dark-progress)) * 100%),
+    var(--theme-dark-canvas)
+  );
+}
+:root .service-editorial-card.service-agents {
+  background: color-mix(in srgb, #f6f8fb calc((1 - var(--theme-dark-progress)) * 100%), #15191f);
+}
+:root[data-scroll-theme='dark'] .impact-clients :is(.section-clientes, .client-strip) {
+  background: transparent;
+  color: #fff;
+}
+:root[data-scroll-theme='dark'] .impact-clients .text-run {
+  color: #fff !important;
+}
+:root[data-scroll-theme='dark'] .impact-press-logos img {
+  filter: grayscale(1) brightness(0) invert(1);
+}
+:root[data-scroll-theme='dark'] .section-inicio :is(.hero-grid-title, .text-run) {
+  color: #fff !important;
+}
+:root .section-inicio > .figma-art {
+  opacity: calc(1 - var(--theme-dark-progress));
+}
+:root[data-scroll-theme='dark']
+  :is(.section-inicio, .services-editorial, .cases-editorial)
+  :is(.button, .button-link) {
+  --button-fill: var(--primary-dark-hover);
+  --button-depth: var(--primary-dark-depth);
+  color: #000;
+}
+:root[data-scroll-theme='dark'] .section-inicio .button-link .text-run {
+  color: #000 !important;
+}
+:root[data-scroll-theme='dark']
+  :is(
+    .section-inicio .button-art-icon,
+    .services-editorial .button-icon,
+    .case-explore .button-label > img
+  ) {
+  filter: brightness(0);
+}
+:root[data-scroll-theme='dark'] .cases-editorial {
+  color: #fff;
+}
+:root :is(.case-browser, .case-tab[aria-selected='true']) {
+  background: color-mix(in srgb, #fff calc((1 - var(--theme-dark-progress)) * 100%), #15191f);
+}
+:root[data-scroll-theme='dark'] :is(.case-browser, .case-tab[aria-selected='true']) {
+  color: #fff;
+}
+:root :is(.case-browser-toolbar, .case-tags span) {
+  background: color-mix(in srgb, #f3f4f6 calc((1 - var(--theme-dark-progress)) * 100%), #232932);
+}
+:root[data-scroll-theme='dark'] :is(.case-tab, .case-category, .case-tags span) {
+  color: #d1d5db;
+}
+:root[data-scroll-theme='dark'] .case-tab-logo {
+  filter: none;
+}
