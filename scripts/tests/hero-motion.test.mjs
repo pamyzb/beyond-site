@@ -22,7 +22,7 @@ test('ambient motion stays inside its reserved area across compact layouts', () 
   }
 });
 
-test('ambient motion slowly traces the two headline lines when a trace is available', () => {
+test('ambient motion sweeps the headline and slows smoothly at each turn', () => {
   const area = {
     width: 390,
     lensWidth: 96,
@@ -31,12 +31,31 @@ test('ambient motion slowly traces the two headline lines when a trace is availa
     trace: { left: 12, right: 282, top: 160, bottom: 285 },
   };
   assert.deepEqual(ambientPose(area, 0), { x: 12, y: 160, angle: 0 });
-  const endOfFirstLine = ambientPose(area, 9.6);
-  assert.equal(endOfFirstLine.x, 282);
-  assert.equal(endOfFirstLine.y, 160);
+  const endOfFirstLine = ambientPose(area, 1.8);
+  assert.ok(Math.abs(endOfFirstLine.x - 282) < 0.000001);
+  assert.ok(Math.abs(endOfFirstLine.y - 160) < 0.000001);
   assert.ok(Math.abs(endOfFirstLine.angle) < 0.001);
-  assert.deepEqual(ambientPose(area, 12), { x: 282, y: 285, angle: 0 });
-  assert.deepEqual(ambientPose(area, 21.6), { x: 12, y: 285, angle: 0 });
+  assert.deepEqual(ambientPose(area, 4.6), { x: 282, y: 285, angle: 0 });
+  assert.ok(Math.abs(ambientPose(area, 6.4).x - 12) < 0.000001);
+  assert.deepEqual(ambientPose(area, 9.2), ambientPose(area, 0));
+  for (const elapsed of [0.1, 0.5, 1, 1.5]) {
+    assert.deepEqual(ambientPose(area, 1.8 + elapsed), { x: 282, y: 160, angle: 0 });
+    assert.deepEqual(ambientPose(area, 6.4 + elapsed), { x: 12, y: 285, angle: 0 });
+  }
+  const step = 1 / 30;
+  const distance = (time) => {
+    const a = ambientPose(area, time);
+    const b = ambientPose(area, time + step);
+    return Math.hypot(b.x - a.x, b.y - a.y);
+  };
+  assert.ok(distance(0.9) > 8, 'fast sweep leaves a visible trail');
+  assert.ok(distance(0.9) > distance(1.7) * 10, 'decelerates before the edge');
+  for (const turn of [1.8, 3.4, 4.6, 6.4, 8, 9.2]) {
+    const before = ambientPose(area, turn - step);
+    const after = ambientPose(area, turn + step);
+    assert.ok(Math.hypot(after.x - before.x, after.y - before.y) < 0.1);
+    assert.equal(after.angle, 0, 'no rotation jump at turns or loop boundary');
+  }
 });
 
 test('video samples cap the long edge without enlarging small sources', () => {

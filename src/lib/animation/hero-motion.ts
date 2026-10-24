@@ -26,24 +26,25 @@ const contourAngles = Array.from({ length: HERO_INK_SEGMENTS + 1 }, (_, index) =
 export function ambientPose(area: AmbientArea, seconds: number) {
   if (area.trace) {
     const { left, right, top, bottom } = area.trace;
-    // Follow the headline as a slow, continuous serpentine: each text line gets
-    // almost ten seconds on screen, leaving enough time for the ink trail to read.
-    const phase = (((seconds % 24) + 24) % 24) / 24;
-    const ease = (value: number) => value * value * (3 - 2 * value);
-    if (phase < 0.4) {
-      const progress = ease(phase / 0.4);
-      return { x: left + (right - left) * progress, y: top, angle: 0 };
+    // Each line gets a quick sweep, a 1.6s hold for the ink to develop, and
+    // a slow turn. Zero velocity and acceleration keep every join smooth.
+    const time = ((seconds % 9.2) + 9.2) % 9.2;
+    const returning = time >= 4.6;
+    const leg = returning ? time - 4.6 : time;
+    const startX = returning ? right : left;
+    const endX = returning ? left : right;
+    const startY = returning ? bottom : top;
+    const endY = returning ? top : bottom;
+    const ease = (value: number) => value * value * value * (value * (value * 6 - 15) + 10);
+    if (leg < 1.8) {
+      const progress = ease(leg / 1.8);
+      return { x: startX + (endX - startX) * progress, y: startY, angle: 0 };
     }
-    if (phase < 0.5) {
-      const progress = ease((phase - 0.4) / 0.1);
-      return { x: right, y: top + (bottom - top) * progress, angle: 0 };
+    if (leg < 3.4) {
+      return { x: endX, y: startY, angle: 0 };
     }
-    if (phase < 0.9) {
-      const progress = ease((phase - 0.5) / 0.4);
-      return { x: right + (left - right) * progress, y: bottom, angle: 0 };
-    }
-    const progress = ease((phase - 0.9) / 0.1);
-    return { x: left, y: bottom + (top - bottom) * progress, angle: 0 };
+    const progress = ease((leg - 3.4) / 1.2);
+    return { x: endX, y: startY + (endY - startY) * progress, angle: 0 };
   }
   const travel = Math.max(0, area.width - area.lensWidth);
   return {

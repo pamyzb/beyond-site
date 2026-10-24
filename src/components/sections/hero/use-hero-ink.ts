@@ -245,7 +245,13 @@ export function useHeroInk() {
       });
     };
     const ambient = (event: Event) => {
-      if (!desktop.matches) add((event as CustomEvent<HeroPoint>).detail);
+      if (desktop.matches) return;
+      const point = (event as CustomEvent<HeroPoint>).detail;
+      const previous = points.at(-1);
+      // Holding at an endpoint must let the existing ink develop and fade,
+      // rather than replacing the bounded trail with stationary samples.
+      if (previous && Math.hypot(point.x - previous.x, point.y - previous.y) < 1) return;
+      add(point);
     };
     const visibility = () => {
       if (document.hidden) clear();
