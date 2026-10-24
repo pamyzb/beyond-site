@@ -87,5 +87,6 @@ regenerados e ignorados pelo Git. `prebuild` também limpa a saída `out/`, apó
 validar que o diretório resolvido está dentro desta implementação, para não
 manter arquivos retirados de `public/` em um build anterior.
 
-A Vercel deve usar a raiz do repositório como Root Directory, `pnpm build` e saída `out`.
+A Vercel deve usar a raiz do repositório como Root Directory, `pnpm build` e saída `.next`
+para a integração Next.js ler os manifestos. A exportação estática continua em `out`.
 O projeto não precisa de servidor Next.js em execução para servir a publicação.

@@ -70,7 +70,7 @@ O `vercel.json` agora está na raiz, mantendo:
 | Framework | Next.js |
 | Instalação | `pnpm install --frozen-lockfile` |
 | Build | `pnpm build` |
-| Saída | `out` |
+| Saída da integração Next.js | `.next` |
 
 O site continua sendo exportado estaticamente. Não foi executado deploy nem
 alterado o projeto remoto. Referência:

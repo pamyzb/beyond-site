@@ -42,7 +42,10 @@ gerenciador.
 No painel da Vercel, em **Settings → Build and Deployment → Root Directory**,
 remova `prototype` e deixe o campo vazio para usar a raiz do repositório.
 O `vercel.json` na raiz define Next.js como framework, `pnpm install --frozen-lockfile` como
-instalação, `pnpm build` como build e `out` como diretório de saída.
+instalação, `pnpm build` como build e `.next` como diretório de saída da integração Next.js.
+Essa integração precisa dos manifestos em `.next`; apontar para `out` causa
+o erro de `routes-manifest.json` ausente. A pasta `out` contém a exportação
+estática para servir localmente ou em outra hospedagem.
 Não é necessário trocar o comando de build; a exportação estática é
 ativada por `output: "export"` no `next.config.ts`. Envie as alterações e
 faça um novo deploy para aplicar a configuração.
