@@ -1,0 +1,65 @@
+import type { SectionData } from '@/lib/figma/design';
+import { rawBlockText, sectionHeading } from '@/lib/figma/content';
+
+const definitions = [
+  {
+    id: 'Article_5',
+    image: '/assets/figma/blog-19.svg',
+    description:
+      'Da ideia ao lançamento, criamos produtos digitais intuitivos e preparados para crescer com o seu negócio e conquistar seus usuários.',
+  },
+  {
+    id: 'Article_6',
+    image: '/assets/figma/blog-20.svg',
+    description:
+      'Conectamos processos, dados e equipes em um sistema feito para sua operação, reduzindo tarefas manuais e facilitando a gestão do negócio.',
+  },
+  {
+    id: 'Article_7',
+    image: '/assets/figma/case-editorial-screen.svg',
+    description:
+      'Desenvolvemos aplicativos e plataformas web sob medida, com experiências simples de usar e tecnologia preparada para acompanhar seu crescimento.',
+  },
+  {
+    id: 'Article_8',
+    image: '/assets/service-ai-team.png',
+    description:
+      'Aplicamos inteligência artificial aos desafios do seu negócio para automatizar tarefas, analisar informações e apoiar decisões com mais clareza.',
+  },
+  {
+    id: 'Article_9',
+    image: '/assets/figma/conversation-photo.svg',
+    description:
+      'Cuidamos da estabilidade, da segurança e da evolução do seu software, com suporte contínuo e melhorias que acompanham as necessidades da operação.',
+  },
+];
+export type ServicesContent = {
+  ariaLabel: string;
+  label: string;
+  subtitle: string;
+  cards: { id: string; title: string; description: string; image: string }[];
+  agent: { title: string; description: string; cta: string };
+};
+export function servicesContent(section: SectionData): ServicesContent {
+  const heading = sectionHeading(section);
+  if (!heading.label || !heading.subtitle) throw new Error('Missing services heading');
+  function text(id: string, role: 'h3' | 'p', action = false) {
+    const block = section.blocks.find(
+      (block) =>
+        block.ancestors.includes(id) && block.role === role && !!block.actionBox === action,
+    );
+    if (!block) throw new Error(`Missing service content ${id}/${role}/${action}`);
+    return rawBlockText(block);
+  }
+  return {
+    ariaLabel: section.label,
+    label: rawBlockText(heading.label),
+    subtitle: rawBlockText(heading.subtitle),
+    cards: definitions.map((card) => ({ ...card, title: text(card.id, 'h3') })),
+    agent: {
+      title: text('Article_10', 'h3'),
+      description: text('Article_10', 'p'),
+      cta: text('Article_10', 'p', true),
+    },
+  };
+}

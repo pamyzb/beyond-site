@@ -1,0 +1,199 @@
+/* Language selection preview; content remains in Portuguese. */
+.header-language {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-black);
+  font-family: inherit;
+  font-size: var(--text-small);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+}
+.language-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3125rem;
+  min-height: 2.75rem;
+  padding: 0 0.625rem;
+  border: 0;
+  border-radius: 62.4375rem;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.language-trigger svg {
+  transition: transform 180ms ease;
+  pointer-events: none;
+}
+.language-trigger[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+.language-trigger:hover,
+.language-trigger[aria-expanded='true'] {
+  background: rgb(127 127 127 / 0.1);
+}
+.language-trigger:focus-visible,
+.language-options button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.language-options {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 5;
+  min-width: 6.75rem;
+  padding: 0.375rem;
+  border: 1px solid #e9eaf0;
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 0.97);
+  box-shadow:
+    0 0.75rem 2rem #0b17351a,
+    0 2px 0.375rem #0b173508;
+  backdrop-filter: blur(1.25rem);
+  pointer-events: auto;
+}
+.language-options button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 0;
+  border-radius: 0.625rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+.language-options button[aria-checked='true'] {
+  color: var(--color-action);
+  background: var(--color-primary-50);
+  font-weight: var(--weight-medium);
+}
+.language-options button:hover,
+.language-options button:focus-visible {
+  background: rgb(127 127 127 / 0.12);
+}
+:is(:root[data-scroll-theme='dark'] .site-header, .site-header.hero-header-reveal)
+  .language-options {
+  background: rgb(24 28 36 / 0.97);
+  border-color: #ffffff1a;
+  box-shadow: 0 0.75rem 2rem #0005;
+}
+:is(:root[data-scroll-theme='dark'] .site-header, .site-header.hero-header-reveal)
+  .language-options
+  button[aria-checked='true'] {
+  color: var(--color-accent);
+  background: #adf01c14;
+}
+@media (prefers-reduced-motion: reduce) {
+  .language-trigger svg {
+    transition: none;
+  }
+}
+
+.site-header .header-cta {
+  right: 4rem;
+}
+.header-frame::before {
+  right: calc(0.25rem + 2.5rem * var(--header-collapse));
+}
+
+/* Override the legacy coordinate rules above after they have been declared. */
+.desktop-nav .header-language {
+  position: relative;
+  right: auto;
+  top: auto;
+}
+.desktop-nav .header-cta {
+  position: relative;
+  right: auto;
+  top: auto;
+}
+
+/* Top-layer dropdown stays outside the hero's header mask. */
+.language-options[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: 6.75rem;
+  overflow: visible;
+  color: var(--color-black);
+  font-family: var(--font-sans);
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+}
+.language-options::backdrop {
+  background: transparent;
+  pointer-events: none;
+}
+
+/* Match contact fields whenever a dark area is visible behind the header. */
+:is(
+  .site-header[data-dark-area-visible] .header-language,
+  :root[data-scroll-theme='dark'] .header-language,
+  .hero-header-reveal .header-language
+) {
+  --language-surface: var(--color-gray-800);
+  --language-hover: var(--color-primary-950);
+  --language-border: var(--color-primary-900);
+}
+:is(
+    .site-header[data-dark-area-visible] .header-language,
+    :root[data-scroll-theme='dark'] .header-language,
+    .hero-header-reveal .header-language
+  )
+  .language-trigger {
+  background: transparent;
+  color: var(--color-white);
+}
+:is(
+    .site-header[data-dark-area-visible] .header-language,
+    :root[data-scroll-theme='dark'] .header-language,
+    .hero-header-reveal .header-language
+  )
+  .language-options[popover] {
+  background: var(--language-surface);
+  color: var(--color-white);
+  border-color: var(--language-border);
+  box-shadow: 0 0.75rem 2rem #0005;
+}
+:is(
+    .site-header[data-dark-area-visible] .header-language,
+    :root[data-scroll-theme='dark'] .header-language,
+    .hero-header-reveal .header-language
+  )
+  .language-options
+  button[aria-checked='true'] {
+  background: var(--language-hover);
+  color: var(--color-white);
+}
+:is(
+    .site-header[data-dark-area-visible] .header-language,
+    :root[data-scroll-theme='dark'] .header-language,
+    .hero-header-reveal .header-language
+  )
+  .language-options
+  button:is(:hover, :focus-visible) {
+  background: var(--language-hover);
+  color: var(--color-white);
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--language-border);
+}
+
+/* Keep the language trigger unfilled; only its menu has a surface. */
+.site-header .header-language .language-trigger {
+  background: transparent;
+}
+
+/* The original header stays dark-on-light; the masked copy supplies light text over ink. */
+.site-header:not(.hero-header-reveal) .header-language .language-trigger {
+  color: var(--color-black);
+  background: transparent;
+}

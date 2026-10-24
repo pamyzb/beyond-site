@@ -1,0 +1,145 @@
+/* Secondary contact action shares the primary fill animation without depth. */
+.contact-form {
+  display: grid;
+  grid-template-columns: 20.5rem 20.5rem;
+  gap: 1.90625rem 2.5rem;
+}
+.field-label {
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-label-wide);
+  line-height: var(--leading-control);
+  color: #fff;
+}
+.field input,
+.field textarea {
+  width: 100%;
+  border: 0;
+  border-radius: 0.75rem;
+  background: var(--color-gray-800);
+  color: #fff;
+  padding: 0.65625rem 1rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-control-lg);
+}
+.field input {
+  height: 2.8125rem;
+}
+.field textarea {
+  height: 9.75rem;
+  resize: none;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--color-gray-600);
+  opacity: 1;
+}
+.field-wide,
+.form-actions {
+  grid-column: 1/-1;
+}
+.field-wide {
+  position: relative;
+  width: 43.6875rem;
+}
+.form-actions {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.875rem;
+  margin-top: -0.03125rem;
+}
+.form-actions .button {
+  height: 3rem;
+  width: 19.783438rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+  background: transparent;
+  justify-content: flex-start;
+  padding-left: 1.5rem;
+}
+.whatsapp-link {
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent);
+  padding: 0.75rem 1.5rem 0.75rem 3.5625rem;
+  position: relative;
+  white-space: nowrap;
+}
+.form-actions .whatsapp-link.button {
+  --button-fill: var(--color-button-primary-pressed);
+  --button-depth: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5625rem;
+  width: auto;
+  min-height: 3rem;
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  border-radius: 62.4375rem;
+  background: var(--color-black);
+  color: var(--color-accent);
+  font-weight: var(--weight-semibold);
+  box-shadow: none;
+}
+.form-actions .whatsapp-link.button::before {
+  display: none;
+}
+.form-actions .whatsapp-link .button-icon {
+  flex-shrink: 0;
+}
+/* ContactField owns the focus treatment, including its design-system preview. */
+.field :is(input, textarea):focus {
+  outline: none;
+  outline-offset: 0;
+  box-shadow: inset 0 0 0 1px var(--color-focus);
+}
+
+/* Match the dark header CTA with a real foreground icon above the hover fill. */
+/* The form is rendered with semantic controls; hide the exported Figma fields
+   so their static shapes cannot appear behind the interactive inputs. */
+#contact-art-Form,
+#contact-art-primary_6 {
+  display: none;
+}
+.form-actions .contact-submit {
+  --button-fill: var(--primary-dark-hover);
+  --button-depth: var(--primary-dark-depth);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: auto;
+  height: auto;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
+  border: 0;
+  border-radius: 62.4375rem;
+  background: var(--color-accent);
+  color: #000;
+  font-family: inherit;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-control-lg);
+  white-space: nowrap;
+}
+.form-actions .contact-submit .button-icon {
+  flex-shrink: 0;
+  filter: brightness(0);
+}
+
+/* Keep the secondary outline above the animated fill on every breakpoint. */
+#contact-art-secondary_2 {
+  display: none;
+}
+.form-actions .whatsapp-link.button::before {
+  display: block;
+  inset: 0;
+  z-index: 4;
+  border: 1px solid #374151;
+  border-radius: inherit;
+  box-sizing: border-box;
+  box-shadow: none;
+  pointer-events: none;
+}

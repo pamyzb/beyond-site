@@ -1,0 +1,189 @@
+/* Embed the original client section without changing its layout. */
+.impact-clients {
+  margin-bottom: 4rem;
+}
+.impact-clients > .section-clientes {
+  background: transparent;
+  color: var(--color-black);
+}
+
+.impact-clients > .section-clientes {
+  margin-inline: auto;
+}
+
+/* Clients and metrics follow the hero in the normal document flow. */
+.impact-section {
+  padding: 0;
+}
+.impact-panel {
+  position: relative;
+  isolation: isolate;
+  background: #edf1f9;
+  padding: 5.5rem 0 3rem;
+  display: flow-root;
+}
+
+/* Light client gallery, with descriptions below the original logos. */
+.impact-clients > .section-clientes {
+  width: 100%;
+  height: auto;
+  padding: 0;
+  display: block;
+  overflow: hidden;
+}
+.impact-clients .section-content {
+  position: static;
+  display: block;
+  width: 100%;
+  padding: 0;
+}
+.impact-clients .client-heading {
+  position: static;
+  width: min(80rem, calc(100% - 7rem));
+  margin: 0 auto 2.5rem;
+  max-width: none;
+  text-align: left;
+  font-size: var(--text-body-lg) !important;
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-subtle);
+  color: #7b818c;
+}
+.impact-clients .client-strip {
+  position: relative;
+  top: auto;
+  left: auto;
+  display: block;
+  width: 100%;
+  height: 8.25rem;
+  margin: 0;
+  background: transparent;
+  color: var(--color-black);
+}
+.impact-clients .client-strip-item {
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  width: 17.5rem;
+  height: 8.25rem;
+  padding: 0.75rem 1.75rem;
+  border: 0;
+  text-align: center;
+}
+.impact-clients .client-strip-item .component-art {
+  height: 3rem;
+  max-width: 10rem;
+  width: auto;
+  margin: 0;
+  object-fit: contain;
+  filter: none;
+}
+.impact-clients .client-copy {
+  display: none;
+}
+.impact-clients .client-copy > span:first-child {
+  display: none;
+}
+.impact-clients .client-copy > span + span {
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-none);
+  color: #737985;
+}
+
+.impact-clients .client-heading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.625rem;
+}
+.impact-clients .client-heading > img {
+  display: block;
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+.impact-press > p {
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-body);
+}
+
+/* Balance Superpet's wider artwork with the other client logos. */
+.impact-clients .client-strip-item .component-art[src$='client-superpet-dark.png'] {
+  height: 4.25rem;
+  max-width: 11.875rem;
+}
+
+/* Give every photo its own column and equal gaps beside the metric figures. */
+
+.impact-grid {
+  grid-template-columns: max-content 4.75rem max-content 4.75rem max-content;
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.impact-stat {
+  display: contents;
+}
+.title--metric-stat {
+  grid-row: 1;
+  margin: 0;
+}
+.impact-stat > p {
+  grid-row: 2;
+  text-align: center;
+}
+.impact-stat:nth-of-type(1) > * {
+  grid-column: 1;
+}
+.impact-stat:nth-of-type(2) > * {
+  grid-column: 3;
+}
+.impact-stat:nth-of-type(3) > * {
+  grid-column: 5;
+}
+
+/* Align both labels to the content grid; press logos sit beside their label. */
+.impact-press {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 4rem;
+  text-align: left;
+}
+.impact-press > p {
+  flex: none;
+}
+
+.impact-press-logos {
+  margin-left: auto;
+  justify-content: flex-end;
+}
+.impact-painted-band {
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-assembly path {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .services-fade-ready > .service-editorial-card {
+    opacity: 0;
+    translate: 0 1rem;
+    transition:
+      opacity 900ms ease,
+      translate 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .services-fade-ready > .service-editorial-card.is-visible,
+  .services-fade-ready > .service-editorial-card:focus-within {
+    opacity: 1;
+    translate: 0 0;
+  }
+}

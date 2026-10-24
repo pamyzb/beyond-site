@@ -1,0 +1,188 @@
+/* Figma 15948:360: client ribbon followed by the inset metrics panel. */
+:root .impact-figma {
+  background: var(--scroll-canvas);
+  padding: 0;
+  color: var(--scroll-ink);
+}
+.impact-figma .impact-brands {
+  height: 8.25rem;
+  overflow: hidden;
+  padding-top: 0;
+}
+.title--metrics-label {
+  width: min(82.5rem, calc(100% - 7.5rem));
+  margin: 0 auto 1.5rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-control-lg);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-uppercase-wide);
+  text-transform: uppercase;
+  color: var(--scroll-ink);
+}
+.title--metrics-label em {
+  font-weight: var(--weight-medium);
+  color: var(--color-action);
+}
+.impact-figma .impact-brand-strip {
+  display: flex;
+  width: max-content;
+  gap: 4rem;
+  padding: 0 3.75rem;
+  border: 0;
+  border-radius: 0;
+}
+.impact-figma .impact-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 10rem;
+  height: 5rem;
+  padding: 0;
+  border: 0;
+}
+.impact-figma .impact-brand img {
+  display: block;
+  width: 10rem;
+  height: 3rem;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 1;
+}
+.impact-figma .impact-brand img[src$='client-usp-dark.png'] {
+  width: 5.5rem;
+}
+.impact-metrics-wrap {
+  padding: 2.5rem 0 5rem;
+}
+.impact-figma .impact-panel {
+  padding: 5rem 3.75rem;
+  border-radius: 2rem;
+}
+.impact-figma .impact-inner {
+  width: 100%;
+  max-width: 82.5rem;
+  margin: auto;
+}
+.impact-figma .impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  align-items: start;
+  margin: 0;
+}
+.impact-figma .impact-stat {
+  display: block;
+  position: relative;
+  padding: 0;
+}
+.impact-figma .impact-stat + .impact-stat::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 2rem;
+  height: 4.5rem;
+  border-left: 1px solid #dfe5ef;
+}
+.impact-figma .title--metric-stat {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: var(--text-display-lg);
+  font-weight: var(--weight-bold);
+  line-height: 1;
+  letter-spacing: var(--tracking-stat);
+  margin: 0 0 0.5rem;
+  white-space: nowrap;
+}
+.impact-figma .title--metric-stat > span {
+  order: 0;
+  align-self: center;
+  margin: 0;
+  font-size: var(--text-display-md);
+  line-height: 1;
+  letter-spacing: var(--tracking-none);
+  color: var(--color-action);
+}
+.impact-figma .title--metric-stat > .impact-live-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0.75rem #aaed3570;
+}
+.impact-figma .impact-stat > p {
+  font-size: var(--text-body);
+  font-weight: var(--weight-light);
+  line-height: var(--leading-control-lg);
+  letter-spacing: var(--tracking-none);
+  color: var(--scroll-muted);
+  max-width: none;
+  margin: 0;
+}
+.impact-figma .impact-press {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  margin: 3rem 0 0;
+  padding: 0;
+  text-align: left;
+  min-height: 3.125rem;
+}
+.impact-figma .impact-press > p {
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-control-lg);
+  letter-spacing: var(--tracking-uppercase-wide);
+  text-transform: uppercase;
+  color: var(--scroll-ink);
+  max-width: none;
+  margin: 0;
+}
+.impact-figma .impact-press-logos {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex: 1;
+  gap: 2.5rem;
+  margin: 0;
+  width: auto;
+}
+.impact-figma .impact-press-logos img {
+  width: 6.8125rem;
+  height: 2.5rem;
+  max-width: 100%;
+  object-fit: contain;
+  opacity: 0.6;
+}
+.impact-figma .impact-press-logos img:last-child {
+  width: 8.75rem;
+}
+.impact-press-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-control-lg);
+  color: var(--color-action);
+}
+.impact-press-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+.impact-press-arrow {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  background: currentColor;
+  mask: url('/assets/figma/header-button-arrow.svg') center/contain no-repeat;
+  transform: rotate(90deg);
+}
+:root[data-scroll-theme='dark'] .impact-brand img {
+  filter: grayscale(1) brightness(0) invert(1);
+}
+.impact-figma .impact-brand-strip {
+  padding-left: calc((100vw - 82.5rem) / 2);
+}

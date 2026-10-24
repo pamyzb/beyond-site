@@ -1,0 +1,18 @@
+/* Flat glass version of the Beyond mark in the hero. */
+.hero-glass-badge{--glass-x:50%;--glass-y:50%;position:absolute;top:100px;right:7%;width:100px;aspect-ratio:1;z-index:8;pointer-events:none;transform:rotate(-12deg);will-change:transform;filter:drop-shadow(0 3px 2px #152b8250) drop-shadow(9px 16px 20px #183ca344)}
+.hero-glass-badge-content{position:absolute;inset:0;width:100%;height:100%}
+.hero-glass-badge img,.hero-glass-badge-lens,.hero-glass-badge-sheen,.hero-glass-badge-content::after{position:absolute;inset:0;width:100%;height:100%;mask:url('/assets/beyond-symbol.svg') center/contain no-repeat;-webkit-mask:url('/assets/beyond-symbol.svg') center/contain no-repeat}
+.hero-glass-badge img{object-fit:contain;filter:none;opacity:.46}
+/* Keep the vector edge intact; the lens lives inside the mask instead of warping its silhouette. */
+.hero-glass-badge-lens{background:linear-gradient(124deg,#fff9 0 6%,#bcd4ff80 22%,#2f43fc44 48%,#061f9870 100%);backdrop-filter:blur(10px) saturate(1.75) contrast(1.08);-webkit-backdrop-filter:blur(10px) saturate(1.75) contrast(1.08);opacity:.9}
+.hero-glass-badge-sheen{background:radial-gradient(circle at var(--glass-x) var(--glass-y),#ffffff 0 2.4%,#ffffffb8 7%,#bcd4ff58 21%,transparent 45%),linear-gradient(132deg,#ffffffa8 2%,transparent 29% 67%,#001d8280);mix-blend-mode:screen}
+.hero-glass-badge-content::after{content:'';inset:2.2%;background:linear-gradient(135deg,#fff9 2%,transparent 20% 72%,#8eb2ff85);opacity:.88}
+
+@media(prefers-reduced-motion:reduce){.hero-glass-badge{will-change:auto}}
+/* The mark travels with the pointer over the full desktop hero. */
+.hero-glass-badge{top:0;right:auto;left:0;width:136px}
+
+/* Restore the original hero-scale mark while keeping the cursor follower. */
+.hero-glass-badge{width:360px}
+
+

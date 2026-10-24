@@ -1,0 +1,157 @@
+/* Inline artwork retains the original image geometry at each breakpoint. */
+.app-drawn-art > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.component-art.app-drawn-art > svg {
+  height: auto;
+}
+
+/* Keep application title strokes attached to their words across breakpoints. */
+.app-drawn-art :is([id$='-Line-1'], [id$='-Line-6']) {
+  display: none;
+}
+.app-title-word {
+  position: relative;
+  display: inline-block;
+  line-height: 1;
+  z-index: 1;
+  color: var(--color-accent);
+}
+.app-title-scribble {
+  position: absolute;
+  left: -3%;
+  top: calc(100% - 0.08em);
+  width: 106%;
+  height: 0.45em;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.app-feature-title {
+  width: 33.75rem !important;
+  height: auto !important;
+  color: var(--color-white);
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-subheading);
+  line-height: var(--leading-app-title);
+  text-align: center;
+}
+.app-feature-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-title-scribble path {
+    animation: none !important;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* More breathing room between the two application feature blocks. */
+
+.section-aplicativo {
+  /* Figma composition and local asset registration. Keep these exact values
+     local to the section; they are not candidates for global spacing tokens. */
+  --app-block-gap: 5.625rem;
+  --app-heading-track: 10rem;
+  --app-project-offset: 6rem;
+  --app-cases-offset: 7.5rem;
+  --app-project-columns: 21.875rem 33.75rem;
+  --app-project-column-gap: 0;
+  --app-cases-columns: 33.75rem 26.875rem;
+  --app-cases-column-gap: 3.75rem;
+  --app-project-art-offset: 0.625rem;
+  --app-project-copy-offset-x: 0.2875rem;
+  --app-project-copy-offset-y: 0.921875rem;
+  --app-cases-title-offset: 2.864375rem;
+  --app-cases-copy-offset-x: -0.751rem;
+  --app-cases-copy-offset-y: 1.421875rem;
+  --app-qr-top-gap: 4.28125rem;
+  --app-qr-offset-x: 0.1171875rem;
+  height: auto;
+  min-height: calc(var(--section-height) + var(--app-block-gap));
+}
+.section-aplicativo > .app-drawn-art {
+  height: var(--section-height);
+}
+.section-aplicativo > .app-drawn-art > svg {
+  overflow: visible;
+}
+.section-aplicativo .app-drawn-art [id$='-icon_6'] {
+  display: none;
+}
+.section-aplicativo .aplicativo-section-heading {
+  margin: 0 4.167%;
+}
+.section-contato .section-heading-title {
+  max-width: none;
+}
+.section-contato .section-heading-subtitle {
+  grid-column: 1/-1;
+  grid-row: 2;
+  max-width: 43.3125rem;
+  padding-left: 6.0625rem;
+  text-align: left;
+}
+.section-processo .process-track #icon_8,
+.section-faq .conversation-artwork [id$='-icon_13'],
+.section-contato .conversation-artwork [id$='-icon_14'] {
+  display: none;
+}
+.section-depoimentos img[src*='testimonial-heading.svg'] {
+  display: none;
+}
+/* The wide illustration is a constrained backdrop only. Phone mockups belong
+   to their related feature card below, so they can keep their relationship to
+   copy when that card later reflows. */
+.section-aplicativo > .app-drawn-art :is([id$='-container1'], [id$='-container 2']) {
+  display: none;
+}
+/* Center the QR invitation within the space beside the code. */
+.section-aplicativo .qr-instructions {
+  text-align: center;
+}
+
+.section-aplicativo .qr-instructions .text-run {
+  position: static;
+  display: inline;
+  white-space: normal;
+  line-height: var(--leading-qr);
+}
+.section-aplicativo .qr-instructions .text-run:first-child {
+  display: block;
+}
+
+/* Passive QR card: radial fill and depth, without button semantics. */
+.qr-hover-fill {
+  fill: var(--primary-dark-hover);
+}
+.qr-hover-reveal {
+  transition: r 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.qr-hover-card {
+  filter: drop-shadow(0.25rem 0.25rem 0 var(--primary-dark-depth));
+  transition: filter 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (hover: hover) and (pointer: fine) {
+  .qr-hover-card[data-hover='true'] {
+    filter: drop-shadow(0.375rem 0.5rem 0 var(--primary-dark-depth));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-hover-reveal,
+  .qr-hover-card,
+  .section-aplicativo .qr-instructions,
+  .section-aplicativo .qr-instructions::after {
+    transition: none;
+  }
+}

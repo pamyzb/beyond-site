@@ -1,0 +1,418 @@
+.conversation-overlay > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.floating-whatsapp {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(1rem) scale(0.94);
+  transition:
+    opacity 250ms ease,
+    transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s 250ms;
+}
+.floating-whatsapp[data-visible='true'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  transition-delay: 0s;
+}
+.floating-whatsapp[data-visible='true']:hover {
+  transform: translateY(0);
+}
+.floating-whatsapp {
+  overflow: visible;
+}
+.floating-whatsapp > .figma-art {
+  filter: none;
+  image-rendering: auto;
+}
+/* Full-bleed section rules are maintained alongside the Figma layout in style.css. */
+
+/* Code brackets frame the label while a hand-drawn underline traces in. */
+:is(.desktop-nav, .footer-nav) .action-link:has(.menu-ink) {
+  text-decoration: none;
+}
+.menu-ink {
+  transition: color 180ms ease;
+}
+
+.menu-bracket {
+  position: absolute;
+  top: 50%;
+  opacity: 0;
+  color: var(--color-action);
+  font-family: monospace;
+  font-size: 1.15em;
+  line-height: 1;
+  pointer-events: none;
+  transition:
+    opacity 160ms ease,
+    transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.menu-bracket-left {
+  right: calc(100% + 0.25rem);
+  transform: translate(0.3125rem, -50%);
+}
+.menu-bracket-left::before {
+  content: '{';
+}
+.menu-bracket-right {
+  left: calc(100% + 0.25rem);
+  transform: translate(-0.3125rem, -50%);
+}
+.menu-bracket-right::before {
+  content: '}';
+}
+.menu-scribble {
+  position: absolute;
+  left: -3%;
+  top: calc(100% + 0.1875rem);
+  width: 106%;
+  height: 0.5625rem;
+  overflow: visible;
+  fill: none;
+  stroke: var(--color-action);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.menu-scribble path {
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 1;
+}
+/* Follow the three passes of the existing path, slowing slightly at each turn. */
+@keyframes menu-scribble-draw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  42% {
+    stroke-dashoffset: 0.62;
+  }
+  48% {
+    stroke-dashoffset: 0.6;
+  }
+  73% {
+    stroke-dashoffset: 0.29;
+  }
+  79% {
+    stroke-dashoffset: 0.27;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+:is(.desktop-nav, .footer-nav) .action-link:focus-visible .menu-ink {
+  color: var(--color-action) !important;
+}
+:is(.desktop-nav, .footer-nav) .action-link:focus-visible .menu-bracket {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+:is(.desktop-nav, .footer-nav) .action-link:focus-visible .menu-scribble {
+  opacity: 1;
+}
+:is(.desktop-nav, .footer-nav) .action-link:focus-visible .menu-scribble path {
+  animation: menu-scribble-draw 350ms linear both;
+}
+@media (hover: hover) and (pointer: fine) {
+  :is(.desktop-nav, .footer-nav) .action-link:hover .menu-ink {
+    color: var(--color-action) !important;
+  }
+  :is(.desktop-nav, .footer-nav) .action-link:hover .menu-bracket {
+    opacity: 1;
+    transform: translate(0, -50%);
+  }
+  :is(.desktop-nav, .footer-nav) .action-link:hover .menu-scribble {
+    opacity: 1;
+  }
+  :is(.desktop-nav, .footer-nav) .action-link:hover .menu-scribble path {
+    animation: menu-scribble-draw 350ms linear both;
+  }
+}
+
+/* A clipped overlay preserves the original Figma artwork and its icons. */
+:is(.button-link, .button, .menu-toggle) {
+  --fill-x: 50%;
+  --fill-y: 50%;
+  --fill-radius: 150%;
+  --button-depth: #b5c2f4;
+  isolation: isolate;
+}
+:is(.button, .menu-toggle) {
+  position: relative;
+}
+.button-link .text-run {
+  z-index: 3;
+}
+.button-label {
+  position: relative;
+  z-index: 3;
+}
+:is(.button, .button-link, .menu-toggle) {
+  font-weight: var(--weight-medium);
+}
+.button-link,
+.header-cta {
+  --button-fill: var(--color-button-primary-hover);
+}
+:root {
+  --primary-dark-hover: var(--color-button-lime-hover);
+  --primary-dark-depth: var(--color-button-lime-depth);
+}
+.theme-dark .button-link,
+.section-rodape .button-link,
+.button-lime,
+:root[data-scroll-theme='dark'] .section-conversa .button-link {
+  --button-fill: var(--primary-dark-hover);
+  --button-depth: var(--primary-dark-depth);
+}
+.button-icon {
+  position: relative;
+  z-index: 3;
+  pointer-events: none;
+}
+.button-art-icon {
+  position: absolute;
+  left: var(--hit-x);
+  top: var(--hit-y);
+  width: var(--hit-width);
+  height: var(--hit-height);
+  z-index: 3;
+  pointer-events: none;
+}
+.section-conversa .button-art-icon {
+  transition: filter var(--theme-duration) var(--theme-ease);
+}
+:root[data-scroll-theme='dark'] .section-conversa .button-art-icon {
+  filter: brightness(0);
+}
+
+.site-header .header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  min-height: 3rem;
+  border-radius: 62.4375rem;
+  background: var(--color-button-primary);
+  color: var(--color-on-action);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-control-lg);
+  white-space: nowrap;
+}
+.header-cta img {
+  flex-shrink: 0;
+}
+/* Start on the hero grid, then converge on the original compact header. */
+.site-header {
+  --header-collapse: 0;
+  --header-glass: rgb(255 255 255 / calc(0.72 * var(--header-collapse)));
+  --header-border: rgb(255 255 255 / calc(0.65 * var(--header-collapse)));
+  --header-shadow: none;
+  --header-backdrop: blur(calc(1.5rem * var(--header-collapse)))
+    saturate(calc(100% + 80% * var(--header-collapse)));
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header {
+    --header-glass: rgb(255 255 255 / calc(0.96 * var(--header-collapse)));
+  }
+}
+
+.header-frame::before {
+  left: calc(3.75rem + 4.0625rem * var(--header-collapse));
+  right: calc(3.75rem + 4rem * var(--header-collapse));
+  -webkit-backdrop-filter: var(--header-backdrop);
+  backdrop-filter: var(--header-backdrop);
+}
+.header-frame > .figma-art,
+.brand-link {
+  translate: calc(-4.0625rem * (1 - var(--header-collapse))) 0;
+}
+.site-header .header-cta {
+  right: calc(6.25rem + 4rem * var(--header-collapse));
+}
+
+/* Header controls share one desktop row. The exported SVG remains a visual
+   layer; the interactive brand, navigation, language selector and CTA use
+   their semantic Flex relationships. */
+.header-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 5.4375rem;
+  padding: 0 4rem 0 10.3125rem;
+}
+.header-content .brand-link {
+  position: relative;
+  left: auto;
+  top: auto;
+  display: block;
+  flex: 0 0 13.75rem;
+  width: 13.75rem;
+  height: 2.375rem;
+}
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+  margin-left: 4.40625rem;
+}
+.header-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.91875rem;
+  white-space: nowrap;
+}
+.header-nav-link {
+  position: relative;
+  display: block;
+  font-size: var(--text-small);
+  font-weight: var(--weight-regular);
+  line-height: 1;
+  color: var(--color-black);
+}
+.header-nav-link .menu-ink {
+  position: relative;
+  display: inline-block;
+}
+.desktop-nav .header-language {
+  display: flex;
+  margin-left: 2.875rem;
+}
+.desktop-nav .header-cta {
+  display: inline-flex;
+  flex: 0 0 auto;
+  margin-left: 1.9375rem;
+}
+
+:is(.button-link, .button, .menu-toggle)::before,
+:is(.button-link, .button, .menu-toggle)::after {
+  content: '';
+  position: absolute;
+  border-radius: 62.4375rem;
+  pointer-events: none;
+  inset: 0;
+}
+.button-link::before,
+.button-link::after {
+  inset: auto;
+  left: var(--hit-x);
+  top: var(--hit-y);
+  width: var(--hit-width);
+  height: var(--hit-height);
+}
+:is(.button-link, .button, .menu-toggle)::before {
+  z-index: -1;
+  box-shadow: 0.25rem 0.25rem 0 var(--button-depth);
+  transition: box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+:is(.button-link, .button, .menu-toggle)::after {
+  display: block;
+  z-index: 0;
+  background: var(--button-fill, rgb(10 25 135 / 28%));
+  clip-path: circle(0 at var(--fill-x) var(--fill-y));
+  transition: clip-path 480ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.button-link::after {
+  pointer-events: auto;
+}
+/* Keep the full Figma hit area interactive even while the fill is clipped. */
+.button-link::before {
+  pointer-events: auto;
+}
+:is(.button-link, .button, .menu-toggle):focus-visible::after {
+  clip-path: circle(var(--fill-radius) at var(--fill-x) var(--fill-y));
+}
+:is(.button-link, .button, .menu-toggle):focus-visible::before {
+  box-shadow: 0.375rem 0.5rem 0 var(--button-depth);
+}
+@media (hover: hover) and (pointer: fine) {
+  :is(.button-link, .button, .menu-toggle):hover {
+    text-decoration: none;
+    filter: none;
+  }
+  :is(.button-link, .button, .menu-toggle):hover::after {
+    background: var(--button-fill, rgb(10 25 135 / 28%));
+    box-shadow: none;
+    clip-path: circle(var(--fill-radius) at var(--fill-x) var(--fill-y));
+  }
+  :is(.button-link, .button, .menu-toggle):hover::before {
+    box-shadow: 0.375rem 0.5rem 0 var(--button-depth);
+  }
+}
+:is(.button-link, .button, .menu-toggle):active::before {
+  box-shadow: 1px 2px 0 var(--button-depth);
+  transition-duration: 90ms;
+}
+.menu-toggle,
+.button-link[data-source='Ver detalhes do serviço'] {
+  --button-depth: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.button-link, .button, .menu-toggle)::before,
+  :is(.button-link, .button, .menu-toggle)::after {
+    transition: none;
+  }
+}
+.floating-whatsapp.button {
+  position: fixed;
+  --button-fill: #1daf54;
+  --button-depth: transparent;
+  box-shadow: none;
+}
+.floating-whatsapp.button::before,
+.floating-whatsapp.button::after {
+  inset: 13.1579%;
+  border: 0;
+  box-shadow: none;
+}
+.floating-whatsapp.button::before {
+  background: #25d366;
+}
+.button-primary-blue {
+  background: var(--color-action);
+  color: var(--color-white);
+}
+.button-secondary {
+  --button-fill: var(--color-button-primary-pressed);
+  --button-depth: transparent;
+  background: var(--color-black);
+  border: 1px solid var(--color-gray-700);
+  color: var(--color-accent);
+  box-shadow: none;
+}
+.button-secondary::before {
+  z-index: 4;
+  border: 1px solid var(--color-gray-700);
+  box-sizing: border-box;
+  box-shadow: none;
+}
+.button-secondary-dark {
+  background: var(--color-primary-900);
+  color: var(--color-white);
+}
+.button-secondary-white {
+  background: var(--color-white);
+  color: var(--color-primary-900);
+}
+.button-tertiary-dark {
+  background: transparent;
+  color: var(--color-primary-900);
+}
+.button-tertiary-white {
+  background: transparent;
+  color: var(--color-white);
+}

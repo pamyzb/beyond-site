@@ -1,0 +1,67 @@
+/* The ribbon can be wider than the viewport, but its detail panel belongs to
+   the section grid. Constrain that grid column so the carousel does not use
+   the marquee's max-content width as its own layout width. */
+.impact-figma .impact-brands {
+  grid-template-columns: minmax(0, 1fr);
+}
+.impact-figma .client-inline-carousel {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Hero CTA follows the approved bottom row: copy on the left, direct WhatsApp action on the right. */
+:is(.section-inicio .hero-cta, .section-conversa .conversation-cta) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18rem;
+  min-height: 3rem;
+  padding: 0 1.5rem;
+  white-space: nowrap;
+}
+:is(.section-inicio .hero-cta-icon, .section-conversa .conversation-cta-icon) {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  filter: brightness(0) invert(1);
+}
+:is(.section-inicio .hero-cta, .section-conversa .conversation-cta) .button-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  line-height: 1;
+}
+.section-conversa .conversation-cta {
+  margin-top: var(--conversation-action-gap);
+}
+/* Match the hero CTA when the painted page transitions to its dark theme. */
+:root[data-scroll-theme='dark'] .section-conversa .conversation-cta {
+  --button-fill: var(--primary-dark-hover);
+  --button-depth: var(--primary-dark-depth);
+  background: var(--color-button-lime);
+  color: #000;
+}
+:root[data-scroll-theme='dark'] .section-conversa .conversation-cta-icon {
+  filter: brightness(0);
+}
+
+/* The ink-reveal copy carries data-ink=true, exposing the dark-theme CTA only inside the painted area. */
+.section-inicio[data-ink='true'] .hero-cta {
+  --button-fill: var(--primary-dark-hover);
+  --button-depth: var(--primary-dark-depth);
+  background: var(--color-button-lime);
+  color: var(--color-primary-900);
+}
+.section-inicio[data-ink='true'] .hero-cta-icon {
+  filter: brightness(0);
+}
+
+/* Align the copy itself to the hero grid; the arrow occupies its own 27px column beside it. */
+.hero-bottom {
+  padding-left: 0;
+}
+.hero-description-group {
+  margin-left: 0;
+}

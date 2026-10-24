@@ -1,0 +1,428 @@
+/* The footer keeps its original logo, links, social controls and badges when
+   the desktop artwork is reflowed into the narrow layout. */
+
+/* Keep the desktop header hierarchy through tablet landscape: the link group
+   stays optically centered while language and CTA remain anchored right. */
+
+/* On narrow screens the corner marks intentionally bleed beyond the panel,
+   retaining the cropped edge treatment from the desktop composition. */
+
+/* Mobile section markers always lead with the existing Beyond symbol. */
+
+/* Desktop flow shells -----------------------------------------------------
+   These sections retain the approved 1440px composition, but their heading,
+   primary interactive content, and vertical rhythm now belong to the normal
+   document flow. Decorative Figma exports remain on their own paint layer. */
+.cases-editorial {
+  --case-toolbar-height: 4rem;
+  --case-testimonial-height: 7.5rem;
+}
+.cases-editorial .case-browser {
+  display: grid;
+  grid-template-rows: var(--case-toolbar-height) minmax(0, 1fr);
+  min-height: min(53.75rem, calc(100svh - 8.25rem));
+}
+.cases-editorial .case-browser-toolbar {
+  min-height: var(--case-toolbar-height);
+}
+.cases-editorial #case-panel {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) var(--case-testimonial-height);
+  min-height: 0;
+}
+.cases-editorial .case-browser-main {
+  height: auto;
+  min-height: 0;
+}
+.cases-editorial :is(.case-story, .case-visual) {
+  min-height: 0;
+}
+.cases-editorial :is(.case-project-image, .case-demo-screen) {
+  height: 100%;
+  max-height: none;
+}
+.cases-editorial .case-testimonial {
+  height: var(--case-testimonial-height);
+  min-height: 0;
+}
+.impact-figma {
+  --impact-content-width: 82.5rem;
+  --impact-inline-gutter: 3.75rem;
+}
+.impact-figma .impact-brands {
+  display: grid;
+  grid-template-rows: auto auto;
+}
+.impact-figma .impact-metrics-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+.impact-figma .impact-panel {
+  display: grid;
+  grid-template-columns: minmax(0, var(--impact-content-width));
+  justify-content: center;
+}
+.impact-figma .impact-inner {
+  display: grid;
+  grid-template-rows: auto auto;
+  min-width: 0;
+}
+.section-faq .section-content--faq,
+.section-contato .section-content--contato,
+.section-depoimentos .section-content--depoimentos {
+  position: relative;
+  inset: auto;
+  width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
+  height: auto;
+  margin-inline: auto;
+}
+.section-faq .section-content--faq {
+  /* The heading sits above a single, centered photo-and-accordion row. */
+  --faq-accordion-width: 39.125rem;
+  --faq-columns-gap: 5rem;
+  --faq-content-top: 8.8125rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding-top: var(--faq-content-top);
+}
+.section-faq .faq-section-heading,
+.section-contato .contato-section-heading,
+.section-depoimentos .depoimentos-section-heading {
+  position: relative;
+  left: auto;
+  right: auto;
+  top: auto;
+  margin: 0;
+}
+.section-faq .faq-section-heading {
+  margin-bottom: var(--space-6);
+}
+.section-faq .faq-content-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--faq-accordion-width);
+  column-gap: var(--faq-columns-gap);
+  align-items: center;
+}
+.section-faq .faq-team-art {
+  display: block;
+  justify-self: start;
+  width: 39.375rem;
+  height: auto;
+  max-width: none;
+}
+.section-faq .faq-accordion {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 100%;
+  margin: 0;
+}
+.section-faq .conversation-artwork [id='faq-art-Image-faq'] {
+  display: none;
+}
+.section-contato .section-content--contato {
+  /* Desktop form composition, kept independent from field-internal rhythm. */
+  --contact-form-width: 43.5rem;
+  --contact-columns-gap: 5rem;
+  --contact-content-top: 9rem;
+  --contact-form-offset-x: 6.0625rem;
+  --contact-heading-to-form-gap: var(--space-20);
+  display: grid;
+  grid-template-columns: var(--contact-form-width) minmax(0, 1fr);
+  column-gap: var(--contact-columns-gap);
+  align-content: start;
+  padding-top: var(--contact-content-top);
+}
+.section-contato .contato-section-heading {
+  grid-column: 1 / -1;
+}
+.section-contato .contact-form {
+  position: relative;
+  left: auto;
+  top: auto;
+  grid-column: 1;
+  width: var(--contact-form-width);
+  margin: var(--contact-heading-to-form-gap) 0 0 var(--contact-form-offset-x);
+}
+.section-depoimentos .section-content--depoimentos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 9.75rem;
+}
+.section-depoimentos .depoimentos-section-heading {
+  width: 100%;
+  margin-bottom: 0;
+}
+.section-depoimentos .testimonial-carousel {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 73rem;
+  margin: var(--space-20) 0 0 4.75rem;
+}
+.section-sobre .section-content--sobre {
+  position: relative;
+  inset: auto;
+  width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
+  height: auto;
+  margin-inline: auto;
+  padding-top: 7.375rem;
+}
+.secondary-section-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.secondary-section-heading-title {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-section-h2);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-subheading);
+}
+.secondary-section-heading-title em {
+  color: var(--color-accent);
+  font-weight: inherit;
+}
+.secondary-section-heading-copy {
+  align-self: flex-end;
+  max-width: 32.9375rem;
+  margin: var(--space-8) 0 0;
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-subtle);
+  text-align: right;
+}
+.section-sobre .about-panel {
+  position: relative;
+  left: auto;
+  top: auto;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  height: 23.4375rem;
+  margin-top: var(--space-20);
+  border: 1px solid var(--color-gray-700);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.about-panel-card {
+  position: relative;
+  min-width: 0;
+}
+.about-card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 2.125rem 2rem;
+}
+.about-icon {
+  position: relative;
+  left: auto;
+  top: auto;
+  flex: 0 0 5.5rem;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin-bottom: auto;
+}
+.about-card-title {
+  margin: 0 0 0.875rem;
+  color: var(--color-text);
+  font-size: var(--text-card);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-card);
+  letter-spacing: var(--tracking-card-em);
+}
+.about-card-copy {
+  max-width: 20.625rem;
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-subtle);
+}
+.section-processo .section-content--processo {
+  /* Card composition follows the approved staggered desktop layout. */
+  --process-card-width: 33.125rem;
+  --process-column-gap: max(0, min(9.25rem, calc(100% - 2 * var(--process-card-width))));
+  --process-content-top: 9rem;
+  --process-cards-gap: 5.5rem;
+  --process-left-column-offset: 2.5rem;
+  --process-right-column-offset: 5.5rem;
+  /* The exported SVG includes a 44px left canvas margin before the card face.
+     This keeps the visible content inset at the specified 40px. */
+  --process-card-padding: 2.5rem 5.25rem;
+  --process-step-gap: 1.5625rem;
+  --process-title-gap: 1.375rem;
+  position: relative;
+  z-index: 1;
+  inset: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, var(--process-card-width)));
+  grid-template-rows: auto auto;
+  column-gap: var(--process-column-gap);
+  align-content: start;
+  width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
+  min-height: var(--section-height);
+  margin-inline: auto;
+  padding-top: var(--process-content-top);
+}
+.section-processo .process-section-heading {
+  grid-column: 1 / -1;
+  position: relative;
+  left: auto;
+  right: auto;
+  top: auto;
+  margin: 0;
+}
+.section-processo .process-card-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--process-cards-gap);
+  min-width: 0;
+}
+.section-processo .process-card-column--left {
+  grid-column: 1;
+  margin-top: var(--process-left-column-offset);
+}
+.section-processo .process-card-column--right {
+  grid-column: 2;
+  margin-top: var(--process-right-column-offset);
+}
+.section-processo .process-card-entry {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 100%;
+}
+.section-processo .process-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  isolation: isolate;
+  width: 100%;
+  height: auto;
+  padding: var(--process-card-padding);
+}
+/* The SVG draws the card face; copy must remain in the semantic foreground. */
+.section-processo .process-card-art {
+  z-index: 0;
+}
+.section-processo .process-card > :not(.process-card-art) {
+  position: relative;
+  z-index: 1;
+}
+.section-processo .process-card-step {
+  position: absolute;
+  /* Absolute flex children are laid out from the card's padded content box. */
+  top: calc(var(--step-center-y) - 4rem);
+  left: calc(var(--step-center-x) - 6.75rem);
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin: 0;
+  color: var(--color-black);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+}
+.section-processo .process-card-title {
+  max-width: 27.5rem;
+  margin: 0 0 var(--process-title-gap);
+  color: var(--color-white);
+  font-size: 2.5rem;
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-card);
+  letter-spacing: var(--tracking-card-em);
+  transform: rotate(var(--process-title-angle));
+  transform-origin: left center;
+}
+.section-processo .process-card-copy {
+  max-width: 20.625rem;
+  margin: 0;
+  color: var(--color-white);
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+  transform: rotate(var(--process-title-angle));
+  transform-origin: left center;
+}
+.section-conversa .section-content {
+  /* The copy is registered against decorative art; retain this desktop anchor. */
+  --conversation-content-top: 23.8125rem;
+  --conversation-content-indent: 0;
+  --conversation-copy-gap: 1.5rem;
+  --conversation-action-gap: 2.125rem;
+  position: relative;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
+  height: auto;
+  margin-inline: auto;
+  padding: var(--conversation-content-top) 0 0 var(--conversation-content-indent);
+}
+.section-conversa .flow-copy {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+}
+.section-conversa .flow-copy .text-run {
+  position: static;
+  display: inline;
+  white-space: normal;
+}
+.section-conversa .conversation-artwork [id='conversation-art-Container:margin_2'],
+.section-conversa .conversation-overlay [id^='primary_'] {
+  display: none;
+}
+.section-conversa .flow-copy--h2 {
+  max-width: 51.25rem;
+  text-align: center;
+  font-size: var(--text-heading);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-heading-em);
+}
+.section-conversa .flow-copy--p {
+  max-width: 38.75rem;
+  text-align: center;
+  margin-top: var(--conversation-copy-gap);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-subtle);
+}
+.section-conversa .flow-copy--p.action-link {
+  max-width: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  margin-top: var(--conversation-action-gap);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-black);
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+/* These sections use the exported desktop height as a visual floor only.
+   Semantic content may grow in the document flow without stretching a wrapper
+   that exists only to reproduce the original Figma canvas. */
+:is(.section-conversa, .section-sobre, .section-faq, .section-contato) {
+  height: auto;
+  min-height: var(--section-height);
+}
+.section-contato {
+  margin-bottom: 5rem;
+}

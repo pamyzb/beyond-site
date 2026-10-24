@@ -1,0 +1,465 @@
+/* Foreground brand lens. The original brand silhouette supplies the mask. */
+.hero-glass-filters,
+.hero-ink-defs {
+  position: absolute;
+  pointer-events: none;
+}
+.hero-glass {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 22.5rem;
+  height: 24.625rem;
+  z-index: 8;
+  pointer-events: none;
+  mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  overflow: hidden;
+  contain: layout paint;
+  will-change: transform;
+  background: rgba(220, 232, 255, 0.12);
+  transform-origin: 0 0;
+  visibility: hidden;
+}
+.hero-glass[data-motion-state='idle'],
+.hero-glass[data-motion-state='running'],
+.hero-glass[data-motion-state='reduced'] {
+  visibility: visible;
+}
+.hero-glass[data-motion-state='paused'],
+.hero-glass[data-motion-state='reduced'] {
+  will-change: auto;
+}
+.hero-glass-scene {
+  position: absolute;
+  left: 0;
+  top: 0;
+  filter: url('#hero-refraction');
+  pointer-events: none;
+  transform-origin: 0 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  contain: paint;
+}
+.hero-glass-sample {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.hero-glass[data-motion-mode='auto'],
+.hero-glass[data-motion-mode='reduced'] {
+  width: clamp(5.5rem, 20vw, 8rem);
+  height: auto;
+  aspect-ratio: 180 / 197;
+}
+.hero-glass[data-motion-mode='auto'] .hero-glass-scene,
+.hero-glass[data-motion-mode='reduced'] .hero-glass-scene {
+  display: none;
+}
+.hero-glass[data-motion-mode='auto'] .hero-glass-material {
+  backdrop-filter: blur(1px) saturate(1.15);
+  -webkit-backdrop-filter: blur(1px) saturate(1.15);
+}
+.hero-glass-scene .design-section {
+  transition: none !important;
+}
+.hero-glass-sheen {
+  position: absolute;
+  inset: 0;
+  background:
+    url('/assets/figma/hero-glass-rim.svg') center/100% 100% no-repeat,
+    linear-gradient(
+      132deg,
+      rgba(255, 255, 255, 0.8),
+      rgba(221, 232, 255, 0.08) 12%,
+      rgba(255, 255, 255, 0.015) 46%,
+      rgba(111, 151, 255, 0.1) 86%,
+      rgba(255, 255, 255, 0.8)
+    );
+  box-shadow:
+    inset 2px 2px 5px #ffffffb3,
+    inset -2px -3px 9px #a7bcf070;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-glass {
+    will-change: auto;
+  }
+  .hero-glass-scene {
+    filter: blur(0.5px);
+  }
+}
+
+/* The reference art establishes a minimum, while content can grow without
+   reintroducing a fixed canvas height. */
+.section-inicio {
+  /* The hero already spans the viewport. A 1440px canvas offset would shift
+     its background and ink mask left, exposing their right-hand edge. */
+  --bleed-offset: 0px;
+  --bleed-width: 100%;
+  height: auto;
+  min-height: max(var(--section-height), 100vh);
+  min-height: max(var(--section-height), 100dvh);
+}
+.hero-scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  translate: -50% 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 3.25rem;
+  border-radius: 1.375rem;
+  color: var(--color-action);
+}
+.hero-scroll-cue svg {
+  animation: hero-scroll-nudge 2s ease-in-out infinite;
+}
+.section-inicio[data-ink='true'] .hero-scroll-cue,
+:root[data-scroll-theme='dark'] .hero-scroll-cue {
+  color: var(--color-accent);
+}
+@keyframes hero-scroll-nudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(0.375rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-cue svg {
+    animation: none;
+  }
+}
+
+/* The Hero content follows a content row and an anchored cue. Artwork, ink and WebGL stay on
+   their own paint layers, while the meaningful content remains in flow. */
+.section-inicio {
+  /* Desktop composition from the approved Figma canvas. These values are not
+     global rhythm tokens: they register content against the hero artwork. */
+  --hero-content-top: 14.59375rem;
+  --hero-content-bottom: 1.25rem;
+  --hero-copy-to-actions-gap: 7.26875rem;
+  --hero-actions-indent: 2.56875rem;
+  --hero-copy-gap: 1.71875rem;
+  --hero-description-gap: 0.5625rem;
+}
+.section-inicio .section-content--inicio {
+  position: relative;
+  inset: auto;
+  z-index: 2;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
+  min-height: inherit;
+  margin-inline: auto;
+  padding: var(--hero-content-top) 0 var(--hero-content-bottom);
+}
+/* The hero copy is a two-row composition. Artwork remains independently
+   constrained to the section, so it never establishes the copy geometry. */
+.hero-main {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: start;
+  min-width: 0;
+  row-gap: var(--hero-copy-to-actions-gap);
+}
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: var(--hero-copy-gap);
+}
+.hero-eyebrow {
+  margin: 0;
+  color: var(--color-action);
+  font-size: var(--text-small);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  text-transform: uppercase;
+}
+/* Full-grid hero headline, preserving the two original lines and lettering. */
+.section-inicio .hero-grid-title {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-hero);
+  letter-spacing: var(--tracking-hero);
+  line-height: var(--leading-hero);
+  text-align: left;
+}
+.hero-grid-title > span {
+  display: block;
+  white-space: nowrap;
+}
+.hero-grid-title .hero-grid-title-bottom {
+  display: flex;
+  align-items: center;
+  gap: 0.08em;
+}
+
+/* Container-relative rem queries also respond when the reader enlarges text.
+   Keep the approved desktop lines until their available canvas becomes narrow. */
+@container (max-width: 86rem) {
+  .hero-grid-title > span {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .hero-grid-title .hero-grid-title-bottom {
+    flex-wrap: wrap;
+  }
+}
+.hero-grid-title-bottom img {
+  display: block;
+  width: 4.28em;
+  height: auto;
+  flex: none;
+}
+.hero-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: flex-start;
+  column-gap: var(--space-10);
+  margin: 0;
+  padding-left: var(--hero-actions-indent);
+}
+.hero-description-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.hero-description-arrow {
+  display: block;
+  flex: none;
+  width: 1.6875rem;
+  height: 1.6875rem;
+}
+.hero-description {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hero-description-gap);
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-body-lg);
+  font-weight: var(--weight-regular);
+  line-height: 1.125rem;
+}
+.hero-description-line {
+  display: block;
+}
+.section-inicio .section-content--inicio .hero-scroll-cue {
+  position: relative;
+  left: auto;
+  bottom: auto;
+  justify-self: center;
+  align-self: end;
+  translate: none;
+  margin: 0;
+}
+
+/* Hero eyebrow follows the headline grid without a badge surface. */
+.section-inicio .section-content > .text-block:first-child {
+  left: 3.75rem;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  text-align: left;
+}
+
+.section-inicio .section-content > .text-block:first-child {
+  text-transform: uppercase;
+}
+/* Extra breathing room between the eyebrow and the hero headline. */
+.section-inicio .section-content > .text-block:first-child {
+  transform: translateY(-1.25rem);
+}
+
+/* Moving fill uses the exact original letter outlines, including the accent. */
+.hero-video-word {
+  display: block;
+  position: relative;
+  /* The SVG lettering has a tighter cap-height than Poppins. Match its visible
+     top edge to the adjacent live word without tying the adjustment to pixels. */
+  translate: 0 0.08em;
+  flex: none;
+  width: 4.28em;
+  aspect-ratio: 650/168;
+  overflow: hidden;
+  background: var(--color-action);
+  mask: url('/assets/figma/hero-lettering-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/figma/hero-lettering-mask.svg') center/100% 100% no-repeat;
+}
+.hero-video-word video,
+.hero-video-word canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Cursor-origin liquid reveal; text and controls transition to the dark palette. */
+.hero-ink {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  visibility: hidden;
+  clip-path: circle(0);
+  overflow: hidden;
+  background: #07101c;
+}
+.hero-ink-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background:
+    radial-gradient(ellipse at 75% 65%, #263cbd 0, transparent 50%),
+    radial-gradient(ellipse at 20% 30%, #233ea3 0, transparent 55%),
+    linear-gradient(165deg, #050916 20%, #0c154a 60%, #07101c);
+}
+.hero-ink-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 5, 18, 0.55);
+}
+.section-inicio > .section-content {
+  z-index: 2;
+}
+.section-inicio .hero-grid-title,
+.section-inicio .text-run {
+  transition: color 450ms ease;
+}
+.section-inicio[data-ink='true'] .hero-grid-title,
+.section-inicio[data-ink='true'] .text-run {
+  color: #fff !important;
+}
+.section-inicio[data-ink='true'] .hero-eyebrow {
+  color: #aaed35 !important;
+}
+.section-inicio[data-ink='true'] .hero-description {
+  color: #fff;
+}
+.section-inicio[data-ink='true'] .hero-video-word {
+  filter: brightness(1.45) saturate(0.8);
+}
+.section-inicio .hero-video-word {
+  transition: filter 450ms ease;
+}
+.section-inicio[data-ink='true'] .hero-glass-scene .design-section {
+  background: transparent !important;
+}
+.section-inicio[data-ink='true'] .hero-glass-scene .figma-art {
+  opacity: 0;
+}
+.section-inicio[data-ink='true'] .hero-glass {
+  background: rgba(180, 205, 255, 0.08);
+}
+.section-inicio[data-ink='true'] .hero-glass-sheen {
+  opacity: 0.6;
+}
+
+.hero-ink {
+  left: calc(-1 * var(--bleed-offset));
+  width: var(--bleed-width);
+  right: auto;
+}
+.section-inicio > .section-content > .button-link::before {
+  background: var(--color-action);
+}
+.section-inicio[data-ink='true'] .section-content > .button-link::before {
+  background: #aaed35;
+}
+.section-inicio[data-ink='true'] .section-content > .button-link .text-run {
+  color: #071a3d !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section-inicio .hero-grid-title,
+  .section-inicio .text-run,
+  .section-inicio .hero-video-word {
+    transition: none;
+  }
+}
+.section-inicio[data-ink='true'] .hero-video-word {
+  background: #aaed35;
+  filter: none;
+}
+.section-inicio[data-ink='true'] .hero-video-word :is(video, canvas) {
+  mix-blend-mode: normal;
+}
+
+.section-inicio[data-ink='true'] .section-content > .button-link::after {
+  z-index: 1;
+}
+.section-inicio[data-ink='true'] .section-content > .button-link .text-run {
+  z-index: 3;
+}
+.section-inicio[data-ink='true'] .button-art-icon {
+  z-index: 3;
+  filter: brightness(0);
+}
+
+.section-inicio[data-ink='true'] .button-link {
+  --button-fill: var(--primary-dark-hover);
+  --button-depth: var(--primary-dark-depth);
+}
+:is(.hero-ink-copy, .hero-header-reveal)
+  :is(.button-link, .button, .menu-toggle)[data-hover-active]::after {
+  clip-path: circle(var(--fill-radius) at var(--fill-x) var(--fill-y));
+  background: var(--button-fill);
+  box-shadow: none;
+}
+:is(.hero-ink-copy, .hero-header-reveal)
+  :is(.button-link, .button, .menu-toggle)[data-hover-active]::before {
+  box-shadow: 6px 8px 0 var(--button-depth);
+}
+:is(.hero-ink-copy, .hero-header-reveal)
+  :is(.button-link, .button, .menu-toggle)[data-press-active]::before {
+  box-shadow: 1px 2px 0 var(--button-depth);
+}
+
+/* Local ink trails: dark content is revealed by the same mask as the video. */
+.hero-ink {
+  z-index: 4;
+  clip-path: none;
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+.hero-ink-copy {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero-ink-copy > .section-inicio {
+  background: transparent !important;
+}
+:root .hero-ink-copy > .section-inicio > .figma-art {
+  opacity: 0;
+}
+.hero-ink-copy .section-content {
+  pointer-events: none;
+}
+/* The masked copy must stay registered with the original hero; entrance transforms
+   would otherwise expose the black source text inside the dark hover trail. */
+.hero-ink-copy .text-block {
+  transform: none !important;
+  opacity: 1 !important;
+}

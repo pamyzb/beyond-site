@@ -1,0 +1,62 @@
+/* Metric feedback: the values carry the hierarchy without framing strokes or labels. */
+.impact-figma .impact-stat {
+  border: 0;
+}
+.impact-figma .impact-press {
+  border: 0;
+}
+
+/* Anchor the four decorative marks to the complete impact section. */
+.impact-figma {
+  border-radius: 0;
+  overflow: hidden;
+}
+.impact-figma .impact-panel {
+  border-radius: 0;
+}
+.impact-figma > .impact-patterns {
+  z-index: 0;
+}
+.impact-figma > :is(.impact-brands, .impact-metrics-wrap) {
+  position: relative;
+  z-index: 1;
+}
+
+:root .impact-figma {
+  border-radius: 0;
+}
+
+/* Corner marks use the requested pure white. */
+.impact-figma > .impact-patterns {
+  opacity: 1;
+}
+.impact-figma > .impact-patterns .impact-pattern {
+  filter: brightness(0) invert(1);
+}
+
+/* Final spacing and balance for the metrics ribbon. */
+.impact-figma .impact-pattern-top-right {
+  top: 2rem;
+}
+.impact-figma .impact-brands {
+  padding-top: 5.5rem;
+}
+.impact-figma .impact-stat {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.impact-figma .title--metric-stat {
+  justify-content: center;
+}
+.impact-figma .impact-stat > p {
+  text-align: center;
+}
+
+/* Use matching clear space around the complete supplied corner vectors. */
+.impact-figma .impact-brands {
+  padding-top: 7.5rem;
+}
+.impact-figma .impact-metrics-wrap {
+  padding-bottom: 3rem;
+}

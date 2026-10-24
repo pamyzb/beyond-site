@@ -1,0 +1,47 @@
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+@import '../styles/fonts.css';
+@import '../styles/tokens.css';
+@import '../styles/base.css';
+
+@import '../styles/interactions.css';
+@import '../components/sections/metrics/client-carousel.css';
+@import '../components/sections/cases/cases.css';
+@import '../components/sections/testimonials/testimonials.css';
+@import '../components/sections/services/services.css';
+@import '../components/sections/metrics/metrics.css';
+@import '../components/sections/hero/hero.css';
+@import '../components/sections/metrics/clients-layout.css';
+@import '../components/layout/header/header-theme.css';
+@import '../styles/themes.css';
+@import '../components/sections/app-showcase/artwork.css';
+@import '../components/sections/process/process.css';
+@import '../components/sections/about/about.css';
+@import '../components/sections/blog/blog.css';
+@import '../components/sections/faq/faq.css';
+@import '../components/sections/contact/contact.css';
+@import '../components/layout/footer/footer-actions.css';
+@import '../components/sections/contact/contact-feedback.css';
+@import '../components/sections/metrics/metrics-ribbon.css';
+@import '../components/layout/header/header.css';
+@import '../components/sections/metrics/metrics-details.css';
+@import '../components/sections/services/scroll-journey.css';
+@import '../components/sections/metrics/metrics-finish.css';
+@import '../styles/theme-wash.css';
+@import '../components/sections/app-showcase/qr.css';
+@import '../styles/flow-layout.css';
+@import '../components/sections/app-showcase/app.css';
+@import '../styles/cta-layout.css';
+@import '../styles/responsive.css';
+
+/* Keep the approved Figma reset; Tailwind preflight is intentionally not imported. */
+@theme inline {
+  --font-sans: 'Poppins', sans-serif;
+  --color-brand: var(--color-action);
+  --color-lime: var(--color-accent);
+  --color-canvas: var(--scroll-canvas);
+  --color-ink: var(--scroll-ink);
+  --radius-card: 1rem;
+  --radius-pill: 62.4375rem;
+}

@@ -1,0 +1,390 @@
+/* Interactive credibility section, using the shared client and button components. */
+.impact-figma .impact-brands {
+  height: auto;
+  overflow: visible;
+  padding-top: 4rem;
+}
+.impact-figma .client-inline-carousel {
+  position: relative;
+}
+.impact-figma .client-strip {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  background: transparent;
+  color: inherit;
+}
+.impact-figma .client-track {
+  height: auto;
+  animation-duration: 48s;
+}
+.impact-figma .client-strip .impact-brand {
+  flex: 0 0 14rem;
+  padding: 0 2rem;
+  border: 0;
+  background: transparent;
+  border-radius: var(--radius-card);
+}
+.impact-figma .client-strip .impact-brand img {
+  filter: brightness(0);
+  transition: filter 250ms ease;
+}
+.impact-figma .client-strip .impact-brand:is(:hover, :focus-visible, [aria-expanded='true']) img {
+  filter: none;
+}
+/* An explicit height cap keeps the hover panel measurable. A fractional grid
+   track in an auto-height wrapper could remain at zero and hide its content. */
+.client-inline-details {
+  display: block;
+  width: min(82.5rem, calc(100% - 7.5rem));
+  max-height: 0;
+  margin: 0 auto;
+  visibility: hidden;
+  overflow: hidden;
+  transition:
+    max-height 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    margin-top 600ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s 600ms;
+}
+.client-inline-details[data-open='true'] {
+  max-height: 22.5rem;
+  margin-top: 1.5rem;
+  visibility: visible;
+  transition-delay: 0s;
+}
+.client-inline-reveal {
+  min-height: 0;
+  overflow: visible;
+}
+.client-inline-details .client-inline-card {
+  opacity: 0;
+  transform: translateY(-1.125rem) scale(0.94, 0.88);
+  transform-origin: 50% 0;
+  transition:
+    opacity 350ms ease,
+    transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.client-inline-details[data-open='true'] .client-inline-card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+.client-inline-card {
+  display: grid;
+  grid-template-columns: minmax(12.5rem, 0.8fr) 1.2fr;
+  align-items: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--scroll-ink);
+  overflow: hidden;
+  max-height: none;
+}
+.client-inline-photo {
+  display: block;
+  width: 100%;
+  height: 16.25rem;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+}
+.client-inline-card .client-tooltip-body {
+  padding: 2.5rem;
+}
+.client-inline-card .title--tooltip {
+  margin: 0 0 1rem;
+  font-size: var(--text-title);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-compact);
+}
+.client-inline-card .client-tooltip-body p {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-relaxed);
+  color: var(--scroll-muted);
+}
+.impact-count {
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+.impact-press-link.button {
+  --button-fill: var(--color-action);
+  background: transparent;
+  padding: 0.625rem 1rem;
+  border-radius: var(--radius-pill);
+  min-height: 2.75rem;
+  transition: color 200ms ease;
+}
+.impact-press-link.button > .button-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.impact-press-link.button::before {
+  display: none !important;
+  box-shadow: none !important;
+}
+.impact-press-link.button:focus-visible {
+  color: #fff;
+  text-decoration: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .impact-press-link.button:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+}
+:root[data-scroll-theme='dark'] .impact-press-link.button {
+  --button-fill: var(--color-accent);
+}
+:root[data-scroll-theme='dark'] .impact-press-link.button:is(:hover, :focus-visible) {
+  color: #000;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .impact-figma .client-strip {
+    overflow-x: auto;
+  }
+  .client-inline-details,
+  .client-inline-details .client-inline-card {
+    transition: none;
+  }
+}
+.client-inline-photo[src$='-logo.png'] {
+  object-fit: contain;
+  padding: 3rem;
+  background: var(--color-primary-50);
+}
+/* Optical sizing: these assets have more whitespace inside their original bounds. */
+.impact-figma .impact-press-logos img[src$='impact-pegn.svg'] {
+  width: 9.375rem;
+  height: 3.75rem;
+}
+.impact-figma .impact-press-logos img[src$='impact-softex.svg'] {
+  width: 11.25rem;
+  height: 3.5rem;
+}
+.impact-figma .client-strip .impact-brand img[src$='superpet-logo.png'] {
+  width: 11.875rem;
+  max-width: none;
+  height: 4rem;
+}
+.impact-figma .client-strip .impact-brand img[src$='shc-logo.png'] {
+  width: 6.25rem;
+  height: 4.5rem;
+}
+.impact-figma .client-strip .impact-brand img[src$='usp-logo.png'] {
+  width: 6.25rem;
+}
+
+/* Supplied media logos: solid black at rest, original colors on hover. */
+.impact-figma .impact-press-logos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 2.5rem);
+  min-width: 0;
+}
+:root .impact-figma .impact-press-logos img {
+  width: 100%;
+  height: 3rem;
+  max-width: 9.375rem;
+  justify-self: center;
+  align-self: center;
+  opacity: 1;
+  filter: brightness(0);
+  transition: filter 250ms ease;
+}
+:root .impact-figma .impact-press-logos img[src$='/valor.png'] {
+  max-width: 6.875rem;
+  height: 2.5rem;
+}
+:root .impact-figma .impact-press-logos img[src$='/pegn.png'] {
+  max-width: 6.875rem;
+}
+:root .impact-figma .impact-press-logos img:hover {
+  filter: none;
+}
+.impact-press-profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  align-self: center;
+  border-radius: 0.5rem;
+}
+:root .impact-figma .impact-press-profile:is(:hover, :focus-visible) img {
+  filter: none;
+}
+
+/* Client feedback: flat brand, shared proof section and local scroll journeys. */
+:root .impact-figma {
+  background: color-mix(in srgb, #edf1f6 calc((1 - var(--theme-dark-progress)) * 100%), #15191f);
+  border-radius: 2rem;
+}
+.impact-figma .impact-metrics-wrap {
+  padding-top: 0;
+}
+.impact-figma .impact-panel {
+  background: transparent;
+  padding-top: 3rem;
+}
+.impact-figma .impact-patterns {
+  opacity: 0.35;
+}
+/* The ribbon's 146px desktop rhythm comes from the logo, summary and clear
+   space below them. Let each item define the track instead of fixing its
+   wrapper, so longer client copy can grow without rebuilding the carousel. */
+.impact-figma .client-strip,
+.impact-figma .client-track {
+  height: auto;
+}
+.impact-figma .client-track {
+  align-items: flex-start;
+}
+.impact-figma .client-strip .impact-brand {
+  height: auto;
+  flex-basis: 15rem;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem 1.5rem;
+  justify-content: flex-start;
+}
+.impact-figma .client-strip .impact-brand img {
+  height: 3.625rem !important;
+  max-width: 10.625rem;
+  object-fit: contain;
+}
+.client-visible-summary {
+  font-size: var(--text-caption);
+  line-height: var(--leading-body);
+  font-weight: var(--weight-regular);
+  color: var(--scroll-muted);
+  text-align: center;
+  max-width: 12.1875rem;
+  white-space: normal;
+}
+.impact-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  margin: 0 0 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #8796b233;
+}
+.impact-intro > span {
+  font-size: var(--text-caption);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-overline);
+  color: var(--color-action);
+  padding-top: 0.625rem;
+}
+.impact-intro h2 {
+  margin: 0;
+  font-size: clamp(1.875rem, 4vw, 3.5rem);
+  line-height: var(--leading-section-title);
+  letter-spacing: var(--tracking-heading-em);
+  font-weight: var(--weight-medium);
+}
+.impact-intro h2 em {
+  color: var(--color-action);
+  font-style: normal;
+}
+.impact-figma .impact-grid {
+  gap: 1rem;
+  align-items: stretch;
+}
+.impact-figma .impact-stat {
+  padding: 1.75rem 1.5rem 2rem;
+  border-radius: 1.5rem;
+  background: var(--color-white);
+  text-align: left;
+  overflow: hidden;
+  border: 1px solid var(--color-border-soft);
+  display: flex;
+  flex-direction: column;
+  min-height: 14.875rem;
+}
+.impact-stat-label {
+  font-size: var(--text-micro);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-stat-label-wide);
+  margin-bottom: 2.5rem;
+  color: #5d6880;
+}
+.impact-figma .title--metric-stat {
+  font-size: clamp(2.625rem, 5.7vw, 5.125rem);
+  justify-content: flex-start;
+  gap: 0.375rem;
+  letter-spacing: var(--tracking-tighter);
+}
+.impact-figma .title--metric-stat > .impact-count {
+  font-size: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+.impact-figma .title--metric-stat > span:not(.impact-count) {
+  font-size: 0.65em;
+}
+.impact-figma .impact-stat > p {
+  text-align: left;
+  font-size: var(--text-small);
+  line-height: var(--leading-relaxed);
+  margin-top: 0.75rem;
+}
+.impact-figma .impact-stat:first-child {
+  background: var(--color-action);
+  color: var(--color-on-action);
+  border-color: var(--color-action);
+}
+.impact-figma .impact-stat:first-child :is(p, .impact-stat-label) {
+  color: #e2e6ff;
+}
+.impact-figma .impact-stat:nth-child(3) {
+  background: #d5edb9;
+  color: #172719;
+  border-color: #d5edb9;
+}
+.impact-figma .impact-stat:nth-child(3) :is(p, .impact-stat-label) {
+  color: #365138;
+}
+.impact-figma .impact-stat + .impact-stat::before {
+  display: none;
+}
+.impact-figma .impact-press {
+  margin-top: 1.5rem;
+  padding: 1.75rem 2rem;
+  border: 1px solid #c6cfdd;
+  border-radius: 1.25rem;
+  gap: 2rem;
+  background: #ffffff70;
+}
+.impact-figma .impact-press > p {
+  max-width: 7.8125rem;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: #26344b;
+}
+:root[data-scroll-theme='dark'] .impact-stat:nth-child(2) {
+  background: #232932;
+  border-color: #354054;
+}
+:root[data-scroll-theme='dark'] .impact-press {
+  background: #dfe5ef;
+}
+:root[data-scroll-theme='dark'] .impact-press-link {
+  color: #2f43fc;
+}
+.services-progress-label {
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-progress);
+  margin-right: 0.75rem;
+  color: var(--scroll-muted);
+}
+.services-window.is-scroll-driven {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+}

@@ -1,0 +1,155 @@
+/* Four identical sequences; one quarter is a seamless full cycle. */
+.client-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  align-items: center;
+  padding-left: 0;
+  animation: clients-loop 28s linear infinite;
+}
+@keyframes clients-loop {
+  to {
+    transform: translateX(-25%);
+  }
+}
+.client-strip-item {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  border-radius: 0;
+}
+.client-strip-item:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -0.25rem;
+}
+.client-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  white-space: nowrap;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+}
+.client-copy > span + span {
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-uppercase);
+  color: var(--color-gray-300);
+}
+.client-tooltip {
+  position: fixed;
+  z-index: 60;
+  width: min(21.25rem, calc(100vw - 1.5rem));
+  overflow: visible;
+  border: 0;
+  border-radius: var(--radius-card, 1rem);
+  background: var(--color-white);
+  color: var(--color-black);
+  box-shadow: 0 1rem 3rem #071a3d26;
+  font-family: var(--font-sans);
+}
+.client-tooltip-image {
+  height: 7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #08090b;
+  padding: 1.5rem;
+}
+.client-tooltip-image img {
+  display: block;
+  max-width: 12.5rem;
+  width: auto;
+  max-height: 4rem;
+  object-fit: contain;
+}
+.client-tooltip-body {
+  padding: 1.5rem;
+}
+.client-tooltip {
+  background: transparent;
+  box-shadow: none;
+  filter: drop-shadow(0 1rem 1.5rem #071a3d26);
+}
+.client-tooltip-content {
+  position: relative;
+  max-height: calc(100dvh - 1.5rem);
+  overflow: auto;
+  border-radius: inherit;
+  background: var(--color-white);
+}
+.client-tooltip-arrow {
+  position: absolute;
+  width: 0.875rem;
+  height: 0.875rem;
+  bottom: -0.4375rem;
+  transform: translateX(-50%) rotate(45deg);
+  background: var(--color-white);
+  pointer-events: none;
+}
+.client-tooltip[data-side='below'] .client-tooltip-arrow {
+  bottom: auto;
+  top: -0.4375rem;
+  background: #08090b;
+}
+.title--tooltip {
+  margin: 0 0 0.75rem;
+  font-size: var(--text-title-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-card);
+  letter-spacing: var(--tracking-snug);
+}
+.client-tooltip p {
+  margin: 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-looser);
+  color: var(--color-gray-600);
+}
+
+.client-strip.is-paused .client-track,
+.client-strip:hover .client-track {
+  animation-play-state: paused;
+}
+.client-strip-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: none;
+  height: 4.5rem;
+  padding: 0 2rem;
+  border-right: 1px solid var(--color-gray-800);
+}
+.client-strip-item .component-art {
+  display: block;
+  width: auto;
+  height: 3.0625rem;
+  max-width: 9.0625rem;
+}
+.client-strip-item p {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+}
+.client-strip-item p + p {
+  margin-top: 0.1875rem;
+  font-size: var(--text-caption);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-uppercase);
+  color: var(--color-gray-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .client-track {
+    animation: none;
+    transform: none;
+  }
+  .client-strip {
+    overflow-x: auto;
+  }
+  .client-strip-item[aria-hidden='true'] {
+    display: none;
+  }
+}

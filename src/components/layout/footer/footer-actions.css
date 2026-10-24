@@ -1,0 +1,24 @@
+/* Paint the footer primary in CSS, matching the dark CTA without SVG seams. */
+.footer-original-art [id='primary_7'] {
+  display: none;
+}
+.section-rodape .button-link[data-source='+ Mostrar mais_3'] {
+  --button-fill: var(--primary-dark-hover);
+  --button-depth: var(--primary-dark-depth);
+  border: 0;
+}
+.section-rodape .button-link[data-source='+ Mostrar mais_3']::before {
+  background: var(--color-accent);
+  border: 0;
+}
+/* Footer secondary CTA shares the contact button's radial fill and outline. */
+.section-rodape .button-link[data-source='Ver a rota no Maps'] {
+  --button-fill: #071a3d;
+  --button-depth: transparent;
+}
+.section-rodape .button-link[data-source='Ver a rota no Maps']::before {
+  z-index: 4;
+  border: 1px solid #374151;
+  box-sizing: border-box;
+  box-shadow: none;
+}
