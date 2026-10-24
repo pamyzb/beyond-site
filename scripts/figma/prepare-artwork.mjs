@@ -7,6 +7,7 @@ import { prepareFonts } from './prepare-fonts.mjs';
 import { pruneSvgDefs } from './prune-svg-defs.mjs';
 import { writeGeneratedFile } from './write-generated-file.mjs';
 import { processFragments } from './process-fragments.mjs';
+import { normalizePhoneScreens } from './normalize-phone-screens.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 if (process.argv.includes('--clean-export')) {
@@ -62,7 +63,7 @@ for (const [key, input] of Object.entries(inputs)) {
   const source = await readFile(path.join(root, 'public', input), 'utf8');
   const shared = stripSharedSvgFonts(source, sharedFonts);
   sharedFontFaces += shared.removedFonts;
-  const result = extractRasterAssets(shared.svg);
+  const result = extractRasterAssets(normalizePhoneScreens(shared.svg));
   if (key === 'process') {
     await writeGeneratedFile(
       path.join(root, '.generated/process-fragments.json'),
