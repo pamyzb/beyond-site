@@ -100,13 +100,10 @@ export function useTestimonialCarousel() {
       let tween: gsap.core.Tween | undefined;
       let intro: gsap.core.Tween | undefined;
       let introduced = false;
+      let glassStrength = 0;
+      const glassEnabled = () => glassMedia.matches && !media.matches && paused.current.visible;
       const render = () => {
-        const glassActive =
-          glassMedia.matches &&
-          !media.matches &&
-          paused.current.visible &&
-          !paused.current.playing &&
-          (state.intro > 1.001 || state.speed > 0.001 || Math.abs(state.velocity) > 0.001);
+        const glassActive = glassEnabled() && glassStrength > 0;
         cards.forEach((card, index) => {
           const slot = wrap(index - state.pos);
           const distance = Math.min(1, Math.abs(slot));
@@ -121,7 +118,7 @@ export function useTestimonialCarousel() {
         rail.style.filter = glassActive ? `url("#${filterId}")` : '';
         displacement.current?.setAttribute(
           'scale',
-          String(glassActive ? mapScale * (state.intro + state.speed) : 0),
+          String(glassActive ? mapScale * glassStrength : 0),
         );
         // The lens follows the signed movement; magnitude still controls bending.
         // Returning to the previous slide mirrors the leading/trailing refraction.
@@ -180,10 +177,23 @@ export function useTestimonialCarousel() {
         state.velocity += (velocity - state.velocity) * smoothing;
         if (state.speed < 0.001) state.speed = 0;
         if (Math.abs(state.velocity) < 0.001) state.velocity = 0;
+        // Ease the lens itself to zero before detaching its SVG filter. The
+        // previous baseline of 1 removed a still-distorted image in one frame.
+        const previousStrength = glassStrength;
+        const amount = Math.min(1, state.speed / 0.18);
+        const envelope = amount * amount * (3 - 2 * amount);
+        const targetStrength =
+          glassEnabled() && !paused.current.playing
+            ? Math.max(0, state.intro - 1) * 2.25 + (1 + state.speed) * envelope
+            : 0;
+        glassStrength += (targetStrength - glassStrength) * (1 - Math.exp(-8 * dt));
+        // At this point removing the filter changes displacement by < 0.03px.
+        if (targetStrength === 0 && glassStrength * mapScale < 0.03) glassStrength = 0;
         if (
           state.pos !== lastPos ||
           state.speed !== previousSpeed ||
           state.velocity !== previousVelocity ||
+          glassStrength !== previousStrength ||
           intro?.isActive() ||
           wasPlaying !== paused.current.playing
         )
