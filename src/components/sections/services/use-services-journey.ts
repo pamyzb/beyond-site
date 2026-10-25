@@ -1,5 +1,7 @@
 'use client';
 import type { RefObject } from 'react';
+import { servicesRoute, compactBuilders, type CardBounds } from '@/lib/animation/services-geometry';
+import { useServicesReveal } from './use-services-reveal';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/animation/gsap';
 type Options = {
   scope: RefObject<HTMLElement | null>;
@@ -17,6 +19,7 @@ export function useServicesJourney({
   scrollJourney,
   updatePagination,
 }: Options) {
+  useServicesReveal({ scope, rail });
   useGSAP(
     () => {
       const track = rail.current!;
@@ -30,7 +33,7 @@ export function useServicesJourney({
       let outlineLength = 0;
       let construction: gsap.core.Timeline | undefined;
       let traveling = false;
-      let cardBounds: { left: number; right: number; top: number; bottom: number }[] = [];
+      let cardBounds: CardBounds[] = [];
       const journey = { distance: 0 };
       let robotStartDistances = [0, 0];
       const robotOffset = (point: DOMPoint) => {
@@ -64,31 +67,15 @@ export function useServicesJourney({
           let x = point.x + (onVerticalSegment ? 0 : index * spacing);
           let y = point.y + robotOffset(point) + (onVerticalSegment ? index * spacing : 0);
           if (compactMedia.matches && cardBounds.length) {
-            // The SVG route can lag behind native scrolling. Choose the card
-            // from the actual viewport, never from that delayed route position.
-            const center = element.scrollLeft + element.clientWidth / 2;
-            const card = cardBounds.reduce((nearest, candidate) => {
-              const gap = (bounds: (typeof cardBounds)[number]) =>
-                Math.max(bounds.left - center, 0, center - bounds.right);
-              return gap(candidate) < gap(nearest) ? candidate : nearest;
-            });
-            const halfWidth = Math.max(...robots.map((builder) => builder.offsetWidth)) / 2;
-            const pairSpacing = 72;
-            const visibleLeft = element.scrollLeft + halfWidth + 12;
-            const visibleRight =
-              element.scrollLeft + element.clientWidth - halfWidth - pairSpacing - 12;
-            const start = Math.max(
-              visibleLeft,
-              Math.min(
-                visibleRight,
-                Math.max(
-                  card.left + halfWidth,
-                  Math.min(card.right - halfWidth - pairSpacing, point.x),
-                ),
-              ),
+            const position = compactBuilders(
+              cardBounds,
+              element.scrollLeft,
+              element.clientWidth,
+              Math.max(...robots.map((builder) => builder.offsetWidth)) / 2,
+              point.x,
             );
-            x = start + index * pairSpacing;
-            y = card.top - 38;
+            x = position.x + index * position.spacing;
+            y = position.y;
           }
           gsap.set(robot, {
             left: 0,
@@ -138,26 +125,15 @@ export function useServicesJourney({
         // Once the card outline is drawn, every bit of carousel progress advances
         // directly into the route to the next service.
         const joinProgress = 0.18;
-        const compact = false;
-        const head = compact
-          ? outlineLength + (length - outlineLength) * progress
-          : progress < joinProgress
+        const head =
+          progress < joinProgress
             ? robotStartDistances[0] +
               (robotStartDistances[1] - robotStartDistances[0]) * (progress / joinProgress)
             : robotStartDistances[1] +
               (length - robotStartDistances[1]) * ((progress - joinProgress) / (1 - joinProgress));
         path.style.strokeDasharray = String(length);
         const dashOffset = reduced.matches ? 0 : length - Math.max(outlineLength, head);
-        // Native horizontal scrolling can move several cards between frames.
-        // Tween the drawn segment so the route visibly grows into each contour.
-        if (compact && !reduced.matches)
-          gsap.to(path, {
-            strokeDashoffset: dashOffset,
-            duration: 0.48,
-            ease: 'power2.out',
-            overwrite: 'auto',
-          });
-        else path.style.strokeDashoffset = String(dashOffset);
+        path.style.strokeDashoffset = String(dashOffset);
         followJourney(head);
       };
       paintJourney.current = paint;
@@ -171,47 +147,8 @@ export function useServicesJourney({
         }));
         const agentCard = cards[0];
         if (!agentCard) return;
-        const radius = Math.min(28, agentCard.offsetWidth / 2, agentCard.offsetHeight / 2);
-        const left = agentCard.offsetLeft - 1,
-          top = agentCard.offsetTop - 1;
-        const right = agentCard.offsetLeft + agentCard.offsetWidth + 1,
-          bottom = agentCard.offsetTop + agentCard.offsetHeight + 1;
-        const middle = (top + bottom) / 2;
-        // A single line closes the agent card before continuing through every other card.
-        let d = `M ${right} ${middle} V ${bottom - radius} Q ${right} ${bottom} ${right - radius} ${bottom} H ${left + radius} Q ${left} ${bottom} ${left} ${bottom - radius} V ${top + radius} Q ${left} ${top} ${left + radius} ${top} H ${right - radius} Q ${right} ${top} ${right} ${top + radius} V ${middle}`;
-        outlineLength = 2 * (right - left + (bottom - top)) - (8 - 2 * Math.PI) * radius;
-        let previous = { x: right, y: middle };
-        // Small screens retain the agent-card outline only. The longer route is
-        // reserved for the spacious desktop canvas.
-        if (true) {
-          const routePoints = [previous];
-          cards.slice(1).forEach((card, index) => {
-            const x = card.offsetLeft - 12;
-            const cardRight = card.offsetLeft + card.offsetWidth + 12;
-            const y =
-              (index + 1) % 2 === 0 ? card.offsetTop - 42 : card.offsetTop + card.offsetHeight + 42;
-            const turn = (previous.x + x) / 2;
-            routePoints.push(
-              { x: turn, y: previous.y },
-              { x: turn, y },
-              { x, y },
-              { x: cardRight, y },
-            );
-            previous = { x: cardRight, y };
-          });
-          for (let index = 1; index < routePoints.length - 1; index++) {
-            const previousPoint = routePoints[index - 1],
-              point = routePoints[index],
-              next = routePoints[index + 1];
-            const before = Math.hypot(point.x - previousPoint.x, point.y - previousPoint.y);
-            const after = Math.hypot(next.x - point.x, next.y - point.y);
-            const corner = Math.min(22, before / 2, after / 2);
-            if (!before || !after) continue;
-            d += ` L ${point.x - ((point.x - previousPoint.x) / before) * corner} ${point.y - ((point.y - previousPoint.y) / before) * corner} Q ${point.x} ${point.y} ${point.x + ((next.x - point.x) / after) * corner} ${point.y + ((next.y - point.y) / after) * corner}`;
-          }
-          const finalPoint = routePoints[routePoints.length - 1];
-          d += ` L ${finalPoint.x} ${finalPoint.y}`;
-        }
+        const { d, outlineLength: outline, left, right, top } = servicesRoute(cardBounds);
+        outlineLength = outline;
         svg.setAttribute('width', String(track.scrollWidth));
         svg.setAttribute('height', String(track.offsetHeight));
         path.setAttribute('d', d);
@@ -300,40 +237,6 @@ export function useServicesJourney({
             autoRound: false,
           },
         );
-      });
-      mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const cards = Array.from(
-          rail.current?.querySelectorAll<HTMLElement>(':scope > article') ?? [],
-        );
-        const revealObserver = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.intersectionRatio >= 0.18) entry.target.classList.add('is-visible');
-              else if (!entry.isIntersecting) entry.target.classList.remove('is-visible');
-            });
-            // Observe the page viewport as well as the carousel's clipping bounds,
-            // so cards reveal when scrolling down to services, not while offscreen.
-          },
-          { rootMargin: '0px 0px -18% 0px', threshold: [0, 0.18] },
-        );
-        rail.current?.classList.add('services-fade-ready');
-        cards.forEach((card) => revealObserver.observe(card));
-        const tools = robots.flatMap((robot) =>
-          Array.from(robot.querySelectorAll<SVGElement>('.builder-tool')),
-        );
-        gsap.to(tools, {
-          rotation: -35,
-          transformOrigin: 'bottom left',
-          duration: 0.18,
-          yoyo: true,
-          repeat: -1,
-          ease: 'sine.inOut',
-        });
-        return () => {
-          revealObserver.disconnect();
-          rail.current?.classList.remove('services-fade-ready');
-          cards.forEach((card) => card.classList.remove('is-visible'));
-        };
       });
       return () => {
         observer.disconnect();

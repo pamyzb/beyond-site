@@ -1,0 +1,30 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+@media (max-width: 89.999em) {
+  .section-blog.blog-bento {
+    padding: var(--section-space) var(--page-gutter);
+  }
+}
+
+@media (max-width: 59.999em) {
+  .blog-grid,
+  .blog-grid-alternate {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: 'lead support-one' 'support-two support-three';
+    grid-template-rows: auto;
+  }
+  .blog-card {
+    min-height: 26rem;
+  }
+}
+
+@media (max-width: 37.499em) {
+  .blog-grid,
+  .blog-grid-alternate {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'lead' 'support-one' 'support-two' 'support-three';
+  }
+  .blog-card {
+    min-height: 25rem;
+  }
+}

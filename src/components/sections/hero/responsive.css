@@ -1,0 +1,88 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+@media (max-width: 89.999em) {
+  .section-inicio {
+    min-height: 100svh;
+    --hero-content-top: clamp(9rem, 17vh, 14.5rem);
+    --hero-content-bottom: 2rem;
+    --hero-copy-to-actions-gap: clamp(3rem, 8vh, 7rem);
+  }
+  .section-inicio > .figma-art {
+    display: none;
+  }
+  .section-inicio .section-content--inicio {
+    min-height: 100svh;
+    gap: 3rem;
+  }
+  .section-inicio .hero-grid-title {
+    font-size: clamp(2.625rem, 12.4vw, 11.75rem);
+  }
+  .hero-eyebrow {
+    line-height: 1.6;
+    max-width: 40rem;
+  }
+  .hero-description {
+    line-height: 1.6;
+    gap: 0;
+  }
+  .hero-description-line {
+    display: inline;
+  }
+  .hero-description-line + .hero-description-line::before {
+    content: ' ';
+  }
+  .hero-bottom {
+    gap: 2rem;
+    align-items: center;
+  }
+  .hero-glass {
+    width: clamp(5.5rem, 20vw, 8rem);
+    height: auto;
+    aspect-ratio: 180 / 197;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .hero-bottom {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+  .hero-eyebrow {
+    font-size: var(--text-caption);
+  }
+  .section-inicio .hero-grid-title {
+    font-size: clamp(2.25rem, 11.6vw, 7rem);
+  }
+  .section-inicio .hero-cta {
+    max-width: 100%;
+    width: auto;
+    white-space: normal;
+    padding: 1rem 1.5rem;
+  }
+  .section-inicio .hero-cta .button-label {
+    line-height: 1.4;
+  }
+  .hero-description {
+    font-size: var(--text-body);
+  }
+}
+
+@media (max-width: 37.499em) {
+  .section-inicio {
+    --hero-content-top: 9rem;
+    --hero-copy-to-actions-gap: 3rem;
+  }
+  .section-inicio .section-content--inicio {
+    padding-bottom: 1.5rem;
+    gap: 2rem;
+  }
+  .hero-description-arrow {
+    display: none;
+  }
+  .hero-grid-title > span {
+    white-space: normal;
+  }
+  .hero-grid-title .hero-grid-title-bottom {
+    flex-wrap: wrap;
+  }
+}

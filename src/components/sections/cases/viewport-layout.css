@@ -1,0 +1,53 @@
+/* Section-owned rules; import position preserves the V1 cascade. */
+.case-browser-main {
+  min-height: 0;
+  height: clamp(18.125rem, 45vh, 31.25rem);
+  padding: 1.5rem 2rem;
+}
+.case-project-image,
+.case-demo-screen {
+  height: 100%;
+  max-height: 40vh;
+  min-height: 0;
+}
+.title--case {
+  font-size: var(--text-title-lg);
+}
+.case-description {
+  font-size: var(--text-small);
+}
+.case-result {
+  margin-block: 1rem;
+}
+.case-testimonial {
+  min-height: 0;
+  padding: 1.25rem 2rem;
+}
+.case-testimonial blockquote {
+  font-size: var(--text-body-lg);
+}
+.case-quote-author p,
+.case-quote-author strong {
+  font-size: var(--text-small);
+}
+.case-demo-content {
+  padding: 1rem 1.5rem;
+}
+.title--case-demo {
+  font-size: var(--text-title);
+  margin: 0 0 1rem;
+}
+
+/* Section-owned rules; import position preserves the V1 cascade. */
+.case-tab[hidden] {
+  display: none;
+}
+
+/* Section-owned rules; import position preserves the V1 cascade. */
+.case-testimonial {
+  height: 7.5rem;
+  box-sizing: border-box;
+}
+.case-browser {
+  height: calc(clamp(18.125rem, 45vh, 31.25rem) + 11.5rem);
+}

@@ -11,7 +11,7 @@ nova regra de tema.
 | --- | --- | --- |
 | Tema base claro | `:root` em `src/styles/tokens.css` | Define os tokens semânticos iniciais. |
 | Tema escuro local | `.theme-dark` em `src/styles/tokens.css` | Adapta uma seção que nasce escura, como o Blog. |
-| Tema escuro por rolagem | `:root[data-scroll-theme="dark"]` | Mantém a experiência escura a partir do App. |
+| Tema escuro por rolagem | `:root[data-scroll-theme="dark"]` | Mantém a experiência escura após o gatilho no fim de Conversa. |
 | Transição visual | `.theme-wash` em `src/styles/theme-wash.css` | Faz somente o efeito de passagem; não define cores de conteúdo. |
 
 `src/styles/tokens.css` é a fonte de verdade de paleta e semântica. `src/styles/base.css` define a
@@ -22,7 +22,7 @@ elas devem consumir tokens, em vez de introduzir cores de tema próprias.
 
 Não há uma classe `.theme-light`. O estado claro é o contrato padrão de
 `:root` e também é aplicado explicitamente por `data-scroll-theme="light"`
-quando o usuário retorna acima do gatilho do App.
+quando o usuário retorna acima do gatilho de Conversa.
 
 | Papel | Token | Valor atual |
 | --- | --- | --- |
@@ -56,8 +56,8 @@ em uma seção escura o ícone e o destaque ficam verdes; no tema claro, azuis.
 
 `MotionRoot` controla o atributo no elemento `html`:
 
-- O gatilho é o `h2` de `#aplicativo`.
-- Ao entrar em `top 90%`, aplica `data-scroll-theme="dark"`.
+- O gatilho `conversation-scroll-theme` usa a seção `#conversa`.
+- Quando o fim da seção alcança o fim da viewport (`bottom bottom`), aplica `data-scroll-theme="dark"`.
 - Ao retornar acima do gatilho, aplica `data-scroll-theme="light"`.
 - O tema persiste nas seções posteriores até o usuário retornar.
 
@@ -102,7 +102,7 @@ fundo e texto para componentes que acompanham a transição.
 4. Não adicione `.theme-light` sem antes migrar o contrato padrão: hoje a
    ausência de `.theme-dark` é parte da implementação.
 5. Ao criar ou alterar um componente, confira os dois estados no navegador:
-   antes do App e depois do gatilho do App. Se ele existir em uma seção
+   antes e depois do gatilho no fim de Conversa. Se ele existir em uma seção
    `.theme-dark`, confira também esse contexto.
 
 ## Arquivos relacionados

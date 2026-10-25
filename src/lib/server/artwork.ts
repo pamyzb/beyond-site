@@ -15,7 +15,7 @@ export async function readHomeArtwork() {
           let svg = await readArtwork(`about-${id}`);
           if (id === 17)
             svg = svg.replace(
-              /(<g id="lucide\/blocks">)[\s\S]*?(<\/g>)/,
+              /(<g\b[^>]*\sid="lucide\/blocks"[^>]*>)[\s\S]*?(<\/g>)/,
               '$1<g fill="none" stroke="#2F43FC" stroke-width="2"><rect x="564.667" y="8961.25" width="10.667" height="10.667" rx="2"/><rect x="564.667" y="8971.92" width="10.667" height="10.667" rx="1"/><rect x="575.334" y="8971.92" width="10.667" height="10.667" rx="1"/><rect x="580.667" y="8955.92" width="10.667" height="10.667" rx="1.333"/></g>$2',
             );
           return prefixSvgIds(svg.replaceAll('crispEdges', 'geometricPrecision'), `about-${id}`);

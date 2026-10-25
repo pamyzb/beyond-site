@@ -1,0 +1,90 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+@media (max-width: 89.999em) {
+  .section-depoimentos {
+    height: auto;
+    min-height: 0;
+    padding-block: var(--section-space);
+  }
+  .section-depoimentos .section-content--depoimentos {
+    padding-top: 0;
+  }
+  .section-depoimentos .testimonial-carousel {
+    width: 100%;
+    margin: 3rem 0 0;
+  }
+  .testimonial-text {
+    grid-template-columns: minmax(0, 1fr) 30%;
+    padding: 3rem;
+    gap: 2rem;
+  }
+  .testimonial-portrait {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 323/379;
+  }
+  .testimonial-slide blockquote {
+    font-size: clamp(1.5rem, 3vw, 2.75rem);
+  }
+  .testimonial-track,
+  .testimonial-slide {
+    height: 34rem;
+  }
+  .testimonial-video-copy {
+    padding: 3rem;
+  }
+  .testimonial-arrow {
+    top: calc(17rem - 1.75rem);
+  }
+  .testimonial-prev {
+    left: -0.75rem;
+  }
+  .testimonial-next {
+    right: -0.75rem;
+  }
+}
+
+@media (max-width: 37.499em) {
+  .testimonial-text {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 1.75rem;
+    gap: 1.5rem;
+    align-content: center;
+  }
+  .testimonial-portrait {
+    width: 7rem;
+    grid-row: 1;
+    aspect-ratio: 1;
+    border-radius: 1rem;
+  }
+  .testimonial-slide blockquote {
+    font-size: 1.5rem;
+    letter-spacing: -0.025em;
+  }
+  .testimonial-slide strong {
+    font-size: var(--text-body-lg);
+  }
+  .testimonial-video-copy {
+    padding: 1.75rem;
+  }
+  .testimonial-track,
+  .testimonial-slide {
+    height: 38rem;
+  }
+  .testimonial-arrow {
+    top: calc(19rem - 1.375rem);
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .testimonial-play {
+    width: 4rem;
+    height: 4rem;
+  }
+  .testimonial-pagination {
+    gap: 1.5rem;
+  }
+  .testimonial-pagination button {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}

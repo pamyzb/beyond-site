@@ -1,0 +1,9 @@
+/* Section-owned rules; import position preserves the V1 cascade. */
+:root[data-scroll-theme='dark'] .conversation-overlay [id='Vector_40'] {
+  stroke: #1f2937;
+}
+
+/* Section-owned rules; import position preserves the V1 cascade. */
+.conversation-mobile-artwork {
+  display: none;
+}

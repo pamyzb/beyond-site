@@ -35,9 +35,7 @@ export function ProcessSection({
       );
       const svg = root.querySelector<SVGSVGElement>('.process-route-layer svg')!;
       const markerSvg = root.querySelector<SVGSVGElement>('.process-marker-layer svg')!;
-      const marker = markerSvg.querySelector<SVGGElement>(
-        '[id="process-Container_53-Container_53"]',
-      )!;
+      const marker = markerSvg.querySelector<SVGGElement>('[data-artwork-role="process-marker"]')!;
       const route = document.createElementNS('http://www.w3.org/2000/svg', 'path');
       route.setAttribute('class', 'process-route');
       route.setAttribute('fill', 'none');
@@ -126,7 +124,7 @@ export function ProcessSection({
           const cleanups = Array.from(
             root.querySelectorAll<HTMLElement>('.process-card-entry'),
           ).map((target) => {
-            const face = target.querySelector<SVGGElement>('[id*="-Process Card"]');
+            const face = target.querySelector<SVGGElement>('[data-artwork-role="process-face"]');
             const filterId = face?.getAttribute('filter')?.match(/url\(#(.+)\)/)?.[1];
             const filter = filterId
               ? target.querySelector<SVGFilterElement>(`filter[id="${filterId}"]`)

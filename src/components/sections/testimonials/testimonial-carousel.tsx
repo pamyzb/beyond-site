@@ -18,11 +18,7 @@ export function TestimonialCarousel({
     scope,
     track,
     pagination,
-    filterId,
-    glass,
-    glassImage,
-    displacement,
-    lensOffset,
+    glassCanvas,
     active,
     notice,
     playing,
@@ -47,59 +43,44 @@ export function TestimonialCarousel({
 
       {...interactionProps}
     >
-      <svg className="testimonial-glass-defs" aria-hidden="true" width="0" height="0">
-        <defs>
-          <filter
-            ref={glass}
-            id={filterId}
-            filterUnits="userSpaceOnUse"
-            primitiveUnits="userSpaceOnUse"
-            colorInterpolationFilters="sRGB"
-          >
-            <feImage ref={glassImage} result="cylinder" preserveAspectRatio="none" />
-            <feOffset ref={lensOffset} in="cylinder" dx="0" dy="0" result="directed-cylinder" />
-            <feDisplacementMap
-              ref={displacement}
-              in="SourceGraphic"
-              in2="directed-cylinder"
-              scale="0"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
       <div
         className="testimonial-viewport"
 
         {...viewportProps}
       >
-        <div ref={track} className="testimonial-track">
-          {labels.map((label, index) => (
-            <article
-              key={index}
-              className={`testimonial-slide ${index === 1 ? 'testimonial-video' : 'testimonial-text'}`}
-              aria-label={`${index + 1} de 3: ${label}${index === 2 ? ' (prévia repetida)' : ''}`}
-              aria-hidden={active !== index}
-              inert={active !== index}
-            >
-              {index === 1 ? (
-                <TestimonialVideoCard
-                  quote={quote}
-                  name={name}
-                  role={role}
-                  videoSrc={videoSrc}
-                  playing={playing}
-                  notice={notice}
-                  onPlay={() => (videoSrc ? setPlaying(true) : setNotice(true))}
-                  onEnded={() => setPlaying(false)}
-                />
-              ) : (
-                <TestimonialTextCard quote={quote} name={name} role={role} />
-              )}
-            </article>
-          ))}
+        <div className="testimonial-reading-window">
+          <div ref={track} className="testimonial-track">
+            {labels.map((label, index) => (
+              <article
+                key={index}
+                className="testimonial-slide"
+                aria-label={`${index + 1} de 3: ${label}${index === 2 ? ' (prévia repetida)' : ''}`}
+                aria-hidden={active !== index}
+                inert={active !== index}
+              >
+                <div
+                  className={`testimonial-surface ${index === 1 ? 'testimonial-video' : 'testimonial-text'}`}
+                >
+                  {index === 1 ? (
+                    <TestimonialVideoCard
+                      quote={quote}
+                      name={name}
+                      role={role}
+                      videoSrc={videoSrc}
+                      playing={playing}
+                      notice={notice}
+                      onPlay={() => (videoSrc ? setPlaying(true) : setNotice(true))}
+                      onEnded={() => setPlaying(false)}
+                    />
+                  ) : (
+                    <TestimonialTextCard quote={quote} name={name} role={role} />
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
+        <canvas ref={glassCanvas} className="testimonial-glass-canvas" aria-hidden="true" hidden />
       </div>
       <button
         type="button"

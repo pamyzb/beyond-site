@@ -38,7 +38,7 @@ export function AboutSection({ section, icons }: { section: SectionData; icons: 
         () => {
           const cleanups = Array.from(root.querySelectorAll('.about-panel-card')).map(
             (card, index) => {
-              const glyph = card.querySelector('[id*="lucide/"]');
+              const glyph = card.querySelector('[data-artwork-role="about-glyph"]');
               if (!glyph) return () => {};
               const motion = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
               if (index === 0) {

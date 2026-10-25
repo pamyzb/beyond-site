@@ -1,0 +1,16 @@
+/* Section-owned rules; import position preserves the V1 cascade. */
+.section-contato .section-heading-title {
+  max-width: none;
+}
+.section-contato .section-heading-subtitle {
+  grid-column: 1/-1;
+  grid-row: 2;
+  max-width: 43.3125rem;
+  padding-left: 6.0625rem;
+  text-align: left;
+}
+
+/* Section-owned rules; import position preserves the V1 cascade. */
+.section-contato .conversation-artwork [id$='-icon_14'] {
+  display: none;
+}

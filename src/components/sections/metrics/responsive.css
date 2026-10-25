@@ -1,0 +1,76 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+.impact-section {
+  scroll-margin-top: var(--space-4);
+}
+
+@media (max-width: 89.999em) {
+  .impact-figma .impact-panel {
+    padding: 3rem var(--page-gutter);
+  }
+  .impact-figma .impact-grid {
+    gap: 1rem;
+  }
+  .impact-figma .impact-stat {
+    padding: 2rem 1.25rem;
+  }
+  .impact-figma .impact-press {
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+  .impact-figma .impact-press-logos {
+    flex-basis: 60%;
+  }
+  .client-inline-details {
+    width: calc(100% - 2 * var(--page-gutter));
+  }
+  .client-inline-details[data-open='true'] {
+    max-height: 50rem;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .impact-figma .impact-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .impact-figma .impact-stat {
+    min-height: 0;
+    padding: 2rem;
+  }
+  .impact-figma .title--metric-stat {
+    font-size: clamp(3.5rem, 10vw, 5.125rem);
+  }
+  .impact-stat-label {
+    margin-bottom: 1.5rem;
+  }
+  .impact-figma .impact-press {
+    padding: 1.5rem;
+  }
+  .impact-figma .impact-press > p {
+    max-width: none;
+    flex-basis: 100%;
+  }
+  .impact-figma .impact-press-logos {
+    flex-basis: 100%;
+  }
+  .client-inline-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .client-inline-photo {
+    height: 12rem;
+  }
+  .client-inline-card .client-tooltip-body {
+    padding: 1.5rem;
+  }
+  .title--metrics-label {
+    width: calc(100% - 2 * var(--page-gutter));
+    font-size: var(--text-small);
+  }
+}
+
+@media (max-width: 37.499em) {
+  .impact-figma .impact-press-logos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}

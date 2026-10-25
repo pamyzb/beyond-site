@@ -1,0 +1,4 @@
+/* Section-owned rules; import position preserves the V1 cascade. */
+.section-faq .conversation-artwork [id$='-icon_13'] {
+  display: none;
+}

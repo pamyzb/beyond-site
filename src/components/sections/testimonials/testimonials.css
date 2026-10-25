@@ -16,6 +16,14 @@
   height: 38.3125rem;
   border-radius: 2rem;
   overflow: hidden;
+  background: transparent;
+}
+.testimonial-surface {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
   background: var(--color-gray-800);
 }
 .testimonial-text {
@@ -267,11 +275,31 @@
 .testimonial-slide[aria-hidden='true'] {
   pointer-events: none;
 }
-.testimonial-glass-defs {
+.testimonial-glass-canvas {
   position: absolute;
   pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: plus-lighter;
+}
+.testimonial-glass-canvas[hidden] {
+  display: none;
+}
+.testimonial-carousel[data-glass-renderer='webgl'] .testimonial-reading-window {
+  /* Fade only outside the reading viewport; blend the two premultiplied
+     layers additively so the overlap cannot create a dark vertical band. */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 48px,
+    black calc(100% - 48px),
+    transparent
+  );
+  width: calc(100% + 96px);
+  margin-inline: -48px;
+  padding-inline: 48px;
 }
 .testimonial-viewport {
+  position: relative;
   cursor: grab;
 }
 .testimonial-viewport[data-dragging='true'] {
@@ -281,6 +309,44 @@
 .testimonial-viewport img {
   user-select: none;
   -webkit-user-drag: none;
+}
+
+/* Frost the background separately from the readable content. The animated
+   lens remains shared; this surface adds no outlined rim or displacement pass. */
+@media (min-width: 60em) and (hover: hover) and (pointer: fine) {
+  .testimonial-slide {
+    overflow: visible;
+  }
+  /* The static surface is filtered inside the moving layer. The track itself
+     remains unfiltered so scrolling/translation can reuse the card textures. */
+  .testimonial-text {
+    background: transparent;
+  }
+  .testimonial-text::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    filter: blur(3px);
+    background:
+      url('/assets/figma/testimonial-card-art.svg?v=rounded-2') center/100% 100% no-repeat,
+      radial-gradient(ellipse at 20% 0%, rgb(215 231 255 / 8%), transparent 70%),
+      linear-gradient(145deg, rgb(31 41 55 / 92%), rgb(17 24 39 / 88%));
+  }
+  .testimonial-text > * {
+    position: relative;
+    z-index: 1;
+  }
+  .testimonial-video::after {
+    border-radius: inherit;
+    background: rgb(24 33 48 / 74%);
+  }
+  .testimonial-video-poster {
+    /* This is a static image: frost it once instead of sampling a moving
+       backdrop underneath the full-card refraction on every frame. */
+    filter: blur(3px) saturate(1.15);
+  }
 }
 
 /* On compact screens the card stays crisp and the browser avoids rasterizing a

@@ -1,0 +1,25 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+.footer-nav {
+  flex-wrap: wrap;
+}
+.footer-contact a {
+  overflow-wrap: anywhere;
+}
+.footer-slogan {
+  font-size: clamp(2.625rem, 5vw, 4.5rem);
+  white-space: normal;
+}
+.footer-layout {
+  width: min(var(--content-width), calc(100% - 2 * var(--page-gutter)));
+}
+.footer-action.button {
+  max-width: 100%;
+  height: auto;
+  min-height: 2.75rem;
+  padding: 0.625rem 1rem;
+}
+.footer-socials .footer-social.button {
+  width: 2.75rem;
+  height: 2.75rem;
+}

@@ -1,0 +1,103 @@
+.hero-glass {
+  mask: none;
+  -webkit-mask: none;
+  overflow: visible;
+  contain: layout;
+  background: none;
+  filter: drop-shadow(2px 4px 2px rgb(52 69 113 / 0.2))
+    drop-shadow(12px 22px 24px rgb(26 43 85 / 0.24));
+}
+.hero-glass-material {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  background: rgb(220 232 255 / 0.22);
+}
+.hero-glass-tint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(132deg, #7187ff80 4%, #2f43fc52 38%, #1731bc66 72%, #abc9ff73);
+  mix-blend-mode: normal;
+  opacity: 0.72;
+}
+.hero-glass-sheen {
+  background:
+    url('/assets/figma/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
+    linear-gradient(118deg, transparent 20%, #ffffff30 32%, #ffffff05 43%, transparent 54%),
+    linear-gradient(132deg, #ffffffd9, #dde8ff30 16%, #ffffff08 46%, #6f97ff38 86%, #ffffffe0);
+}
+.hero-glass-grain {
+  position: absolute;
+  inset: 0;
+  background: url('/assets/figma/hero-glass-grain.svg') repeat;
+  opacity: 0;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+.hero-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translate(6px, 8px);
+  mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  background: linear-gradient(135deg, #eff5ffb3 5%, #bbcef080 38%, #647ba880 72%, #dceaffb3);
+  pointer-events: none;
+}
+.hero-glass-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 22%,
+    #ffffff05 27%,
+    #ffffff45 29%,
+    #ffffff08 32%,
+    transparent 38%,
+    transparent 66%,
+    #a4baff18 76%,
+    #ffffff40 88%,
+    transparent 95%
+  );
+  pointer-events: none;
+}
+.section-inicio {
+  overflow: visible;
+}
+.hero-typewriter {
+  display: inline-grid;
+  position: relative;
+  max-width: 100%;
+  white-space: normal;
+}
+.hero-typewriter-reserve {
+  opacity: 0;
+  grid-area: 1/1;
+}
+.hero-typewriter-visual {
+  grid-area: 1/1;
+  justify-self: start;
+}
+.hero-typewriter-caret {
+  display: inline-block;
+  width: 1px;
+  height: 0.95em;
+  margin-left: 0.1875rem;
+  vertical-align: -0.08em;
+  background: currentColor;
+  animation: hero-caret-blink 900ms step-end infinite;
+}
+@keyframes hero-caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-typewriter-caret {
+    display: none;
+  }
+}
