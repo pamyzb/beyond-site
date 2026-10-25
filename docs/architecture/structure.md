@@ -33,10 +33,14 @@ ramificações dos antigos `DesignSection` e `ContentCards`. `SectionShell`
 mantém o contrato de tema e geometria; `TextBlock` adapta apenas tipografia.
 
 `data/site-content.ts` acessa o JSON na composição da página. Os adaptadores
-de Cases e Serviços selecionam blocos por identificadores/ancestrais estáveis
+de Cases e Serviços selecionam blocos por identificadores/ancestrais do export
 e entregam modelos tipados aos componentes interativos. Não importe o JSON
 completo em componentes cliente. `data/navigation.ts` concentra os destinos;
 o texto visível não decide mais qual URL abrir.
+
+Esses identificadores são contratos locais com o export atual, não uma API
+estável do Figma. Uma reexportação deve preservar ou atualizar os seletores e
+adaptadores correspondentes, com testes de conteúdo e SVG.
 
 Hooks locais isolam a jornada e navegação de Serviços, o arrasto/refração dos
 Depoimentos e a simulação do personagem do rodapé. A geometria do personagem
@@ -48,6 +52,12 @@ Depoimentos e a simulação do personagem do rodapé. A geometria do personagem
 dos blocos; a revisão posterior consolidou declarações sobrescritas em Cases
 e Serviços, retirou estilos de experimentos e padronizou a formatação.
 `styles/responsive.css` conserva os ajustes finais compartilhados.
+
+A separação de CSS por seção ainda é parcial: por exemplo,
+`services/scroll-journey.css` também contém regras de Cases e Aplicativo, e
+`app-showcase/artwork.css` altera outras seções. Confira a ordem dos imports
+antes de mover essas regras. A consolidação planejada está em
+[Sustentabilidade da V1](maintenance.md).
 
 `pnpm css:check` verifica as cascatas global, do personagem do rodapé e do
 módulo do design system. `css:fix` remove somente declarações idênticas com
@@ -65,6 +75,11 @@ compartilhar o registro dos plugins e respeite `prefers-reduced-motion`.
 para dez arquivos com nome baseado no conteúdo. Os bytes das imagens, IDs e
 geometria SVG são preservados. `lib/server/` aplica os namespaces necessários
 antes de enviar os SVGs aos componentes.
+
+A normalização das telas (`normalize-phone-screens.mjs`) move o atributo
+`transform` do `<svg data-screen-source>` para um grupo `<g>` externo. Esse
+formato preserva o resultado geométrico e evita a tela invisível no Safari.
+Os testes verificam dimensões, conteúdo, IDs e estabilidade entre execuções.
 
 Processos também gera `.generated/process-fragments.json`: quatro cards e
 um marcador, cada qual com suas próprias dependências SVG. O módulo servidor

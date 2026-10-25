@@ -33,6 +33,21 @@ estáticos convencionais.
 pré-visualizar `out/` no computador. Não há fallback de SPA: uma URL
 inexistente deve retornar 404. Pare `pnpm dev` antes, pois ambos usam a porta 4173.
 
+Para testar no Safari de um iPhone na mesma rede do computador:
+
+```sh
+node scripts/figma/prepare-artwork.mjs
+pnpm exec next dev --hostname 0.0.0.0 --port 4173
+```
+
+Pare o servidor anterior e abra `http://<IPv4-do-computador>:4173` no iPhone.
+O computador pode estar conectado por cabo ao mesmo roteador. Consulte o IPv4
+com `ipconfig` no Windows e permita o Node no firewall apenas para a rede de
+teste confiável. `allowedDevOrigins` em `next.config.ts` permite os endereços
+IPv4 locais detectados ao iniciar o servidor; após trocar de rede, reinicie-o.
+Essa configuração só vale para desenvolvimento. Em caso de falha, confira se
+o menu abre, os erros do navegador e a preferência “Reduzir Movimento” do iOS.
+
 As versões exatas estão em `pnpm-lock.yaml`. O `pnpm-workspace.yaml` permite
 os builds nativos de Sharp e Tailwind. Não use um segundo lockfile de outro
 gerenciador.
@@ -87,7 +102,19 @@ são hidratados pelo React a partir dos arquivos estáticos.
 
 ## Tema e interações
 
-O dark mode é acionado por ScrollTrigger quando o título "Aplicativo da Beyond" começa a aparecer na tela. Ao subir e o título sair pela borda inferior, o tema volta ao branco. A transição de 600 ms respeita `prefers-reduced-motion`; fotos e mockups mantêm suas cores.
+O dark mode é acionado por `conversation-scroll-theme` quando o fim de
+`#conversa` alcança o fim da viewport (`start: 'bottom bottom'`). Ao subir
+acima desse ponto, o tema volta ao branco. A transição respeita
+`prefers-reduced-motion`; fotos e mockups mantêm suas cores. Os contratos
+estão em [Modos de cor](docs/themes.md).
+
+O hero acompanha o mouse a partir de `90em` com hover e ponteiro fino; nos
+demais layouts, usa uma lente menor com refração e percurso automático em
+faixas de Z, com retorno, desaceleração e pausas. Os controles de Serviços
+ficam abaixo dos cards nos layouts compactos, e os robôs ficam na faixa
+superior visível. O Aplicativo desenha o contorno e os elementos da tela
+progressivamente, inclusive em telas de toque. Veja [Animações](docs/animations.md)
+e [Vidro do hero](docs/hero-3d.md) para limites e variantes.
 
 Menu, FAQ e expansão do blog foram preservados. O formulário valida os
 campos no navegador e simula a confirmação de envio; não há backend nem
@@ -115,6 +142,10 @@ Os SVGs originais usados por `<img>` continuam autocontidos; apenas os derivados
 inline usam referências externas. Para incluir um novo derivado, adicione sua
 origem em `src/data/artwork-files.json`.
 
+`normalize-phone-screens.mjs` move a transformação dos SVGs internos das
+telas para grupos `<g>`, preservando as coordenadas, dimensões e referências.
+Isso corrige a renderização no Safari sem editar os exports originais.
+
 O mesmo preparo converte as sete fontes TTF locais para WOFF2, remove dos
 derivados inline apenas fontes embutidas idênticas às compartilhadas e gera
 um fundo leve do hero sem definições SVG não referenciadas. Os originais
@@ -122,3 +153,17 @@ continuam preservados. As gravações são atômicas e arquivos idênticos não
 são regravados, reduzindo mudanças desnecessárias na prévia de desenvolvimento.
 
 As variantes `*-bleed.svg` separam fundos fluidos, fotos ancoradas às bordas e elementos centrais de tamanho fixo. A largura vem do container da seção (`cqw`), sem incluir a barra de rolagem. A faixa de clientes usa conteúdo React repetido, com cópias ocultas de leitores de tela, e recorta somente na borda da página. A interface usa `rem`, com breakpoints em `em`; SVGs e cálculos de canvas mantêm coordenadas locais em pixels. Consulte [a revisão responsiva](docs/responsiveness-review.md) para critérios e validação.
+
+## Manutenção e validação
+
+Execute `pnpm typecheck`, `pnpm test`, `pnpm css:check` e `pnpm build` antes
+de publicar. Os testes atuais cobrem conteúdo, geometria, fontes e preparo
+de SVGs; não substituem uma conferência visual do site em navegadores.
+Teste menu, carrosséis e animações em desktop, tela compacta e Safari no
+iPhone, incluindo movimento reduzido. Um build local que falhou não deve
+ser registrado como validado porque o TypeScript ou os testes passaram.
+
+As prioridades e limitações estruturais estão em
+[Sustentabilidade da V1](docs/architecture/maintenance.md). Documentos em
+`docs/qa/` registram validações históricas; seus resultados descrevem o estado
+naquela revisão, sem comprovar automaticamente alterações posteriores.
