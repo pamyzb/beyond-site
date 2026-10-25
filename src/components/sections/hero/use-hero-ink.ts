@@ -173,7 +173,7 @@ export function useHeroInk() {
       }
       lastPaint = now;
       const lifetime = desktop.matches ? 1800 : 2600;
-      const radius = desktop.matches ? 145 : Math.min(96, bounds.width * 0.22);
+      const radius = desktop.matches ? 145 : Math.min(80, bounds.width * 0.18);
       points = points.filter((point) => now - point.time < lifetime);
       const path = inkPath(points, now, radius, lifetime);
       playback(Boolean(path));

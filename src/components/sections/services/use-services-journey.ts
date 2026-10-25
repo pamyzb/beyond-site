@@ -25,6 +25,7 @@ export function useServicesJourney({
       const svg = path.ownerSVGElement!;
       const robots = Array.from(track.querySelectorAll<HTMLElement>(':scope > .builder'));
       const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+      const compactMedia = matchMedia('(max-width: 89.999em), (hover: none), (pointer: coarse)');
       let length = 0;
       let outlineLength = 0;
       let construction: gsap.core.Timeline | undefined;
@@ -60,11 +61,40 @@ export function useServicesJourney({
           const after = path.getPointAtLength(Math.min(length, distance + 12));
           const onVerticalSegment =
             !joining && Math.abs(after.y - before.y) > Math.abs(after.x - before.x);
+          let x = point.x + (onVerticalSegment ? 0 : index * spacing);
+          let y = point.y + robotOffset(point) + (onVerticalSegment ? index * spacing : 0);
+          if (compactMedia.matches && cardBounds.length) {
+            // The SVG route can lag behind native scrolling. Choose the card
+            // from the actual viewport, never from that delayed route position.
+            const center = element.scrollLeft + element.clientWidth / 2;
+            const card = cardBounds.reduce((nearest, candidate) => {
+              const gap = (bounds: (typeof cardBounds)[number]) =>
+                Math.max(bounds.left - center, 0, center - bounds.right);
+              return gap(candidate) < gap(nearest) ? candidate : nearest;
+            });
+            const halfWidth = Math.max(...robots.map((builder) => builder.offsetWidth)) / 2;
+            const pairSpacing = 72;
+            const visibleLeft = element.scrollLeft + halfWidth + 12;
+            const visibleRight =
+              element.scrollLeft + element.clientWidth - halfWidth - pairSpacing - 12;
+            const start = Math.max(
+              visibleLeft,
+              Math.min(
+                visibleRight,
+                Math.max(
+                  card.left + halfWidth,
+                  Math.min(card.right - halfWidth - pairSpacing, point.x),
+                ),
+              ),
+            );
+            x = start + index * pairSpacing;
+            y = card.top - 38;
+          }
           gsap.set(robot, {
             left: 0,
             top: 0,
-            x: point.x + (onVerticalSegment ? 0 : index * spacing),
-            y: point.y + robotOffset(point) + (onVerticalSegment ? index * spacing : 0),
+            x,
+            y,
             xPercent: -50,
             yPercent: -50,
           });
@@ -80,6 +110,8 @@ export function useServicesJourney({
         });
       const paint = () => {
         if (!length) return;
+        // Native swipes update the viewport before the journey tween catches up.
+        if (compactMedia.matches) placeRobots();
         const max = element.scrollWidth - element.clientWidth;
         const progress = max > 0 ? Math.max(0, Math.min(1, element.scrollLeft / max)) : 0;
         if (progress <= 0.001) {

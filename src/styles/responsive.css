@@ -942,6 +942,40 @@ video {
   }
 }
 
+/* Native service carousels reserve a separate row for navigation, regardless
+   of image height, caption wrapping, or the agent card's longer copy. */
+@media (max-width: 89.999em), (hover: none), (pointer: coarse) {
+  .services-editorial .services-stage {
+    grid-template-rows: auto auto;
+  }
+  .services-editorial .services-rail {
+    padding-top: 5rem;
+    padding-bottom: 1.5rem;
+  }
+  .services-editorial .services-navigation {
+    grid-row: 2;
+    grid-template-rows: auto;
+    align-items: center;
+    margin: 0 var(--page-gutter) 1rem;
+  }
+  .services-editorial .services-controls {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    margin: 0;
+    transform: none;
+  }
+  .services-editorial .services-pagination {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    margin: 0 3.5rem;
+    padding-block: 0.75rem;
+    pointer-events: none;
+  }
+}
+
 /* Short windows and enlarged text use flow instead of a viewport-height trap. */
 @media (max-height: 47.999em), (prefers-reduced-motion: reduce) {
   .cases-editorial .case-browser {
