@@ -1,0 +1,46 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+@media (max-width: 89.999em) {
+  .section-faq > .conversation-artwork {
+    display: none;
+  }
+  .section-faq {
+    height: auto;
+    min-height: 0;
+    padding-block: var(--section-space);
+  }
+  .section-faq .section-content--faq {
+    padding-top: 0;
+  }
+  .section-faq .faq-content-row {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    gap: 2rem;
+  }
+  .section-faq .faq-team-art {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .section-faq .faq-content-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .section-faq .faq-team-art {
+    width: min(28rem, 100%);
+    justify-self: center;
+  }
+}
+
+@media (max-width: 37.499em) {
+  .section-faq .faq-question {
+    padding: 1.5rem 2.75rem 1rem 0.5rem;
+    min-height: 0;
+    font-size: var(--text-body-lg);
+    line-height: 1.5;
+  }
+  .section-faq .faq-item:first-child .faq-question {
+    padding-top: 1.5rem;
+    min-height: 0;
+  }
+}

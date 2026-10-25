@@ -1,0 +1,9 @@
+/* Section-owned rules; import position preserves the V1 cascade. */
+.app-drawn-art [id$='-qrcode-cta'] {
+  display: none;
+}
+
+/* Section-owned rules; import position preserves the V1 cascade. */
+.app-drawn-art [id$='-Vector_42'] {
+  stroke: #1f2937;
+}

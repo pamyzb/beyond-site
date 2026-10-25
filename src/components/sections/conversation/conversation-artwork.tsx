@@ -30,7 +30,7 @@ export function ConversationArtwork({
           if (!context.conditions?.motion) return;
           if (variant === 'conversation' && context.conditions.desktop) {
             const logo = section.querySelector<SVGPathElement>(
-              '.conversation-overlay [id="Vector_40"]',
+              '.conversation-overlay [data-artwork-role="conversation-outline"]',
             );
             if (logo) {
               const length = logo.getTotalLength();
@@ -54,13 +54,7 @@ export function ConversationArtwork({
           }
           const targets = context.conditions.desktop
             ? Array.from(
-                desktop.current!.querySelectorAll<SVGGElement>(
-                  variant === 'contact'
-                    ? '[id="contact-art-contact-image"]'
-                    : variant === 'faq'
-                      ? '[id="faq-art-Image-faq"]'
-                      : '[id="conversation-art-Container_21"],[id="conversation-art-Container_23"],[id="conversation-art-Container_24"],[id="conversation-art-Container_22"]',
-                ),
+                desktop.current!.querySelectorAll<SVGGElement>('[data-artwork-role="photo"]'),
               )
             : context.conditions.compact && variant === 'conversation'
               ? mobilePhotos
@@ -136,8 +130,7 @@ export function ConversationArtwork({
           targets.forEach((target, index) => {
             const left =
               variant === 'faq' ||
-              target.id.endsWith('_21') ||
-              target.id.endsWith('_24') ||
+              target.getAttribute('data-artwork-side') === 'left' ||
               target.classList.contains('conversation-photo-top-left') ||
               target.classList.contains('conversation-photo-bottom-left');
             const wide = context.conditions?.desktop;

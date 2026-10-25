@@ -14,8 +14,13 @@
 @import '../components/sections/hero/hero.css';
 @import '../components/sections/metrics/clients-layout.css';
 @import '../components/layout/header/header-theme.css';
+@import '../components/sections/hero/material.css';
 @import '../styles/themes.css';
 @import '../components/sections/app-showcase/artwork.css';
+@import '../components/sections/contact/artwork-layout.css';
+@import '../components/sections/process/artwork-layout.css';
+@import '../components/sections/faq/artwork-layout.css';
+@import '../components/sections/testimonials/artwork-layout.css';
 @import '../components/sections/process/process.css';
 @import '../components/sections/about/about.css';
 @import '../components/sections/blog/blog.css';
@@ -27,6 +32,10 @@
 @import '../components/layout/header/header.css';
 @import '../components/sections/metrics/metrics-details.css';
 @import '../components/sections/services/scroll-journey.css';
+@import '../components/sections/cases/viewport-layout.css';
+@import '../components/sections/app-showcase/artwork-visibility.css';
+@import '../components/sections/conversation/artwork-visibility.css';
+@import '../components/ui/section-heading-accent.css';
 @import '../components/sections/metrics/metrics-finish.css';
 @import '../styles/theme-wash.css';
 @import '../components/sections/app-showcase/qr.css';
@@ -34,6 +43,20 @@
 @import '../components/sections/app-showcase/app.css';
 @import '../styles/cta-layout.css';
 @import '../styles/responsive.css';
+@import '../components/sections/hero/responsive.css';
+@import '../components/sections/metrics/responsive.css';
+@import '../components/sections/services/responsive.css';
+@import '../components/sections/cases/responsive.css';
+@import '../components/sections/about/responsive.css';
+@import '../components/sections/contact/responsive.css';
+@import '../components/layout/footer/responsive.css';
+@import '../components/layout/header/responsive.css';
+@import '../components/sections/conversation/responsive.css';
+@import '../components/sections/app-showcase/responsive.css';
+@import '../components/sections/testimonials/responsive.css';
+@import '../components/sections/process/responsive.css';
+@import '../components/sections/faq/responsive.css';
+@import '../components/sections/blog/responsive.css';
 
 /* Keep the approved Figma reset; Tailwind preflight is intentionally not imported. */
 @theme inline {

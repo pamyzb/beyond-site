@@ -13,12 +13,17 @@
     "prebuild": "node scripts/figma/prepare-artwork.mjs --clean-export",
     "build": "next build",
     "test": "node --test scripts/figma/*.test.mjs scripts/tests/*.test.mjs",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\"",
-    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\"",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"playwright.config.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"scripts/**/*.mjs\" \"tests/**/*.ts\" \"playwright.config.ts\"",
     "css:check": "node scripts/css/check-cascade.mjs",
     "css:fix": "node scripts/css/check-cascade.mjs --fix",
     "start": "serve out --listen tcp://127.0.0.1:4173 --no-clipboard --no-port-switching",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "prepare": "node scripts/git/install-hooks.mjs",
+    "check": "node scripts/figma/prepare-artwork.mjs && next typegen && pnpm typecheck && pnpm format:check && pnpm css:check && pnpm test",
+    "verify": "pnpm check && pnpm build && node scripts/git/verify-browser.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -29,11 +34,13 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@xmldom/xmldom": "^0.9.12",
+    "husky": "^9.1.7",
     "postcss": "^8.5.31",
     "prettier": "^3.9.10",
     "serve": "^14.2.6",

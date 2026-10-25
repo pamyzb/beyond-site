@@ -1,0 +1,44 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+.about-card-title {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 89.999em) {
+  .section-sobre {
+    height: auto;
+    min-height: 0;
+    padding-block: var(--section-space);
+  }
+  .section-sobre .section-content--sobre {
+    padding-top: 0;
+  }
+  .section-sobre .about-panel {
+    height: auto;
+    min-height: 24rem;
+    margin-top: 3rem;
+  }
+  .about-card-body {
+    padding: 2rem 1.5rem;
+    gap: 1rem;
+  }
+  .about-icon {
+    margin-bottom: 1rem;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .section-sobre .about-panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .about-panel-card + .about-panel-card {
+    border-left: 0;
+    border-top: 1px solid var(--color-gray-700);
+  }
+  .about-card-body {
+    padding: 2rem;
+  }
+  .about-card-copy {
+    max-width: none;
+  }
+}

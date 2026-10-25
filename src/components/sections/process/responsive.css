@@ -1,0 +1,81 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+@media (max-width: 89.999em) {
+  .section-processo {
+    height: auto;
+    min-height: 0;
+    padding-block: var(--section-space);
+  }
+  .section-processo .section-content--processo {
+    width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
+    min-height: 0;
+    padding-top: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    --process-card-padding: 3rem 2rem;
+    --process-cards-gap: 2rem;
+  }
+  .section-processo .process-card-title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    transform: none;
+  }
+  .section-processo .process-card-copy {
+    transform: none;
+    max-width: none;
+  }
+  .section-processo .process-card {
+    background: var(--color-action);
+    border-radius: var(--radius-card);
+    min-height: 21rem;
+  }
+  .section-processo .process-card-art,
+  .process-route-layer,
+  .process-marker-layer {
+    display: none;
+  }
+  .section-processo .process-card-step {
+    position: static;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--color-accent);
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .section-processo .section-content--processo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .section-processo .process-card-column {
+    display: contents;
+  }
+  .section-processo .process-card-entry {
+    grid-column: 1;
+  }
+  .section-processo .process-card-entry[data-step='0'] {
+    grid-row: 2;
+  }
+  .section-processo .process-card-entry[data-step='1'] {
+    grid-row: 3;
+  }
+  .section-processo .process-card-entry[data-step='2'] {
+    grid-row: 4;
+  }
+  .section-processo .process-card-entry[data-step='3'] {
+    grid-row: 5;
+  }
+  .section-processo .process-card {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 37.499em) {
+  .section-processo .process-card {
+    padding: 2rem;
+  }
+  .section-processo .process-card-title {
+    font-size: clamp(1.5rem, 6.5vw, 2rem);
+    overflow-wrap: anywhere;
+  }
+}

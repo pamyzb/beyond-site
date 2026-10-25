@@ -1,4 +1,4 @@
-/* Inline artwork retains the original image geometry at each breakpoint. */
+/* Section-owned rules; import position preserves the V1 cascade. */
 .app-drawn-art > svg {
   display: block;
   width: 100%;
@@ -7,8 +7,6 @@
 .component-art.app-drawn-art > svg {
   height: auto;
 }
-
-/* Keep application title strokes attached to their words across breakpoints. */
 .app-drawn-art :is([id$='-Line-1'], [id$='-Line-6']) {
   display: none;
 }
@@ -47,16 +45,12 @@
   display: block;
   white-space: nowrap;
 }
-
 @media (prefers-reduced-motion: reduce) {
   .app-title-scribble path {
     animation: none !important;
     stroke-dashoffset: 0;
   }
 }
-
-/* More breathing room between the two application feature blocks. */
-
 .section-aplicativo {
   /* Figma composition and local asset registration. Keep these exact values
      local to the section; they are not candidates for global spacing tokens. */
@@ -91,35 +85,14 @@
 .section-aplicativo .aplicativo-section-heading {
   margin: 0 4.167%;
 }
-.section-contato .section-heading-title {
-  max-width: none;
-}
-.section-contato .section-heading-subtitle {
-  grid-column: 1/-1;
-  grid-row: 2;
-  max-width: 43.3125rem;
-  padding-left: 6.0625rem;
-  text-align: left;
-}
-.section-processo .process-track #icon_8,
-.section-faq .conversation-artwork [id$='-icon_13'],
-.section-contato .conversation-artwork [id$='-icon_14'] {
-  display: none;
-}
-.section-depoimentos img[src*='testimonial-heading.svg'] {
-  display: none;
-}
-/* The wide illustration is a constrained backdrop only. Phone mockups belong
-   to their related feature card below, so they can keep their relationship to
-   copy when that card later reflows. */
+
+/* Section-owned rules; import position preserves the V1 cascade. */
 .section-aplicativo > .app-drawn-art :is([id$='-container1'], [id$='-container 2']) {
   display: none;
 }
-/* Center the QR invitation within the space beside the code. */
 .section-aplicativo .qr-instructions {
   text-align: center;
 }
-
 .section-aplicativo .qr-instructions .text-run {
   position: static;
   display: inline;
@@ -129,8 +102,6 @@
 .section-aplicativo .qr-instructions .text-run:first-child {
   display: block;
 }
-
-/* Passive QR card: radial fill and depth, without button semantics. */
 .qr-hover-fill {
   fill: var(--primary-dark-hover);
 }
@@ -146,7 +117,6 @@
     filter: drop-shadow(0.375rem 0.5rem 0 var(--primary-dark-depth));
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   .qr-hover-reveal,
   .qr-hover-card,

@@ -22,6 +22,19 @@ pnpm build
 pnpm start
 ```
 
+Para testar os arquivos de produção em navegadores automatizados, após o build:
+
+```sh
+pnpm exec playwright install chromium webkit
+pnpm test:e2e
+```
+
+O Playwright serve `out/` na porta 4181 e testa Chromium em desktop, tablet e
+mobile, além de WebKit mobile. `pnpm test:e2e:ui` abre os cenários interativos.
+O workflow `Quality` verifica tipos, testes unitários, CSS, formatação, build e
+navegadores em pushes e pull requests. Consulte os limites e a organização em
+[Sustentabilidade da V1](docs/architecture/maintenance.md).
+
 `pnpm build` limpa a saída gerada anterior e exporta HTML, CSS, JavaScript e assets para `out/`. As leituras
 dos SVGs pelo Node.js acontecem durante o build. A hospedagem precisa servir
 somente `out/`, sem executar o Next.js ou instalar Node.js em produção.
@@ -156,9 +169,20 @@ As variantes `*-bleed.svg` separam fundos fluidos, fotos ancoradas às bordas e 
 
 ## Manutenção e validação
 
-Execute `pnpm typecheck`, `pnpm test`, `pnpm css:check` e `pnpm build` antes
-de publicar. Os testes atuais cobrem conteúdo, geometria, fontes e preparo
-de SVGs; não substituem uma conferência visual do site em navegadores.
+Após `pnpm install`, o Husky ativa os hooks locais. O commit exige `pnpm check`
+(preparo de assets e tipos, TypeScript, formatação, cascata CSS e testes unitários).
+O push exige `pnpm verify`, que acrescenta build e testes de navegador sobre a
+exportação recém-gerada. Instale os navegadores uma vez com
+`pnpm exec playwright install chromium webkit`. Os dois comandos também podem
+ser executados manualmente; o workflow `Quality` executa `pnpm verify` no CI.
+
+Os hooks verificam o estado atual dos arquivos, incluindo alterações ainda não
+adicionadas ao stage. Hooks locais podem ser ignorados pelo Git; para exigir o
+resultado no servidor, configure `Quality / validate` como check obrigatório na
+proteção da branch no GitHub. Essa configuração remota não é feita pelo Husky.
+
+Os testes cobrem conteúdo, geometria, fontes, preparo de SVGs e interações;
+não substituem uma conferência visual do site em navegadores.
 Teste menu, carrosséis e animações em desktop, tela compacta e Safari no
 iPhone, incluindo movimento reduzido. Um build local que falhou não deve
 ser registrado como validado porque o TypeScript ou os testes passaram.

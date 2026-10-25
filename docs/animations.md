@@ -60,6 +60,13 @@ Esse exemplo não foi aplicado à página: novas animações devem partir do mov
 
 ## Alvos e artwork
 
+Para os derivados SVG, use `data-artwork-role` (por exemplo `phone`,
+`phone-camera`, `photo` e `process-marker`). O mapeamento dos nomes exportados
+fica em `scripts/figma/artwork-roles.mjs`, com validação de quantidade no preparo
+e testes. Uma reexportação exige revisar esse adaptador; não adicione IDs como
+`Container_26` aos seletores dos hooks. IDs continuam necessários para referências
+internas SVG, como clips e filtros, com namespace por instância.
+
 As seções têm `data-motion="section"` e os cartões `data-motion="card"`. Textos são elementos React, não imagens. Em 1440 px, parte da decoração ainda vem dos SVGs compostos originais e os cartões usam `display: contents` para conservar a geometria aprovada. Para animar um cartão completo nessa largura, extraia sua decoração em um componente/asset independente e dê um box real ao wrapper antes de aplicar transforms. Não anime o wrapper `display: contents`, nem espere selecionar paths internos de um `<img>`.
 
 O SVG do bloco "45 minutos" já está inline e suas cores são controladas pelo CSS. Os recortes de imagens responsivas ficam em `public/assets/figma/`. Para animações complexas de paths, prefira SVG inline local e IDs sem colisão. O scroll da página continua nativo. Os pins de Serviços e Cases ficam restritos a desktop com ponteiro fino, altura suficiente e movimento habilitado.
@@ -87,6 +94,12 @@ do SVG interno para um `<g>` externo, mantendo a correção de renderização no
 Safari. Respeite a desmontagem dos clones, clips e timelines ao alterar o efeito.
 
 ## Verificação em navegador
+
+`pnpm build && pnpm test:e2e` executa os cenários Playwright sobre a exportação
+estática, em Chromium desktop/tablet/mobile e WebKit mobile. Instale os browsers
+antes com `pnpm exec playwright install chromium webkit`. A suíte cobre menu,
+movimento/pausa do hero, controles e robôs de Serviços, desenho dos telefones
+e conteúdo com movimento reduzido. O workflow `Quality` também a executa no CI.
 
 Os testes de geometria e SVG não executam as timelines num navegador. Depois
 de alterar uma animação, valide entrada e saída da seção, retorno pelo scroll,

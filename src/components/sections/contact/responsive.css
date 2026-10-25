@@ -1,0 +1,88 @@
+/* Responsive rules owned by this component; loaded after base styles. */
+
+.contact-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.contact-form .field {
+  min-width: 0;
+}
+.field-wide {
+  left: auto;
+  width: 100%;
+}
+.field textarea {
+  min-height: 9.75rem;
+  height: auto;
+  resize: vertical;
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--color-gray-400);
+}
+.contact-field-error {
+  position: static;
+  display: block;
+  overflow-wrap: anywhere;
+}
+.form-actions {
+  flex-wrap: wrap;
+  left: auto;
+}
+
+@media (max-width: 89.999em) {
+  .section-contato > .conversation-artwork {
+    display: none;
+  }
+  .section-contato {
+    height: auto;
+    min-height: 0;
+    padding-block: var(--section-space);
+  }
+  .section-contato .section-content--contato {
+    padding-top: 0;
+  }
+  .section-contato .section-content--contato {
+    display: block;
+  }
+  .section-contato .contact-form {
+    width: min(100%, 48rem);
+    margin: 3rem auto 0;
+  }
+  .section-contato .section-heading-subtitle {
+    padding-left: 0;
+  }
+  .section-contato > .component-art {
+    display: block;
+    position: relative;
+    width: min(28rem, calc(100% - 2 * var(--page-gutter)));
+    height: auto;
+    margin: 3rem auto 0;
+  }
+  .section-contato {
+    margin-bottom: 0;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .section-contato .section-heading-subtitle {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .section-contato .contact-form {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  .form-actions .contact-submit {
+    width: 100%;
+    white-space: normal;
+  }
+  .form-actions .whatsapp-link.button {
+    width: 100%;
+    white-space: normal;
+  }
+}
