@@ -20,6 +20,10 @@ export default defineConfig({
       use: { browserName: 'chromium', viewport: { width: 1440, height: 1000 } },
     },
     {
+      name: 'desktop-webkit',
+      use: { browserName: 'webkit', viewport: { width: 1440, height: 1000 } },
+    },
+    {
       name: 'tablet-chromium',
       use: { browserName: 'chromium', viewport: { width: 768, height: 1024 }, hasTouch: true },
     },

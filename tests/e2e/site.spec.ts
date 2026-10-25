@@ -45,6 +45,47 @@ test.afterEach(async ({ page }) => {
   expect(runtimeErrors.get(page)).toEqual([]);
 });
 
+test('case tabs keep their full labels and icons at narrow widths', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  const initialWidth = page.viewportSize()!.width;
+  for (const width of new Set([initialWidth, 360, 320])) {
+    await page.setViewportSize({ width, height: 844 });
+    const tabs = page.getByRole('tablist', { name: 'Cases', exact: true });
+    await tabs.scrollIntoViewIfNeeded();
+    const buttons = tabs.getByRole('tab');
+    await expect(buttons).toHaveCount(3);
+    for (let index = 0; index < 3; index++) {
+      const tab = buttons.nth(index);
+      await tab.scrollIntoViewIfNeeded();
+      expect(
+        await tab.evaluate((button) => {
+          const box = button.getBoundingClientRect();
+          const viewport = button.parentElement!.getBoundingClientRect();
+          return (
+            box.left >= viewport.left - 1 &&
+            box.right <= viewport.right + 1 &&
+            [...button.children].every((child) => {
+              const content = child.getBoundingClientRect();
+              return content.left >= box.left - 1 && content.right <= box.right + 1;
+            })
+          );
+        }),
+        `Complete content of tab ${index + 1} at ${width}px`,
+      ).toBe(true);
+    }
+    await buttons.nth(0).scrollIntoViewIfNeeded();
+    await buttons.nth(0).focus();
+    await page.keyboard.press('End');
+    await expect(buttons.nth(2)).toHaveAttribute('aria-selected', 'true');
+    await page.keyboard.press('Home');
+    await expect(buttons.nth(0)).toHaveAttribute('aria-selected', 'true');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(
+      true,
+    );
+  }
+});
+
 test('theme changes at the conversation boundary and returns when scrolling back', async ({
   page,
 }) => {
@@ -71,20 +112,20 @@ test('services carousel supports Home, End and arrow keys', async ({ page }) => 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload();
   const carousel = page.getByRole('region', { name: 'Serviços', exact: true });
-  const firstCardVisible = () =>
-    carousel.evaluate((el) => {
+  const cardVisible = (index: number) =>
+    carousel.evaluate((el, index) => {
       const viewport = el.getBoundingClientRect();
-      const card = el.querySelector('article')!.getBoundingClientRect();
+      const card = [...el.querySelectorAll('article')].at(index)!.getBoundingClientRect();
       return card.left >= viewport.left - 1 && card.right <= viewport.right + 1;
-    });
+    }, index);
+  const firstCardVisible = () => cardVisible(0);
   await carousel.scrollIntoViewIfNeeded();
   await carousel.focus();
   await page.keyboard.press('End');
-  await expect
-    .poll(() =>
-      carousel.evaluate((el) => Math.abs(el.scrollWidth - el.clientWidth - el.scrollLeft)),
-    )
-    .toBeLessThan(2);
+  // Native snap and decorative overflow can leave a small scroll offset at either
+  // end. Verify that End exposes the complete final card, as Home does the first.
+  await expect.poll(() => cardVisible(-1)).toBe(true);
+  await expect.poll(firstCardVisible).toBe(false);
   await page.keyboard.press('Home');
   // Native scroll snap can retain a small inset; assert the user's full first card.
   await expect.poll(firstCardVisible).toBe(true);

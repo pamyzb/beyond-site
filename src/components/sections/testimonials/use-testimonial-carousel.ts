@@ -1,18 +1,14 @@
 'use client';
-import { useId, useRef, useState, type HTMLAttributes } from 'react';
+import { useRef, useState, type HTMLAttributes } from 'react';
 import { gsap, useGSAP } from '@/lib/animation/gsap';
-import { createCylinderMap } from '@/lib/animation/testimonial-glass';
+import { createTestimonialGlass, type TestimonialGlass } from '@/lib/animation/testimonial-glass';
 export function useTestimonialCarousel() {
   const scope = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const pagination = useRef<HTMLDivElement>(null);
   const previousPage = useRef<number | null>(null);
-  const filterId = `testimonial-glass-${useId().replace(/:/g, '')}`;
-  const glass = useRef<SVGFilterElement>(null);
-  const glassImage = useRef<SVGFEImageElement>(null);
-  const displacement = useRef<SVGFEDisplacementMapElement>(null);
-  const lensOffset = useRef<SVGFEOffsetElement>(null);
-  const motion = useRef({ pos: 0, target: 0, speed: 0, velocity: 0, intro: 1 });
+  const glassCanvas = useRef<HTMLCanvasElement>(null);
+  const motion = useRef({ pos: 0, target: 0 });
   const navigate = useRef<(index: number) => void>(() => {});
   const drag = useRef<{
     id: number;
@@ -89,60 +85,105 @@ export function useTestimonialCarousel() {
       const glassMedia = window.matchMedia(
         '(min-width: 60em) and (hover: hover) and (pointer: fine)',
       );
+      // Shareable preview of the same HTML fallback used when WebGL fails.
+      const glassDisabled =
+        new URLSearchParams(window.location.search).get('testimonialGlass') === 'off';
       const state = motion.current;
       const cards = Array.from(rail.querySelectorAll<HTMLElement>('.testimonial-slide'));
       const wrap = gsap.utils.wrap(-1.5, 1.5);
-      let mapScale = 0;
+      const canvas = glassCanvas.current!;
+      const stage = root.querySelector<HTMLElement>('.testimonial-viewport')!;
       let lastPos = state.pos;
       let lastTime = performance.now();
       let wasPlaying = paused.current.playing;
       let idle = 0;
       let tween: gsap.core.Tween | undefined;
-      let intro: gsap.core.Tween | undefined;
+      let entrance: gsap.core.Tween | undefined;
       let introduced = false;
-      let glassStrength = 0;
-      const glassEnabled = () => glassMedia.matches && !media.matches && paused.current.visible;
+      let geometryKey = '';
+      let generation = 0;
+      let disposed = false;
+      let renderer: TestimonialGlass | null = null;
+      let preparation: AbortController | null = null;
+      let renderedPosition = NaN;
+      const glassEnabled = () =>
+        !glassDisabled &&
+        glassMedia.matches &&
+        !media.matches &&
+        paused.current.visible &&
+        !document.hidden &&
+        !paused.current.playing;
       const render = () => {
-        const glassActive = glassEnabled() && glassStrength > 0;
-        cards.forEach((card, index) => {
-          const slot = wrap(index - state.pos);
-          const distance = Math.min(1, Math.abs(slot));
-          gsap.set(card, {
-            xPercent: slot * 96,
-            scale: 1 - distance * 0.16,
-            opacity: 1 - distance * 0.58,
-            filter: glassMedia.matches ? `blur(${distance * 4}px)` : 'none',
-            zIndex: Math.abs(slot) < 0.5 ? 2 : 1,
+        if (renderedPosition !== state.pos) {
+          cards.forEach((card, index) => {
+            const slot = wrap(index - state.pos);
+            const distance = Math.min(1, Math.abs(slot));
+            gsap.set(card, {
+              xPercent: slot * 96,
+              scale: 1 - distance * 0.16,
+              opacity: 1 - distance * 0.58,
+              zIndex: Math.abs(slot) < 0.5 ? 2 : 1,
+            });
           });
-        });
-        rail.style.filter = glassActive ? `url("#${filterId}")` : '';
-        displacement.current?.setAttribute(
-          'scale',
-          String(glassActive ? mapScale * glassStrength : 0),
-        );
-        // The lens follows the signed movement; magnitude still controls bending.
-        // Returning to the previous slide mirrors the leading/trailing refraction.
-        lensOffset.current?.setAttribute('dx', String(glassActive ? -state.velocity * 72 : 0));
+          renderedPosition = state.pos;
+        }
+        let enabled = false;
+        if (glassEnabled() && renderer) {
+          enabled = renderer.draw(state.pos);
+          if (!enabled) {
+            // A failed GPU pass is terminal for this renderer. Keep the HTML
+            // fallback instead of retrying the failing draw every frame.
+            renderer.dispose();
+            renderer = null;
+          }
+        }
+        if (canvas.hidden === enabled) canvas.hidden = !enabled;
+        const status = enabled ? 'webgl' : renderer ? 'paused' : 'fallback';
+        if (root.dataset.glassRenderer !== status) root.dataset.glassRenderer = status;
       };
       const resize = () => {
-        if (!glassMedia.matches) {
-          mapScale = 0;
-          rail.style.filter = '';
+        if (!glassEnabled()) {
           render();
           return;
         }
-        const map = createCylinderMap(rail.clientWidth, rail.clientHeight, window.innerWidth);
-        if (!map || !glass.current || !glassImage.current) return;
-        for (const key of ['x', 'y', 'width', 'height'] as const) {
-          glass.current.setAttribute(key, String(map[key]));
-          glassImage.current.setAttribute(key, String(map[key]));
+        const key = [rail.clientWidth, rail.clientHeight, innerWidth, devicePixelRatio].join(':');
+        if (key === geometryKey) {
+          render();
+          return;
         }
-        glassImage.current.setAttribute('href', map.href);
-        mapScale = map.scale;
+        geometryKey = key;
+        const currentGeneration = ++generation;
+        preparation?.abort();
+        preparation = new AbortController();
+        renderer?.dispose();
+        renderer = null;
         render();
+        void createTestimonialGlass(
+          canvas,
+          rail,
+          () => {
+            if (disposed || generation !== currentGeneration) return;
+            renderer?.dispose();
+            renderer = null;
+            render();
+          },
+          preparation.signal,
+        )
+          .then((next) => {
+            if (disposed || generation !== currentGeneration) {
+              next?.dispose();
+              return;
+            }
+            renderer = next;
+            render();
+          })
+          .catch(() => {
+            if (!disposed && generation === currentGeneration) render();
+          });
       };
       navigate.current = (index) => {
         tween?.kill();
+        tween = undefined;
         state.target = Math.round(index);
         idle = 0;
         setActive(((state.target % 3) + 3) % 3);
@@ -150,8 +191,6 @@ export function useTestimonialCarousel() {
         setPlaying(false);
         if (media.matches) {
           state.pos = state.target;
-          state.speed = 0;
-          state.velocity = 0;
           render();
           return;
         }
@@ -161,43 +200,13 @@ export function useTestimonialCarousel() {
           ease: 'expo.inOut',
           overwrite: 'auto',
         });
+        syncTicker();
       };
       const tick = () => {
         const now = performance.now();
         const dt = Math.min(0.1, Math.max(0.001, (now - lastTime) / 1000));
         lastTime = now;
-        const velocity = Math.max(-0.7, Math.min(0.7, ((state.pos - lastPos) / dt) * 0.22));
-        const speed = Math.abs(velocity);
-        const previousSpeed = state.speed;
-        const previousVelocity = state.velocity;
-        const smoothing = 1 - Math.exp(-12 * dt);
-        state.speed += (speed - state.speed) * smoothing;
-        // Clear the old direction immediately when a drag or tween reverses.
-        if (velocity * state.velocity < 0) state.velocity = 0;
-        state.velocity += (velocity - state.velocity) * smoothing;
-        if (state.speed < 0.001) state.speed = 0;
-        if (Math.abs(state.velocity) < 0.001) state.velocity = 0;
-        // Ease the lens itself to zero before detaching its SVG filter. The
-        // previous baseline of 1 removed a still-distorted image in one frame.
-        const previousStrength = glassStrength;
-        const amount = Math.min(1, state.speed / 0.18);
-        const envelope = amount * amount * (3 - 2 * amount);
-        const targetStrength =
-          glassEnabled() && !paused.current.playing
-            ? Math.max(0, state.intro - 1) * 2.25 + (1 + state.speed) * envelope
-            : 0;
-        glassStrength += (targetStrength - glassStrength) * (1 - Math.exp(-8 * dt));
-        // At this point removing the filter changes displacement by < 0.03px.
-        if (targetStrength === 0 && glassStrength * mapScale < 0.03) glassStrength = 0;
-        if (
-          state.pos !== lastPos ||
-          state.speed !== previousSpeed ||
-          state.velocity !== previousVelocity ||
-          glassStrength !== previousStrength ||
-          intro?.isActive() ||
-          wasPlaying !== paused.current.playing
-        )
-          render();
+        if (state.pos !== lastPos || wasPlaying !== paused.current.playing) render();
         lastPos = state.pos;
         wasPlaying = paused.current.playing;
         const p = paused.current;
@@ -215,20 +224,34 @@ export function useTestimonialCarousel() {
           if (idle >= 2.6) navigate.current(state.target + 1);
         } else idle = 0;
       };
+      let ticking = false;
+      const syncTicker = () => {
+        const shouldTick = paused.current.visible && !document.hidden && !media.matches;
+        for (const animation of [tween, entrance]) {
+          if (animation && animation.progress() < 1) animation.paused(!shouldTick);
+        }
+        if (shouldTick === ticking) return;
+        ticking = shouldTick;
+        if (ticking) {
+          lastTime = performance.now();
+          lastPos = state.pos;
+          gsap.ticker.add(tick);
+        } else gsap.ticker.remove(tick);
+      };
       const observer = new ResizeObserver(resize);
       observer.observe(rail);
-      if (!media.matches) gsap.set(rail, { opacity: 0, y: 36 });
+      if (!media.matches) gsap.set(stage, { opacity: 0, y: 36 });
       const visibility = new IntersectionObserver(
         ([entry]) => {
           paused.current.visible = entry.isIntersecting;
+          resize();
           render();
+          syncTicker();
           if (entry.isIntersecting && !introduced) {
             introduced = true;
             if (!media.matches) {
-              state.intro = 1.8;
-              intro = gsap.to(state, { intro: 1, duration: 1.3, ease: 'power2.out' });
-              gsap.fromTo(
-                rail,
+              entrance = gsap.fromTo(
+                stage,
                 { y: 36, opacity: 0 },
                 { y: 0, opacity: 1, duration: 1.3, ease: 'power2.out' },
               );
@@ -241,35 +264,45 @@ export function useTestimonialCarousel() {
       const preferenceChanged = () => {
         if (media.matches) {
           tween?.kill();
-          intro?.kill();
-          gsap.killTweensOf(rail);
+          gsap.killTweensOf(stage);
+          tween = undefined;
+          entrance = undefined;
           state.pos = state.target;
-          state.speed = 0;
-          state.velocity = 0;
-          state.intro = 1;
-          gsap.set(rail, { y: 0, opacity: 1 });
+          gsap.set(stage, { y: 0, opacity: 1 });
         }
+        resize();
         render();
+        syncTicker();
+      };
+      const pageVisibilityChanged = () => {
+        resize();
+        render();
+        syncTicker();
       };
       media.addEventListener('change', preferenceChanged);
       glassMedia.addEventListener('change', resize);
       window.addEventListener('resize', resize);
-      gsap.ticker.add(tick);
+      document.addEventListener('visibilitychange', pageVisibilityChanged);
+      syncTicker();
       resize();
       return () => {
         tween?.kill();
-        intro?.kill();
-        gsap.killTweensOf(rail);
+        gsap.killTweensOf(stage);
         observer.disconnect();
         visibility.disconnect();
         gsap.ticker.remove(tick);
         media.removeEventListener('change', preferenceChanged);
         glassMedia.removeEventListener('change', resize);
         window.removeEventListener('resize', resize);
-        rail.style.filter = '';
+        document.removeEventListener('visibilitychange', pageVisibilityChanged);
+        disposed = true;
+        generation++;
+        preparation?.abort();
+        renderer?.dispose();
+        delete root.dataset.glassRenderer;
       };
     },
-    { scope, dependencies: [filterId] },
+    { scope },
   );
 
   const interactionProps: HTMLAttributes<HTMLDivElement> = {
@@ -373,11 +406,7 @@ export function useTestimonialCarousel() {
     scope,
     track,
     pagination,
-    filterId,
-    glass,
-    glassImage,
-    displacement,
-    lensOffset,
+    glassCanvas,
     active,
     notice,
     playing,

@@ -84,7 +84,7 @@ não apenas celulares.
 | Serviços compactos | Abaixo de `90em`, sem hover ou com ponteiro coarse: controles numa linha abaixo dos cards e robôs na faixa acima do card visível. |
 | Jornada fixada de Serviços | A partir de `90em`, altura mínima de `48em`, hover, ponteiro fino e movimento habilitado. |
 | Desenho do Aplicativo | A partir de `60em`, com hover e ponteiro fino, usa a sequência detalhada com recorte. Nos demais layouts, desenha contorno e conteúdo sem o recorte animado adicional. |
-| Refração dos Depoimentos | A partir de `60em`, com hover e ponteiro fino, enquanto há movimento e desaceleração. A intensidade chega praticamente a zero antes de remover o filtro. Nos demais layouts, refração e blur dos cards ficam desativados. |
+| Refração dos Depoimentos | No desktop (`60em`, hover e ponteiro fino), as laterais usam WebGL com curva cilíndrica calculada em ponto flutuante e duas texturas reutilizáveis (texto e vídeo), medidas a partir do HTML e limitadas a DPR 2 e ao tamanho máximo da GPU. O centro permanece HTML nítido e interativo. Uma faixa externa de 48px mistura HTML e canvas com alpha complementar; refração e blur só começam depois dessa faixa, evitando letras duplicadas e divisões verticais. O fundo e a linha de base das texturas acompanham o CSS. O canvas só redesenha quando a posição do carrossel muda, sem reenviar texturas; scroll e resize sem mudança de geometria reutilizam o resultado. Fora da seção, com aba oculta ou movimento reduzido, ticker e canvas são suspensos. Durante a reprodução de vídeo, o canvas e o avanço automático pausam; o ticker continua observando o estado de reprodução. Mobile, GPU indisponível e perda do contexto mantêm o carrossel HTML sem refração. Preparações obsoletas são canceladas e os recursos GPU são liberados ao desmontar ou substituir o renderizador. |
 
 O Aplicativo usa `app-artwork.tsx`. No modo compacto, o ScrollTrigger observa
 o wrapper HTML do telefone, não o grupo interno do SVG. O contorno aparece
@@ -95,8 +95,12 @@ Safari. Respeite a desmontagem dos clones, clips e timelines ao alterar o efeito
 
 ## Verificação em navegador
 
+Para comparar o fallback HTML dos Depoimentos, abra `/?testimonialGlass=off#depoimentos`.
+Esse parâmetro desativa somente a refração desse carrossel, sem alterar as demais
+animações nem a preferência do navegador. Remova o parâmetro para voltar ao WebGL.
+
 `pnpm build && pnpm test:e2e` executa os cenários Playwright sobre a exportação
-estática, em Chromium desktop/tablet/mobile e WebKit mobile. Instale os browsers
+estática, em Chromium desktop/tablet/mobile e WebKit desktop/mobile. Instale os browsers
 antes com `pnpm exec playwright install chromium webkit`. A suíte cobre menu,
 movimento/pausa do hero, controles e robôs de Serviços, desenho dos telefones
 e conteúdo com movimento reduzido. O workflow `Quality` também a executa no CI.

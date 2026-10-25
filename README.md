@@ -30,7 +30,7 @@ pnpm test:e2e
 ```
 
 O Playwright serve `out/` na porta 4181 e testa Chromium em desktop, tablet e
-mobile, além de WebKit mobile. `pnpm test:e2e:ui` abre os cenários interativos.
+mobile, além de WebKit desktop/mobile. `pnpm test:e2e:ui` abre os cenários interativos.
 O workflow `Quality` verifica tipos, testes unitários, CSS, formatação, build e
 navegadores em pushes e pull requests. Consulte os limites e a organização em
 [Sustentabilidade da V1](docs/architecture/maintenance.md).
