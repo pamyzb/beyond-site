@@ -98,7 +98,7 @@ export function useHeroGlass() {
     const syncSample = () => {
       const needed =
         active() &&
-        mode === 'pointer' &&
+        (mode === 'pointer' || mode === 'auto') &&
         canvas &&
         x + w > word.left - 24 &&
         x < word.right + 24 &&
@@ -115,13 +115,14 @@ export function useHeroGlass() {
       const cx = w / 2,
         cy = h / 2;
       glass.style.transform = `translate3d(${x + cx}px,${y + cy}px,0) rotate(${angle}deg) translate(${-cx}px,${-cy}px)`;
-      if (mode === 'pointer' && copy) {
+      if ((mode === 'pointer' || mode === 'auto') && copy) {
         // Counter-rotate the sampled scene inside a lens-sized filter viewport.
         content.style.transform = `translate(${cx}px,${cy}px) rotate(${-angle}deg) translate3d(${-x - cx}px,${-y - cy}px,0)`;
         copy.style.transformOrigin = `${x + cx}px ${y + cy}px`;
-        copy.style.transform = 'scale(1.26)';
+        copy.style.transform = mode === 'auto' ? 'scale(1.3)' : 'scale(1.26)';
         syncSample();
-      } else if (mode === 'auto' && active()) {
+      }
+      if (mode === 'auto' && active()) {
         hero.dispatchEvent(
           new CustomEvent('hero-ambient-position', {
             detail: { x: x + cx, y: y + cy, time: performance.now() },
@@ -216,8 +217,9 @@ export function useHeroGlass() {
           left: clamp(Math.min(firstLine.left, lastLine.left) - bounds.left - w * 0.32, 0, maxX),
           right: clamp(Math.max(firstLine.right, lastLine.right) - bounds.left - w * 0.68, 0, maxX),
           top: clamp(firstLine.top - bounds.top + firstLine.height / 2 - h / 2, top, area.bottom),
-          bottom: clamp(lastLine.top - bounds.top + lastLine.height / 2 - h / 2, top, area.bottom),
+          bottom: Math.max(top, bounds.height - h - 24),
         };
+        area.bottom = area.trace.bottom;
       }
       const videoBounds = hero.querySelector('.hero-video-word')!.getBoundingClientRect();
       word = {
@@ -235,7 +237,7 @@ export function useHeroGlass() {
         canvas = null;
         context = null;
         content.replaceChildren();
-        if (mode === 'pointer' && ready && visible && !document.hidden) {
+        if ((mode === 'pointer' || mode === 'auto') && ready && visible && !document.hidden) {
           const cloned = cloneHeroScene(hero);
           copy = cloned.copy;
           video = cloned.video;
@@ -262,7 +264,10 @@ export function useHeroGlass() {
             filter.current.setAttribute('y', '-16');
             filter.current.setAttribute('width', String(w + 32));
             filter.current.setAttribute('height', String(h + 32));
-            displacement.current?.setAttribute('scale', String(map.scale));
+            displacement.current?.setAttribute(
+              'scale',
+              String(map.scale * (mode === 'auto' ? 1.8 : 1)),
+            );
           }
         }
       }

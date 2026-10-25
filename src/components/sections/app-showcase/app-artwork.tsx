@@ -86,29 +86,10 @@ export function AppArtwork({ svg, className }: { svg: string; className: string 
         },
         (context) => {
           if (!context.conditions?.motion) return;
-          // Mobile Safari can fail to reveal nested SVG clips or measure SVG
-          // scroll triggers. Keep the original phone intact and trigger on HTML.
-          if (!context.conditions.detailed) {
-            if (host.classList.contains('component-art')) {
-              gsap.fromTo(
-                host,
-                { opacity: 0, y: 24 },
-                {
-                  opacity: 1,
-                  y: 0,
-                  duration: 0.7,
-                  ease: 'power2.out',
-                  immediateRender: false,
-                  scrollTrigger: {
-                    trigger: host,
-                    start: 'top 90%',
-                    toggleActions: 'play none none none',
-                  },
-                },
-              );
-            }
-            return;
-          }
+          const compact = !context.conditions.detailed;
+          // Wide background artwork is hidden on mobile; animate only the
+          // standalone phones there, using their HTML wrapper as the trigger.
+          if (compact && !host.classList.contains('component-art')) return;
           const cleanup: Array<() => void> = [];
           // Both theme artworks share this background outline and the same trigger.
           host.querySelectorAll<SVGPathElement>('[id$="-Vector_42"]').forEach((logo) => {
@@ -168,6 +149,12 @@ export function AppArtwork({ svg, className }: { svg: string; className: string 
               outline.setAttribute('stroke-dasharray', '1');
               outline.setAttribute('stroke-dashoffset', '1');
               phone.appendChild(outline);
+              if (compact) {
+                outline.removeAttribute('pathLength');
+                const perimeter = outline.getTotalLength();
+                outline.setAttribute('stroke-dasharray', String(perimeter));
+                outline.setAttribute('stroke-dashoffset', String(perimeter));
+              }
               const clip = document.createElementNS(ns, 'clipPath');
               clip.id = `${phone.id}-screen-reveal-${index}`;
               clip.setAttribute('clipPathUnits', 'userSpaceOnUse');
@@ -178,13 +165,15 @@ export function AppArtwork({ svg, className }: { svg: string; className: string 
               screen.prepend(clip);
               const content = document.createElementNS(ns, 'g');
               while (screen.children.length > 1) content.appendChild(screen.children[1]);
-              content.setAttribute('clip-path', `url(#${clip.id})`);
+              // On touch devices the staggered drawing reveals each element
+              // directly, avoiding a second animated clip inside the SVG viewport.
+              if (!compact) content.setAttribute('clip-path', `url(#${clip.id})`);
               screen.appendChild(content);
               gsap.set([frame, camera, shadow], { opacity: 0 });
               const timeline = gsap
                 .timeline({
                   scrollTrigger: {
-                    trigger: phone,
+                    trigger: compact ? host : phone,
                     start: 'top 85%',
                     toggleActions: 'play none none none',
                   },

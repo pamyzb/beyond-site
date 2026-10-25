@@ -54,13 +54,35 @@
   height: auto;
   aspect-ratio: 180 / 197;
 }
-.hero-glass[data-motion-mode='auto'] .hero-glass-scene,
 .hero-glass[data-motion-mode='reduced'] .hero-glass-scene {
   display: none;
 }
 .hero-glass[data-motion-mode='auto'] .hero-glass-material {
-  backdrop-filter: blur(1px) saturate(1.15);
-  -webkit-backdrop-filter: blur(1px) saturate(1.15);
+  backdrop-filter: saturate(1.3);
+  -webkit-backdrop-filter: saturate(1.3);
+  background: rgb(220 232 255 / 0.04);
+}
+.hero-glass[data-motion-mode='auto'] .hero-glass-tint {
+  opacity: 0.16;
+}
+.hero-glass[data-motion-mode='auto']::before {
+  opacity: 0.2;
+}
+.hero-glass[data-motion-mode='auto'] .hero-glass-scene .design-section {
+  background: transparent !important;
+}
+.hero-glass[data-motion-mode='auto'] .hero-glass-scene .figma-art {
+  opacity: 0;
+}
+.hero-glass[data-motion-mode='auto'] .hero-glass-sheen {
+  opacity: 1;
+  background:
+    url('/assets/figma/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
+    linear-gradient(118deg, transparent 24%, #ffffff28 31%, transparent 39%),
+    linear-gradient(132deg, #ffffff80, transparent 13%, transparent 85%, #ffffff90);
+  box-shadow:
+    inset 1px 1px 3px #ffffff90,
+    inset -1px -2px 4px #a7bcf040;
 }
 .hero-glass-scene .design-section {
   transition: none !important;

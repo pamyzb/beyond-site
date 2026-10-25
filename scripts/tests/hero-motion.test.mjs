@@ -22,7 +22,7 @@ test('ambient motion stays inside its reserved area across compact layouts', () 
   }
 });
 
-test('ambient motion sweeps the headline and slows smoothly at each turn', () => {
+test('ambient motion traces a Z and returns with smooth endpoint holds', () => {
   const area = {
     width: 390,
     lensWidth: 96,
@@ -35,12 +35,15 @@ test('ambient motion sweeps the headline and slows smoothly at each turn', () =>
   assert.ok(Math.abs(endOfFirstLine.x - 282) < 0.000001);
   assert.ok(Math.abs(endOfFirstLine.y - 160) < 0.000001);
   assert.ok(Math.abs(endOfFirstLine.angle) < 0.001);
-  assert.deepEqual(ambientPose(area, 4.6), { x: 282, y: 285, angle: 0 });
-  assert.ok(Math.abs(ambientPose(area, 6.4).x - 12) < 0.000001);
-  assert.deepEqual(ambientPose(area, 9.2), ambientPose(area, 0));
+  assert.deepEqual(ambientPose(area, 5.3), { x: 12, y: 285, angle: 0 });
+  assert.deepEqual(ambientPose(area, 8.7), { x: 282, y: 285, angle: 0 });
+  assert.deepEqual(ambientPose(area, 12.1), { x: 12, y: 285, angle: 0 });
+  assert.deepEqual(ambientPose(area, 15.5), { x: 282, y: 160, angle: 0 });
+  assert.deepEqual(ambientPose(area, 20.4), ambientPose(area, 0));
   for (const elapsed of [0.1, 0.5, 1, 1.5]) {
     assert.deepEqual(ambientPose(area, 1.8 + elapsed), { x: 282, y: 160, angle: 0 });
-    assert.deepEqual(ambientPose(area, 6.4 + elapsed), { x: 12, y: 285, angle: 0 });
+    assert.deepEqual(ambientPose(area, 5.2 + elapsed), { x: 12, y: 285, angle: 0 });
+    assert.deepEqual(ambientPose(area, 8.6 + elapsed), { x: 282, y: 285, angle: 0 });
   }
   const step = 1 / 30;
   const distance = (time) => {
@@ -50,11 +53,40 @@ test('ambient motion sweeps the headline and slows smoothly at each turn', () =>
   };
   assert.ok(distance(0.9) > 8, 'fast sweep leaves a visible trail');
   assert.ok(distance(0.9) > distance(1.7) * 10, 'decelerates before the edge');
-  for (const turn of [1.8, 3.4, 4.6, 6.4, 8, 9.2]) {
+  const diagonal = ambientPose(area, 4.3);
+  assert.ok(Math.abs(diagonal.x - 147) < 0.000001);
+  assert.ok(Math.abs(diagonal.y - 222.5) < 0.000001);
+  for (const turn of [1.8, 3.4, 5.2, 6.8, 8.6, 10.2, 12, 13.6, 15.4, 17, 18.8, 20.4]) {
     const before = ambientPose(area, turn - step);
     const after = ambientPose(area, turn + step);
     assert.ok(Math.hypot(after.x - before.x, after.y - before.y) < 0.1);
     assert.equal(after.angle, 0, 'no rotation jump at turns or loop boundary');
+  }
+});
+
+test('tall heroes get repeated Z bands across the full height and return without a jump', () => {
+  const area = {
+    width: 390,
+    lensWidth: 96,
+    top: 100,
+    bottom: 660,
+    trace: { left: 12, right: 282, top: 100, bottom: 660 },
+  };
+  const forwardSegments = 9;
+  const cycle = forwardSegments * 2 * 3.4;
+  for (let row = 0; row <= 4; row++) {
+    const y = 100 + row * 140;
+    const start = ambientPose(area, row * 2 * 3.4);
+    assert.ok(Math.abs(start.x - 12) < 0.000001);
+    assert.ok(Math.abs(start.y - y) < 0.000001);
+    const end = ambientPose(area, row * 2 * 3.4 + 2);
+    assert.deepEqual(end, { x: 282, y, angle: 0 });
+  }
+  assert.deepEqual(ambientPose(area, cycle), ambientPose(area, 0));
+  for (let t = 0; t < cycle; t += 1 / 30) {
+    const pose = ambientPose(area, t);
+    assert.ok(pose.x >= 11.999999 && pose.x <= 282.000001);
+    assert.ok(pose.y >= 99.999999 && pose.y <= 660.000001);
   }
 });
 

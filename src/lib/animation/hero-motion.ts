@@ -26,25 +26,31 @@ const contourAngles = Array.from({ length: HERO_INK_SEGMENTS + 1 }, (_, index) =
 export function ambientPose(area: AmbientArea, seconds: number) {
   if (area.trace) {
     const { left, right, top, bottom } = area.trace;
-    // Each line gets a quick sweep, a 1.6s hold for the ink to develop, and
-    // a slow turn. Zero velocity and acceleration keep every join smooth.
-    const time = ((seconds % 9.2) + 9.2) % 9.2;
-    const returning = time >= 4.6;
-    const leg = returning ? time - 4.6 : time;
-    const startX = returning ? right : left;
-    const endX = returning ? left : right;
-    const startY = returning ? bottom : top;
-    const endY = returning ? top : bottom;
+    // Stack Z sweeps down the hero, then retrace them in reverse. Each
+    // 1.8s sweep keeps a 1.6s endpoint hold so the ink can develop.
+    const bands = Math.max(1, Math.ceil((bottom - top) / 140));
+    const corners = Array.from({ length: bands + 1 }, (_, row) => {
+      const y = top + ((bottom - top) * row) / bands;
+      return [
+        { x: left, y },
+        { x: right, y },
+      ];
+    }).flat();
+    const forwardSegments = corners.length - 1;
+    const segments = forwardSegments * 2;
+    const cycle = segments * 3.4;
+    const time = ((seconds % cycle) + cycle) % cycle;
+    const segment = Math.min(segments - 1, Math.floor(time / 3.4));
+    const from = segment < forwardSegments ? segment : segments - segment;
+    const to = segment < forwardSegments ? from + 1 : from - 1;
+    const leg = time - segment * 3.4;
     const ease = (value: number) => value * value * value * (value * (value * 6 - 15) + 10);
-    if (leg < 1.8) {
-      const progress = ease(leg / 1.8);
-      return { x: startX + (endX - startX) * progress, y: startY, angle: 0 };
-    }
-    if (leg < 3.4) {
-      return { x: endX, y: startY, angle: 0 };
-    }
-    const progress = ease((leg - 3.4) / 1.2);
-    return { x: endX, y: startY + (endY - startY) * progress, angle: 0 };
+    const progress = ease(Math.min(1, leg / 1.8));
+    return {
+      x: corners[from].x + (corners[to].x - corners[from].x) * progress,
+      y: corners[from].y + (corners[to].y - corners[from].y) * progress,
+      angle: 0,
+    };
   }
   const travel = Math.max(0, area.width - area.lensWidth);
   return {
