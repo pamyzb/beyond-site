@@ -4,8 +4,15 @@ O componente ativo é `src/components/sections/hero/hero-glass.tsx`, com o mapa 
 refração em `src/lib/animation/hero-glass-map.ts`. Ele usa uma cópia mascarada
 do conteúdo do hero, filtros SVG e canvas para o mapa de deslocamento. O filtro
 fica limitado à área da lente. O mapa é pequeno e reutilizado por dimensão.
-Em desktop com ponteiro fino (90em ou mais), acompanha o mouse. Nas outras
-composições, usa uma lente menor com a mesma técnica de cópia e refração,
+Dispositivos com `maxTouchPoints > 0` ou `any-pointer: coarse` usam o percurso
+automático em Z, com ida e volta, inclusive com mouse ou trackpad conectado.
+A detecção usa capacidades de entrada, sem identificar modelos pelo user agent.
+A preferência de movimento reduzido mantém a marca estática e desativa a pintura.
+Sem suporte a toque, com ponteiro fino e hover, acompanha o mouse em qualquer largura, usando o
+mesmo rastro do desktop. A lente mantém o tamanho de 22,5rem × 24,625rem
+a partir de 37,5em. No mobile, sua largura é limitada a 15,75rem ou 60vw,
+preservando a proporção original em todos os modos de movimento. Em dispositivos
+de toque, usa movimento automático com a mesma técnica de cópia e refração,
 ampliação de 1,3 e intensidade de deslocamento de 1,8 vezes o mapa base.
 O filtro continua limitado à área da lente. Transparência, reflexos e a face
 traseira têm ajustes próprios no modo automático; a variante do mouse mantém

@@ -2,9 +2,6 @@
 .impact-figma .impact-stat {
   border: 0;
 }
-.impact-figma .impact-press {
-  border: 0;
-}
 
 /* Anchor the four decorative marks to the complete impact section. */
 .impact-figma {
@@ -35,9 +32,6 @@
 }
 
 /* Final spacing and balance for the metrics ribbon. */
-.impact-figma .impact-pattern-top-right {
-  top: 2rem;
-}
 .impact-figma .impact-brands {
   padding-top: 5.5rem;
 }

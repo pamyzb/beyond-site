@@ -28,6 +28,34 @@
   height: 100%;
   overflow: visible;
 }
+
+/* Rounded artwork must retain antialiasing, including older Figma exports. */
+.about-icon svg [shape-rendering] {
+  shape-rendering: geometricPrecision;
+}
+
+.about-icon--lucide {
+  display: grid;
+  place-items: center;
+}
+
+.about-icon-surface {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  color: var(--color-primary-700);
+  outline: 0.0625rem solid color-mix(in srgb, var(--color-primary-700) 45%, transparent);
+  outline-offset: 0.5rem;
+  box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--color-primary-700) 18%, transparent);
+}
+
+.about-icon--lucide svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
 @media (hover: hover) and (pointer: fine) {
   .about-panel-card:hover::before {
     opacity: 1;

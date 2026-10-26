@@ -1,3 +1,8 @@
+/* Shared visible rhythm between clients, metric cards and press. */
+.impact-figma {
+  --impact-block-gap: 3rem;
+  --metric-depth-height: 0.75rem;
+}
 /* Interactive credibility section, using the shared client and button components. */
 .impact-figma .impact-brands {
   height: auto;
@@ -229,7 +234,7 @@
 }
 .impact-figma .impact-panel {
   background: transparent;
-  padding-top: 3rem;
+  padding-top: var(--impact-block-gap);
 }
 .impact-figma .impact-patterns {
   opacity: 0.35;
@@ -249,7 +254,7 @@
   flex-basis: 15rem;
   flex-direction: column;
   gap: 1rem;
-  padding: 0.75rem 1.5rem 1.5rem;
+  padding: 0.75rem 1.5rem 0;
   justify-content: flex-start;
 }
 .impact-figma .client-strip .impact-brand img {
@@ -294,19 +299,40 @@
   font-style: normal;
 }
 .impact-figma .impact-grid {
-  gap: 1rem;
+  gap: var(--space-10);
   align-items: stretch;
 }
 .impact-figma .impact-stat {
-  padding: 1.75rem 1.5rem 2rem;
-  border-radius: 1.5rem;
-  background: var(--color-white);
+  padding: var(--space-10) var(--space-4);
+  border-radius: var(--radius-card);
+  background-color: var(--color-surface);
+  /* Original Figma exports include each vector's offset, flip and card crop. */
+  background-image: url('/assets/metricas/padroes/card-businesses.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-text);
+  container-type: inline-size;
+  --metric-depth-color: var(--color-metric-neutral-depth);
   text-align: left;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid var(--color-border-soft);
   display: flex;
   flex-direction: column;
-  min-height: 14.875rem;
+  min-height: 13.75rem;
+}
+/* A separate solid strip preserves the inset without collapsing its radius. */
+.impact-figma .impact-stat::after {
+  content: '';
+  position: absolute;
+  inset-inline: var(--space-6);
+  top: 100%;
+  height: var(--metric-depth-height);
+  transform: scaleY(0.65);
+  transform-origin: top;
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  background: var(--metric-depth-color);
+  pointer-events: none;
 }
 .impact-stat-label {
   font-size: var(--text-micro);
@@ -316,7 +342,7 @@
   color: #5d6880;
 }
 .impact-figma .title--metric-stat {
-  font-size: clamp(2.625rem, 5.7vw, 5.125rem);
+  font-size: clamp(2.625rem, 25cqi, var(--text-display-lg));
   justify-content: flex-start;
   gap: 0.375rem;
   letter-spacing: var(--tracking-tighter);
@@ -333,34 +359,54 @@
   text-align: left;
   font-size: var(--text-small);
   line-height: var(--leading-relaxed);
-  margin-top: 0.75rem;
+  margin-top: 0;
 }
 .impact-figma .impact-stat:first-child {
-  background: var(--color-action);
+  background-color: var(--color-action);
+  background-image: url('/assets/metricas/padroes/card-users.svg');
   color: var(--color-on-action);
   border-color: var(--color-action);
+  --metric-depth-color: var(--color-metric-primary-depth);
+  --metric-depth-height: 0.5625rem;
 }
 .impact-figma .impact-stat:first-child :is(p, .impact-stat-label) {
-  color: #e2e6ff;
+  color: var(--color-on-action);
 }
 .impact-figma .impact-stat:nth-child(3) {
-  background: #d5edb9;
-  color: #172719;
-  border-color: #d5edb9;
+  background-color: var(--color-primary-300);
+  background-image: url('/assets/metricas/padroes/card-value.svg');
+  color: var(--color-text);
+  border-color: var(--color-primary-300);
+  --metric-depth-color: var(--color-metric-lilac-depth);
 }
 .impact-figma .impact-stat:nth-child(3) :is(p, .impact-stat-label) {
-  color: #365138;
+  color: var(--color-gray-700);
+}
+.impact-figma .impact-stat:nth-child(3) .title--metric-stat > span:not(.impact-count) {
+  color: var(--color-accent);
 }
 .impact-figma .impact-stat + .impact-stat::before {
   display: none;
 }
 .impact-figma .impact-press {
-  margin-top: 1.5rem;
+  margin-top: calc(var(--impact-block-gap) + var(--metric-depth-height));
   padding: 1.75rem 2rem;
-  border: 1px solid #c6cfdd;
+  border: 0.0625rem solid var(--press-glass-edge);
   border-radius: 1.25rem;
   gap: 2rem;
-  background: #ffffff70;
+  background:
+    linear-gradient(
+      125deg,
+      var(--press-glass-highlight),
+      transparent 24%,
+      transparent 72%,
+      var(--press-glass-fill)
+    ),
+    linear-gradient(180deg, var(--press-glass-fill), rgb(255 255 255 / 0.08)),
+    var(--press-glass-fill);
+  -webkit-backdrop-filter: blur(1.25rem) saturate(160%);
+  backdrop-filter: blur(1.25rem) saturate(160%);
+  box-shadow: 0 0.125rem 0.5rem var(--press-glass-shade);
 }
 .impact-figma .impact-press > p {
   max-width: 7.8125rem;
@@ -369,8 +415,9 @@
   color: #26344b;
 }
 :root[data-scroll-theme='dark'] .impact-stat:nth-child(2) {
-  background: #232932;
+  background-color: #232932;
   border-color: #354054;
+  color: var(--color-white);
 }
 :root[data-scroll-theme='dark'] .impact-press {
   background: #dfe5ef;
@@ -387,4 +434,45 @@
 .services-window.is-scroll-driven {
   scroll-snap-type: none;
   scroll-behavior: auto;
+}
+
+/* Scrolling digit columns: movement is measured in line heights, not hidden track bounds. */
+.impact-count {
+  display: inline-flex;
+  align-items: baseline;
+  line-height: 1.15;
+}
+.impact-count i {
+  font-style: normal;
+}
+.impact-count-digit {
+  display: inline-block;
+  position: relative;
+  height: 1.15em;
+  line-height: 1.15;
+  padding-right: 0.07em;
+  margin-right: -0.07em;
+  overflow: hidden;
+}
+.impact-count-reel {
+  display: none;
+  position: absolute;
+  inset: 0 0 auto;
+  text-align: left;
+  transform: translateY(calc(var(--digit-offset, 0) * -1.15em));
+}
+.impact-count-face {
+  display: block;
+  height: 1.15em;
+  line-height: 1.15;
+}
+.impact-count[data-rolling='true'] .impact-count-final {
+  visibility: hidden;
+}
+.impact-count[data-rolling='true'] .impact-count-reel {
+  display: block;
+}
+
+.impact-press-accent {
+  color: var(--color-action);
 }

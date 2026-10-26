@@ -228,7 +228,7 @@ button {
   bottom: -0.475625rem;
   width: 83.0625rem;
   height: 24.4375rem;
-  background: url('/assets/figma/blog-shade.svg') center/100% 100% no-repeat;
+  background: url('/assets/blog/blog-shade.svg') center/100% 100% no-repeat;
   pointer-events: none;
 }
 .blog-shade .button {

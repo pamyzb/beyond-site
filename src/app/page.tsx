@@ -77,7 +77,7 @@ export default async function Home() {
         aria-label="Conversar com a Beyond pelo WhatsApp"
       >
         <Artwork
-          src="assets/figma/whatsapp-icon.svg"
+          src="assets/compartilhados/whatsapp-icon.svg"
           className="figma-art button-icon"
           width={76}
           height={76}

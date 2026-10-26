@@ -8,12 +8,12 @@ function FooterDecorations({ bottomArtwork }: { bottomArtwork: string[] }) {
       <span className="footer-wave-background" />
       <img
         className="footer-decoration footer-decoration--top-left"
-        src="/assets/footer/left-top.svg"
+        src="/assets/rodape/left-top.svg"
         alt=""
       />
       <img
         className="footer-decoration footer-decoration--top-right"
-        src="/assets/footer/right-top.svg"
+        src="/assets/rodape/right-top.svg"
         alt=""
       />
       <div className="footer-decoration footer-decoration--bottom">
@@ -32,9 +32,11 @@ function FooterDecorations({ bottomArtwork }: { bottomArtwork: string[] }) {
 export function FooterContent({
   stageRef,
   bottomArtwork,
+  homePath = '',
 }: {
   stageRef: RefObject<HTMLDivElement | null>;
   bottomArtwork: string[];
+  homePath?: string;
 }) {
   return (
     <>
@@ -42,14 +44,17 @@ export function FooterContent({
       <div className="footer-layout">
         <a
           className="footer-brand-link"
-          href="#inicio"
+          href={`${homePath}#inicio`}
           aria-label="Beyond the Bytes — voltar ao início"
         >
-          <img src="/assets/figma/brand.svg" width={220} height={23} alt="" />
+          <img src="/assets/compartilhados/brand.svg" width={220} height={23} alt="" />
         </a>
         <nav className="footer-nav" aria-label="Navegação do rodapé">
           {NAVIGATION.map((link) => (
-            <a key={link.href} href={link.href}>
+            <a
+              key={link.href}
+              href={link.href === '#contato' ? link.href : `${homePath}${link.href}`}
+            >
               {link.label}
             </a>
           ))}
@@ -70,7 +75,7 @@ export function FooterContent({
             >
               <img
                 className="button-icon"
-                src={`/assets/figma/footer-social-${name}.svg`}
+                src={`/assets/rodape/footer-social-${name}.svg`}
                 width={40}
                 height={40}
                 alt=""
@@ -110,7 +115,7 @@ export function FooterContent({
           >
             <img
               className="button-icon"
-              src="/assets/figma/button-icon-maps.svg"
+              src="/assets/compartilhados/button-icon-maps.svg"
               width={24}
               height={24}
               alt=""

@@ -2,6 +2,7 @@
 import { useEffect, useId, useRef } from 'react';
 import {
   HERO_FRAME_MS,
+  usesHeroPointer,
   HERO_INK_POINTS,
   inkPath,
   type HeroPoint,
@@ -24,7 +25,10 @@ export function useHeroInk() {
     const host = ink.querySelector<HTMLElement>('.hero-ink-copy')!;
     const header = document.querySelector<HTMLElement>('.site-header:not(.hero-header-reveal)');
     const nextSection = document.getElementById('metricas');
-    const desktop = matchMedia('(min-width: 90em) and (hover: hover) and (pointer: fine)');
+    const desktop = matchMedia('(hover: hover) and (pointer: fine)');
+    const touch = matchMedia('(any-pointer: coarse)');
+    const pointerMode = () =>
+      usesHeroPointer(desktop.matches, touch.matches, navigator.maxTouchPoints);
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     let bounds = hero.getBoundingClientRect(),
       headerBounds = header?.getBoundingClientRect();
@@ -172,8 +176,8 @@ export function useHeroInk() {
         return;
       }
       lastPaint = now;
-      const lifetime = desktop.matches ? 1800 : 2600;
-      const radius = desktop.matches ? 145 : Math.min(80, bounds.width * 0.18);
+      const lifetime = pointerMode() ? 1800 : 2600;
+      const radius = pointerMode() ? 145 : Math.min(80, bounds.width * 0.18);
       points = points.filter((point) => now - point.time < lifetime);
       const path = inkPath(points, now, radius, lifetime);
       playback(Boolean(path));
@@ -182,7 +186,8 @@ export function useHeroInk() {
       ink.dataset.motionState = path ? 'running' : 'idle';
       syncControls(heroControls);
       const atHeader =
-        desktop.matches &&
+        pointerMode() &&
+        matchMedia('(min-width: 90em)').matches &&
         header &&
         headerBounds &&
         bounds.bottom > headerBounds.bottom &&
@@ -232,11 +237,11 @@ export function useHeroInk() {
           });
       }
       points.push(point);
-      points = points.slice(-(desktop.matches ? HERO_INK_POINTS : 12));
+      points = points.slice(-(pointerMode() ? HERO_INK_POINTS : 12));
       if (!frame) frame = requestAnimationFrame(paint);
     };
     const move = (event: PointerEvent) => {
-      if (!desktop.matches || event.pointerType === 'touch') return;
+      if (!pointerMode() || event.pointerType === 'touch') return;
       if (event.clientY < bounds.top || event.clientY > bounds.bottom) return;
       add({
         x: event.clientX - bounds.left,
@@ -245,7 +250,7 @@ export function useHeroInk() {
       });
     };
     const ambient = (event: Event) => {
-      if (desktop.matches) return;
+      if (pointerMode()) return;
       const point = (event as CustomEvent<HeroPoint>).detail;
       const previous = points.at(-1);
       // Holding at an endpoint must let the existing ink develop and fade,
@@ -283,6 +288,7 @@ export function useHeroInk() {
     window.addEventListener('scroll', geometry, { passive: true });
     document.addEventListener('visibilitychange', visibility);
     desktop.addEventListener('change', modeChanged);
+    touch.addEventListener('change', modeChanged);
     reduced.addEventListener('change', modeChanged);
     geometry();
     return () => {
@@ -300,6 +306,7 @@ export function useHeroInk() {
       window.removeEventListener('scroll', geometry);
       document.removeEventListener('visibilitychange', visibility);
       desktop.removeEventListener('change', modeChanged);
+      touch.removeEventListener('change', modeChanged);
       reduced.removeEventListener('change', modeChanged);
     };
   }, [id]);

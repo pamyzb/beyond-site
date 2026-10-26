@@ -11,6 +11,15 @@ export const HERO_INK_SEGMENTS = 32;
 export const HERO_FRAME_MS = 32;
 export const HERO_VIDEO_FRAME_MS = 1000 / 24;
 
+/** Touch-capable devices keep the automatic sweep even with a paired mouse. */
+export function usesHeroPointer(
+  hoverPointer: boolean,
+  coarsePointer: boolean,
+  touchPoints: number,
+) {
+  return hoverPointer && !coarsePointer && !(touchPoints > 0);
+}
+
 const contourAngles = Array.from({ length: HERO_INK_SEGMENTS + 1 }, (_, index) => {
   const a = (index / HERO_INK_SEGMENTS) * Math.PI * 2;
   return {

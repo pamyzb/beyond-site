@@ -190,7 +190,7 @@ export default function DesignSystemPage() {
             <ServiceCard
               title="Produtos digitais"
               description="Sistemas e plataformas feitos para o seu negócio crescer."
-              image="/assets/service-ai-team.png"
+              image="/assets/servicos/service-ai-team.png"
               imageClass=""
               cta="Ver detalhes"
               href="#componentes"

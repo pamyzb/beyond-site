@@ -1,6 +1,7 @@
 export const SITE_LINKS = {
   home: '#inicio',
   contact: '#contato',
+  agentService: '/colaboradores-agenticos/',
   whatsapp: 'https://wa.me/5511936182404',
   maps: 'https://www.google.com/maps/search/?api=1&query=Rua+Cardeal+Arcoverde+745+Pinheiros+Sao+Paulo',
   phone: 'tel:+5511936182404',
@@ -11,7 +12,7 @@ export const NAVIGATION = [
   { label: 'Serviços', href: '#servicos' },
   { label: 'Cases', href: '#cases' },
   { label: 'App Beyond', href: '#aplicativo' },
-  { label: 'Processo', href: '#processo' },
+  { label: 'Processos', href: '#processo' },
   { label: 'Blog', href: '#blog' },
   { label: 'Contato', href: SITE_LINKS.contact },
 ] as const;

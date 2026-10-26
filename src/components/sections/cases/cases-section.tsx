@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap, ScrollTrigger, useGSAP } from '@/lib/animation/gsap';
 import type { CasesContent } from '@/data/cases';
@@ -19,6 +19,24 @@ export function CasesSection({ content }: { content: CasesContent }) {
   const { label, heading, intro, names, projects, cta } = content;
   const project = projects[active];
   const [headingStart, headingAccent] = heading.split('{');
+  useEffect(() => {
+    const tabs = scope.current?.querySelector<HTMLElement>('.case-tabs');
+    if (!tabs) return;
+    let disposed = false;
+    const measure = () => {
+      if (disposed) return;
+      delete tabs.dataset.iconsOnly;
+      if (tabs.scrollWidth > tabs.clientWidth + 1) tabs.dataset.iconsOnly = 'true';
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(tabs);
+    measure();
+    void document.fonts.ready.then(measure);
+    return () => {
+      disposed = true;
+      observer.disconnect();
+    };
+  }, [names, revealed, active]);
   const select = (index: number, focus = false) => {
     if (index < 0 || index >= projects.length || index === active) return;
     entryTimeline.current?.progress(1);
@@ -31,7 +49,7 @@ export function CasesSection({ content }: { content: CasesContent }) {
     () => {
       const media = gsap.matchMedia();
       media.add(
-        '(min-width: 90em) and (min-height: 48em) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+        '(min-width: 60em) and (min-height: 48em) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
         () => {
           setRevealed(0);
           ScrollTrigger.create({
@@ -57,9 +75,33 @@ export function CasesSection({ content }: { content: CasesContent }) {
         },
       );
       media.add(
-        '(prefers-reduced-motion: no-preference)',
-        () => {
+        {
+          motion: '(prefers-reduced-motion: no-preference)',
+          compact:
+            '(max-width: 59.999em), (max-height: 47.999em), (hover: none), (pointer: coarse)',
+        },
+        (context) => {
+          if (!context.conditions?.motion) return;
           const browser = scope.current!.querySelector('.case-browser');
+          if (context.conditions.compact) {
+            const groups = panel.current!.querySelectorAll<HTMLElement>(
+              '.case-visual, .case-story > *, .case-testimonial',
+            );
+            groups.forEach((group) => {
+              gsap.from(group, {
+                y: 10,
+                opacity: 0,
+                duration: 0.95,
+                ease: 'sine.out',
+                scrollTrigger: {
+                  trigger: group,
+                  start: 'top 85%',
+                  toggleActions: 'play none none none',
+                },
+              });
+            });
+            return;
+          }
           const characters = gsap.utils.toArray<HTMLElement>(
             '.case-quote-character',
             panel.current!,
@@ -156,7 +198,7 @@ export function CasesSection({ content }: { content: CasesContent }) {
           <img
             key={corner}
             className={`impact-pattern impact-pattern-${corner}`}
-            src={`/assets/figma/metrics-pattern-${corner}.svg`}
+            src={`/assets/metricas/metrics-pattern-${corner}.svg`}
             alt=""
           />
         ))}
@@ -208,6 +250,8 @@ export function CasesSection({ content }: { content: CasesContent }) {
                 id={`case-tab-${index}`}
                 type="button"
                 role="tab"
+                aria-label={name}
+                title={name}
                 aria-selected={active === index}
                 aria-controls="case-panel"
                 tabIndex={active === index ? 0 : -1}

@@ -4,7 +4,7 @@
   .section-conversa {
     height: auto;
     min-height: 0;
-    padding-block: var(--section-space);
+    padding-block: calc(var(--section-space) + var(--space-20));
   }
   .section-conversa .section-content {
     padding: 9rem 0;
@@ -29,25 +29,33 @@
     overflow: hidden;
   }
   .conversation-photo {
+    /* Enlarge compact photos together, capped at their desktop dimensions. */
     position: absolute;
-    width: clamp(6rem, 16vw, 13rem);
+    width: min(
+      calc(100% * var(--conversation-photo-desktop-width) / 1000),
+      calc(var(--conversation-photo-desktop-width) * 1rem / 16)
+    );
     height: auto;
   }
   .conversation-photo-top-left {
-    top: 0;
-    left: 0;
+    --conversation-photo-desktop-width: 316;
+    top: var(--space-20);
+    left: var(--content-gutter);
   }
   .conversation-photo-top-right {
-    top: 0;
-    right: 0;
+    --conversation-photo-desktop-width: 171;
+    top: var(--space-20);
+    right: var(--content-gutter);
   }
   .conversation-photo-bottom-left {
-    bottom: 0;
-    left: 0;
+    --conversation-photo-desktop-width: 190;
+    bottom: var(--space-20);
+    left: var(--content-gutter);
   }
   .conversation-photo-bottom-right {
-    bottom: 0;
-    right: 0;
+    --conversation-photo-desktop-width: 345;
+    bottom: var(--space-20);
+    right: var(--content-gutter);
   }
 }
 

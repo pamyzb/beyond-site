@@ -1,4 +1,19 @@
 /* Restore the animated QR composition while retaining the approved QR treatment and instruction copy. */
+.section-aplicativo .app-download-cta {
+  align-self: flex-start;
+  margin-top: var(--space-8);
+  max-width: 100%;
+}
+.section-aplicativo .app-download-cta .button-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+.section-aplicativo .app-download-cta svg {
+  flex: none;
+}
+
 :root .app-drawn-art [id$='-qrcode-cta'] {
   display: block;
 }
@@ -52,22 +67,31 @@
   line-height: 1;
   text-transform: uppercase;
 }
+.section-aplicativo .app-feature-card[data-source='container 2'] .app-feature-copy {
+  container-type: inline-size;
+}
+
 /* Figma node 15957:270 — 540 × 156 QR callout with an overflowing code card. */
 :root .app-drawn-art [id$='-qrcode-cta'] {
   display: none;
 }
 
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions {
-  background: linear-gradient(90deg, transparent 0 13.125rem, #aaed35 13.125rem);
-  border-radius: 0 1.5rem 1.5rem 0;
+  --app-qr-unit: min(1rem, calc(100cqw / 33.75));
+  background: linear-gradient(
+    90deg,
+    transparent 0 calc(13.125 * var(--app-qr-unit)),
+    #aaed35 calc(13.125 * var(--app-qr-unit))
+  );
+  border-radius: 0 calc(1.5 * var(--app-qr-unit)) calc(1.5 * var(--app-qr-unit)) 0;
   overflow: visible;
   box-shadow: none;
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions > .qr-hover-fill {
   position: absolute;
-  inset: 0 0 0 13.125rem;
+  inset: 0 0 0 calc(13.125 * var(--app-qr-unit));
   z-index: 0;
-  border-radius: 0 1.5rem 1.5rem 0;
+  border-radius: 0 calc(1.5 * var(--app-qr-unit)) calc(1.5 * var(--app-qr-unit)) 0;
   background: var(--primary-dark-hover);
   clip-path: circle(0 at var(--fill-x, 50%) var(--fill-y, 50%));
   transition: clip-path 480ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -88,27 +112,27 @@
   pointer-events: none;
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions::before {
-  left: 13rem;
-  top: -4.125rem;
-  width: 6.75rem;
-  height: 6.75rem;
-  border-radius: 0 0 1.75rem 1.75rem;
-  clip-path: inset(var(--qr-top-line-inset, 4.125rem) 0 0);
+  left: calc(13 * var(--app-qr-unit));
+  top: calc(-4.125 * var(--app-qr-unit));
+  width: calc(6.75 * var(--app-qr-unit));
+  height: calc(6.75 * var(--app-qr-unit));
+  border-radius: 0 0 calc(1.75 * var(--app-qr-unit)) calc(1.75 * var(--app-qr-unit));
+  clip-path: inset(var(--qr-top-line-inset, calc(4.125 * var(--app-qr-unit))) 0 0);
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions::after {
-  right: 2.125rem;
-  bottom: -4.125rem;
-  width: 7.625rem;
-  height: 6.75rem;
-  border-radius: 1.75rem 1.75rem 0 0;
-  clip-path: inset(0 0 var(--qr-bottom-line-inset, 4.125rem));
+  right: calc(2.125 * var(--app-qr-unit));
+  bottom: calc(-4.125 * var(--app-qr-unit));
+  width: calc(7.625 * var(--app-qr-unit));
+  height: calc(6.75 * var(--app-qr-unit));
+  border-radius: calc(1.75 * var(--app-qr-unit)) calc(1.75 * var(--app-qr-unit)) 0 0;
+  clip-path: inset(0 0 var(--qr-bottom-line-inset, calc(4.125 * var(--app-qr-unit))));
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions .app-qr-surface {
-  width: 13.125rem;
-  height: 13.125rem;
-  padding: 1.875rem;
-  border-radius: 0.5rem;
-  box-shadow: 0.25rem 0.25rem 0 #597e18;
+  width: calc(13.125 * var(--app-qr-unit));
+  height: calc(13.125 * var(--app-qr-unit));
+  padding: calc(1.875 * var(--app-qr-unit));
+  border-radius: calc(0.5 * var(--app-qr-unit));
+  box-shadow: calc(0.25 * var(--app-qr-unit)) calc(0.25 * var(--app-qr-unit)) 0 #597e18;
   animation: qr-callout-reveal 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .section-aplicativo
@@ -116,11 +140,11 @@
   .qr-instructions
   .app-qr-surface
   .app-qr-image {
-  width: 9.375rem;
-  height: 9.375rem;
+  width: calc(9.375 * var(--app-qr-unit));
+  height: calc(9.375 * var(--app-qr-unit));
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions > p {
-  font-size: var(--text-card-lg);
+  font-size: calc(1.625 * var(--app-qr-unit));
   font-weight: var(--weight-semibold);
   line-height: var(--leading-app-cta);
 }

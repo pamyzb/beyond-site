@@ -12,7 +12,7 @@
       "y": 0,
       "height": 967,
       "dark": false,
-      "art": "assets/figma/inicio.svg",
+      "art": "assets/inicio/inicio.svg",
       "blocks": [
         {
           "source": "Text",
@@ -172,7 +172,7 @@
       "y": 967,
       "height": 132,
       "dark": false,
-      "art": "assets/figma/clientes.svg",
+      "art": "assets/clientes/clientes.svg",
       "blocks": [
         {
           "source": "Heading 2",
@@ -381,7 +381,7 @@
       "y": 1099,
       "height": 546,
       "dark": false,
-      "art": "assets/figma/metricas.svg",
+      "art": "assets/metricas/metricas.svg",
       "blocks": [
         {
           "source": "Quem entende o desafio Ã© quem desenha e constrÃ³i a_2",
@@ -633,7 +633,7 @@
       "y": 1645,
       "height": 1166.25,
       "dark": false,
-      "art": "assets/figma/servicos.svg",
+      "art": "assets/servicos/servicos.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes ",
@@ -1104,7 +1104,7 @@
       "y": 2811.25,
       "height": 1090,
       "dark": false,
-      "art": "assets/figma/cases.svg",
+      "art": "assets/cases/cases.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _2",
@@ -1609,7 +1609,7 @@
       "y": 3901.25,
       "height": 986,
       "dark": false,
-      "art": "assets/figma/conversa.svg",
+      "art": "assets/conversa/conversa.svg",
       "blocks": [
         {
           "source": "Heading text",
@@ -1747,7 +1747,7 @@
       "y": 4887.25,
       "height": 1490.34,
       "dark": true,
-      "art": "assets/figma/aplicativo.svg",
+      "art": "assets/aplicativo/aplicativo.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _3",
@@ -2068,7 +2068,7 @@
       "y": 6377.59,
       "height": 1072,
       "dark": true,
-      "art": "assets/figma/depoimentos.svg",
+      "art": "assets/depoimentos/depoimentos.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _4",
@@ -2431,7 +2431,7 @@
       "y": 7449.59,
       "height": 1148,
       "dark": true,
-      "art": "assets/figma/processo.svg",
+      "art": "assets/processos/processo.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _5",
@@ -3007,7 +3007,7 @@
       "y": 8597.59,
       "height": 749,
       "dark": true,
-      "art": "assets/figma/sobre.svg",
+      "art": "assets/sobre/sobre.svg",
       "blocks": [
         {
           "source": "Heading 2_7",
@@ -3359,7 +3359,7 @@
       "y": 9346.59,
       "height": 1469,
       "dark": true,
-      "art": "assets/figma/blog.svg",
+      "art": "assets/blog/blog.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _6",
@@ -3937,7 +3937,7 @@
       "y": 10815.59,
       "height": 1036,
       "dark": true,
-      "art": "assets/figma/faq.svg",
+      "art": "assets/faq/faq.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _7",
@@ -4011,7 +4011,7 @@
       "y": 11851.59,
       "height": 975,
       "dark": true,
-      "art": "assets/figma/contato.svg",
+      "art": "assets/contato/contato.svg",
       "blocks": [
         {
           "source": "Trabalhamos ao seu lado para desenvolver soluÃ§Ãµes _8",
@@ -4123,7 +4123,7 @@
       "y": 12826.59,
       "height": 882,
       "dark": false,
-      "art": "assets/figma/rodape.svg",
+      "art": "assets/rodape/rodape.svg",
       "blocks": [
         {
           "source": "Home",
@@ -4456,7 +4456,7 @@
       "y": 0,
       "height": 87,
       "dark": false,
-      "art": "assets/figma/cabecalho.svg",
+      "art": "assets/compartilhados/cabecalho.svg",
       "blocks": [
         {
           "source": "ServiÃ§os_2",

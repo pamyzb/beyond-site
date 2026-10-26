@@ -32,8 +32,8 @@
   gap: 5rem;
   align-items: center;
   padding: 5rem;
-  background: var(--color-gray-800) url('/assets/figma/testimonial-card-art.svg?v=rounded-2')
-    center/100% 100% no-repeat;
+  background: var(--color-gray-800)
+    url('/assets/depoimentos/testimonial-card-art.svg?v=proportional-4') center/100% 100% no-repeat;
 }
 .testimonial-slide blockquote {
   position: relative;
@@ -98,7 +98,7 @@
   pointer-events: none;
 }
 .testimonial-video-copy p {
-  margin-top: 4rem;
+  margin-top: var(--space-6);
 }
 .testimonial-play {
   position: absolute;
@@ -330,7 +330,8 @@
     pointer-events: none;
     filter: blur(3px);
     background:
-      url('/assets/figma/testimonial-card-art.svg?v=rounded-2') center/100% 100% no-repeat,
+      url('/assets/depoimentos/testimonial-card-art.svg?v=proportional-4') center/100% 100%
+        no-repeat,
       radial-gradient(ellipse at 20% 0%, rgb(215 231 255 / 8%), transparent 70%),
       linear-gradient(145deg, rgb(31 41 55 / 92%), rgb(17 24 39 / 88%));
   }

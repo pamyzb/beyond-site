@@ -54,3 +54,9 @@ Os testes usam a exportação estática; o workflow mantém screenshots e traces
 falhas. Não foi criada uma referência de screenshot que aprove automaticamente
 a aparência atual. Esta validação não é uma medição de FPS nem uma execução em
 iPhone físico; refração e desempenho ainda precisam de conferência nesse aparelho.
+
+## Ajuste dos contratos de Cases e Serviços — 26/10/2026
+
+Os testes de Cases agora conferem limites do conteúdo visível e nomes acessíveis, preservando as abas com ícones em telas estreitas. Os testes de Serviços conferem as setas sobre a imagem, alvos de pelo menos 44px com hit test, paginação abaixo e robôs acompanhando o card selecionado. As expectativas anteriores correspondiam a um layout antigo; nenhum código de interface foi alterado nesta correção. Os quatro cenários focados passaram no Edge desktop/mobile; TypeScript e formatação passaram. Chromium gerenciado/WebKit não executados nesta rodada.
+
+Regressão completa de site.spec.ts nesta rodada: 22 cenários passaram no Edge (11 desktop e 11 mobile), usando a exportação estática atual.

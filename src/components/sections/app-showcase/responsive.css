@@ -17,7 +17,8 @@
   }
   .section-aplicativo .app-feature-card[data-source] {
     width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
-    gap: 2rem;
+    gap: var(--space-4);
+    justify-content: center;
   }
   .section-aplicativo .app-feature-card[data-source] > .component-art {
     width: 36%;
@@ -26,6 +27,7 @@
   .section-aplicativo .app-feature-copy {
     flex: 1;
     width: auto;
+    max-width: 33.75rem;
   }
   .section-aplicativo .app-feature-copy > .app-feature-title {
     width: 100% !important;
@@ -42,52 +44,12 @@
   .section-aplicativo .app-feature-copy .text-run {
     font-size: inherit;
   }
-  .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions {
-    width: 100%;
-    height: auto;
-    min-height: 9.75rem;
-    flex-basis: auto;
-    margin-top: 2rem;
-    padding: 1rem;
-    gap: 1rem;
-  }
-  .section-aplicativo .app-qr-surface {
-    flex: 0 0 8rem;
-    width: 8rem;
-    height: auto;
-  }
-  .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions {
-    background: var(--color-accent);
-    border-radius: var(--radius-card);
-  }
-  .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions::before,
-  .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions::after {
-    display: none;
-  }
-  .section-aplicativo
-    .app-feature-card[data-source='container 2']
-    .qr-instructions
-    .app-qr-surface {
-    width: 8rem;
-    height: 8rem;
-    flex: 0 0 8rem;
-    padding: 0.5rem;
-    box-shadow: none;
-  }
-  .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions .app-qr-image {
-    width: 7rem;
-    height: 7rem;
-  }
-  .section-aplicativo .qr-instructions > p {
-    font-size: var(--text-body);
-    line-height: 1.5;
-  }
 }
 
 @media (max-width: 59.999em) {
   .section-aplicativo .app-feature-card[data-source] {
     flex-direction: column;
-    gap: 2rem;
+    gap: var(--space-4);
   }
   .section-aplicativo .app-feature-card[data-source] > .component-art {
     order: 0;
@@ -109,16 +71,5 @@
 @media (max-width: 37.499em) {
   .section-aplicativo .app-feature-copy > .text-block:not(.app-feature-title) {
     font-size: var(--text-body);
-  }
-  .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions {
-    flex-direction: column;
-    padding: 1.5rem;
-    gap: 1.5rem;
-  }
-  .section-aplicativo .app-qr-surface {
-    flex-basis: auto;
-  }
-  .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions > p {
-    flex: auto;
   }
 }

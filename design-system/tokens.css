@@ -1,0 +1,72 @@
+/* Figma 6GJ5Lmw6KLMBCBBnioehPF / 15857:1601 — inspected in Dev Mode.
+ * Fractional layout values are intentionally retained in figma-layout.json. */
+:root {
+  --color-primary-50:#eaeff9;
+  --color-primary-100:#d0dcf2;
+  --color-primary-200:#b5c2f4;
+  --color-primary-300:#9baaf5;
+  --color-primary-400:#808ff7;
+  --color-primary-700:#2f43fc;
+  --color-primary-900:#0b2c65;
+  --color-primary-950:#071a3d;
+  --color-secondary:#aaed35;
+  --color-black:#000;
+  --color-white:#fff;
+  --color-ink:#08090b;
+  --color-gray-50:#f6f8fb;
+  --color-gray-100:#f3f4f6;
+  --color-gray-200:#e5e7eb;
+  --color-gray-300:#d1d5db;
+  --color-gray-400:#9ca3af;
+  --color-gray-500:#6b7280;
+  --color-gray-600:#4b5563;
+  --color-gray-700:#374151;
+  --color-gray-800:#1f2937;
+  --color-action:var(--color-primary-700);
+  --color-action-hover:var(--color-primary-900);
+  --color-action-pressed:var(--color-primary-950);
+  --color-accent:var(--color-secondary);
+  --color-page:var(--color-white);
+  --color-surface:var(--color-gray-50);
+  --color-text:var(--color-black);
+  --color-text-subtle:var(--color-gray-600);
+  --color-focus:var(--color-primary-700);
+  --font-sans:'Poppins',sans-serif;
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+  --text-display:152px;
+  --text-heading:72px;
+  --text-subheading:44px;
+  --text-card:24px;
+  --text-body-lg:18px;
+  --text-body:16px;
+  --text-small:14px;
+  --tracking-display:-10px;
+  --tracking-heading:-4px;
+  --tracking-subheading:-2px;
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-10:40px;
+  --space-15:60px;
+  --space-20:80px;
+  --space-30:120px;
+  --frame-width:1440;
+  --content-width:1320px;
+  --content-gutter:60px;
+  --radius-card:16px;
+  --radius-section:30px;
+  --radius-pill:999px;
+  --control-height:48px;
+}
+.theme-dark{--color-page:var(--color-black);--color-text:var(--color-white);--color-text-subtle:var(--color-gray-300);--color-focus:var(--color-accent)}
+:root{--page-gutter:clamp(20px,4.167vw,60px);--section-space:clamp(64px,6vw,96px)}
+
+/* Section heading contract: inherited by both Figma and fluid components. */
+:root{--section-heading-ink:var(--color-black);--section-heading-accent:var(--color-action);--section-heading-muted:var(--color-gray-600)}
+.theme-dark{--section-heading-ink:var(--color-white);--section-heading-accent:var(--color-accent);--section-heading-muted:var(--color-gray-300)}

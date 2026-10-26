@@ -23,13 +23,13 @@ export function BlogCard({
     <article className={`blog-card blog-card--${layout}`}>
       <img
         className="blog-card-image"
-        src={`/assets/figma/${card.art}-background.svg`}
+        src={`/assets/blog/${card.art}-background.svg`}
         alt=""
         loading="lazy"
       />
       <span className="blog-tag">
         <img
-          src={`/assets/figma/${card.art}-tag.svg`}
+          src={`/assets/blog/${card.art}-tag.svg`}
           width={card.width}
           height={card.height}
           alt={card.key === 'Article_20' ? 'Beyond the Bytes' : 'Veja'}

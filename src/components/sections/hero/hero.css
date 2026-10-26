@@ -12,8 +12,8 @@
   height: 24.625rem;
   z-index: 8;
   pointer-events: none;
-  mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
-  -webkit-mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
   overflow: hidden;
   contain: layout paint;
   will-change: transform;
@@ -48,12 +48,6 @@
   top: 0;
   transform-origin: 0 0;
 }
-.hero-glass[data-motion-mode='auto'],
-.hero-glass[data-motion-mode='reduced'] {
-  width: clamp(5.5rem, 20vw, 8rem);
-  height: auto;
-  aspect-ratio: 180 / 197;
-}
 .hero-glass[data-motion-mode='reduced'] .hero-glass-scene {
   display: none;
 }
@@ -77,7 +71,7 @@
 .hero-glass[data-motion-mode='auto'] .hero-glass-sheen {
   opacity: 1;
   background:
-    url('/assets/figma/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
+    url('/assets/inicio/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
     linear-gradient(118deg, transparent 24%, #ffffff28 31%, transparent 39%),
     linear-gradient(132deg, #ffffff80, transparent 13%, transparent 85%, #ffffff90);
   box-shadow:
@@ -91,7 +85,7 @@
   position: absolute;
   inset: 0;
   background:
-    url('/assets/figma/hero-glass-rim.svg') center/100% 100% no-repeat,
+    url('/assets/inicio/hero-glass-rim.svg') center/100% 100% no-repeat,
     linear-gradient(
       132deg,
       rgba(255, 255, 255, 0.8),
@@ -323,8 +317,8 @@
   aspect-ratio: 650/168;
   overflow: hidden;
   background: var(--color-action);
-  mask: url('/assets/figma/hero-lettering-mask.svg') center/100% 100% no-repeat;
-  -webkit-mask: url('/assets/figma/hero-lettering-mask.svg') center/100% 100% no-repeat;
+  mask: url('/assets/inicio/hero-lettering-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/inicio/hero-lettering-mask.svg') center/100% 100% no-repeat;
 }
 .hero-video-word video,
 .hero-video-word canvas {

@@ -155,7 +155,7 @@ export function ContactForm() {
           <a className="button whatsapp-link" href={WHATSAPP}>
             <img
               className="button-icon"
-              src="/assets/figma/form-whatsapp.svg"
+              src="/assets/compartilhados/form-whatsapp.svg"
               width={24}
               height={24}
               alt=""
@@ -248,7 +248,7 @@ export function ContactForm() {
           ) : (
             <img
               className="button-icon"
-              src="/assets/figma/header-button-arrow.svg"
+              src="/assets/compartilhados/header-button-arrow.svg"
               width={18}
               height={18}
               alt=""
@@ -258,7 +258,7 @@ export function ContactForm() {
         <a className="button whatsapp-link" href={WHATSAPP}>
           <img
             className="button-icon"
-            src="/assets/figma/form-whatsapp.svg"
+            src="/assets/compartilhados/form-whatsapp.svg"
             width={24}
             height={24}
             alt=""

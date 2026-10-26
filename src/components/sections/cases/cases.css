@@ -44,7 +44,7 @@
   width: 0.875rem;
   height: 0.875rem;
   flex-shrink: 0;
-  mask: url('/assets/figma/section-title-icon.svg') center/contain no-repeat;
+  mask: url('/assets/compartilhados/section-title-icon.svg') center/contain no-repeat;
 }
 
 .section-heading-title {

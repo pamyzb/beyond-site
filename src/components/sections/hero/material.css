@@ -11,8 +11,8 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
-  -webkit-mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
   background: rgb(220 232 255 / 0.22);
 }
 .hero-glass-tint {
@@ -25,14 +25,14 @@
 }
 .hero-glass-sheen {
   background:
-    url('/assets/figma/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
+    url('/assets/inicio/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
     linear-gradient(118deg, transparent 20%, #ffffff30 32%, #ffffff05 43%, transparent 54%),
     linear-gradient(132deg, #ffffffd9, #dde8ff30 16%, #ffffff08 46%, #6f97ff38 86%, #ffffffe0);
 }
 .hero-glass-grain {
   position: absolute;
   inset: 0;
-  background: url('/assets/figma/hero-glass-grain.svg') repeat;
+  background: url('/assets/inicio/hero-glass-grain.svg') repeat;
   opacity: 0;
   mix-blend-mode: soft-light;
   pointer-events: none;
@@ -42,8 +42,8 @@
   position: absolute;
   inset: 0;
   transform: translate(6px, 8px);
-  mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
-  -webkit-mask: url('/assets/figma/hero-glass-mask.svg') center/100% 100% no-repeat;
+  mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
+  -webkit-mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
   background: linear-gradient(135deg, #eff5ffb3 5%, #bbcef080 38%, #647ba880 72%, #dceaffb3);
   pointer-events: none;
 }

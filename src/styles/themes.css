@@ -1,3 +1,10 @@
+:root {
+  --section-soft-canvas: color-mix(
+    in srgb,
+    #f6f8fb calc((1 - var(--theme-dark-progress)) * 100%),
+    var(--theme-dark-canvas)
+  );
+}
 /* Earlier sections share the active page theme when the app boundary is crossed. */
 :root[data-scroll-theme='dark']
   :is(.section-inicio, .impact-section, .services-editorial, .cases-editorial) {
@@ -18,18 +25,10 @@
   background: transparent;
 }
 :root :is(.section-band:has(> .section-cases), .section-cases.cases-editorial) {
-  background: color-mix(
-    in srgb,
-    #f6f8fb calc((1 - var(--theme-dark-progress)) * 100%),
-    var(--theme-dark-canvas)
-  );
+  background: var(--section-soft-canvas);
 }
 :root :is(.impact-section, .impact-panel) {
-  background: color-mix(
-    in srgb,
-    #edf1f9 calc((1 - var(--theme-dark-progress)) * 100%),
-    var(--theme-dark-canvas)
-  );
+  background: var(--section-soft-canvas);
 }
 :root .service-editorial-card.service-agents {
   background: color-mix(in srgb, #f6f8fb calc((1 - var(--theme-dark-progress)) * 100%), #15191f);

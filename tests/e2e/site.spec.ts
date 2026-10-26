@@ -45,7 +45,9 @@ test.afterEach(async ({ page }) => {
   expect(runtimeErrors.get(page)).toEqual([]);
 });
 
-test('case tabs keep their full labels and icons at narrow widths', async ({ page }) => {
+test('case tabs keep visible content inside their buttons and retain accessible names', async ({
+  page,
+}) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload();
   const initialWidth = page.viewportSize()!.width;
@@ -57,6 +59,7 @@ test('case tabs keep their full labels and icons at narrow widths', async ({ pag
     await expect(buttons).toHaveCount(3);
     for (let index = 0; index < 3; index++) {
       const tab = buttons.nth(index);
+      await expect(tab).toHaveAccessibleName(/\S/);
       await tab.scrollIntoViewIfNeeded();
       expect(
         await tab.evaluate((button) => {
@@ -66,6 +69,7 @@ test('case tabs keep their full labels and icons at narrow widths', async ({ pag
             box.left >= viewport.left - 1 &&
             box.right <= viewport.right + 1 &&
             [...button.children].every((child) => {
+              if (getComputedStyle(child).display === 'none') return true;
               const content = child.getBoundingClientRect();
               return content.left >= box.left - 1 && content.right <= box.right + 1;
             })
@@ -86,7 +90,7 @@ test('case tabs keep their full labels and icons at narrow widths', async ({ pag
   }
 });
 
-test('theme changes at the conversation boundary and returns when scrolling back', async ({
+test('theme changes when the first app project title enters and returns when scrolling back', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -98,9 +102,9 @@ test('theme changes at the conversation boundary and returns when scrolling back
     [100, 'dark'],
     [-100, 'light'],
   ] as const) {
-    await page.locator('#conversa').evaluate((section, offset) => {
+    await page.locator('#app-project-title').evaluate((section, offset) => {
       window.scrollTo({
-        top: section.getBoundingClientRect().bottom + scrollY - innerHeight + offset,
+        top: section.getBoundingClientRect().top + scrollY - innerHeight + offset,
         behavior: 'instant',
       });
     }, offset);
@@ -205,12 +209,15 @@ test('navigation hydrates and the compact menu opens and closes', async ({ page 
 
 test('hero motion runs, pauses offscreen and respects reduced motion', async ({ page }) => {
   const lens = page.locator('.hero-glass');
-  const compact = (page.viewportSize()?.width ?? 1440) < 1440;
-  await expect(lens).toHaveAttribute('data-motion-mode', compact ? 'auto' : 'pointer');
-  if (!compact) await page.mouse.move(700, 300);
+  const pointer = await page.evaluate(
+    () => matchMedia('(hover: hover) and (pointer: fine)').matches,
+  );
+  const width = page.viewportSize()?.width ?? 1440;
+  await expect(lens).toHaveAttribute('data-motion-mode', pointer ? 'pointer' : 'auto');
+  if (pointer) await page.mouse.move(width * 0.4, 300);
   await expect(lens).toHaveAttribute('data-motion-state', 'running');
   const transform = await lens.evaluate((el) => el.style.transform);
-  if (!compact) await page.mouse.move(1000, 550);
+  if (pointer) await page.mouse.move(width * 0.7, 550);
   await expect.poll(() => lens.evaluate((el) => el.style.transform)).not.toBe(transform);
   await page.locator('#servicos').scrollIntoViewIfNeeded();
   await expect(lens).toHaveAttribute('data-motion-state', 'paused');
@@ -245,7 +252,7 @@ test('Sobre preserves the corrected block icon after server artwork assembly', a
   ]);
 });
 
-test('carousel controls stay below compact cards and builders remain visible on every group', async ({
+test('carousel controls remain clickable and builders follow the selected compact card', async ({
   page,
 }) => {
   const carousel = page.getByRole('region', { name: 'Serviços', exact: true });
@@ -268,20 +275,44 @@ test('carousel controls stay below compact cards and builders remain visible on 
         .poll(() =>
           page.evaluate(() => {
             const viewport = document.querySelector('.services-window')!.getBoundingClientRect();
-            const nav = document.querySelector('.services-navigation')!.getBoundingClientRect();
+            const cards = [...document.querySelectorAll('.service-editorial-card')].map((el) =>
+              el.getBoundingClientRect(),
+            );
+            const center = (viewport.left + viewport.right) / 2;
+            const active = cards.reduce((nearest, card) =>
+              Math.abs((card.left + card.right) / 2 - center) <
+              Math.abs((nearest.left + nearest.right) / 2 - center)
+                ? card
+                : nearest,
+            );
+            const controls = document.querySelector('.services-controls')!.getBoundingClientRect();
+            const pagination = document
+              .querySelector('.services-pagination')!
+              .getBoundingClientRect();
             const robots = [...document.querySelectorAll('.services-rail > .builder')].map((el) =>
               el.getBoundingClientRect(),
             );
+            const arrows = [...document.querySelectorAll('.services-controls button')];
             return (
-              nav.top >= viewport.bottom - 1 &&
+              controls.top >= viewport.top - 1 &&
+              controls.bottom <= viewport.bottom + 1 &&
+              arrows.every((arrow) => {
+                const box = arrow.getBoundingClientRect();
+                const hit = document.elementFromPoint(
+                  (box.left + box.right) / 2,
+                  (box.top + box.bottom) / 2,
+                );
+                return box.width >= 44 && box.height >= 44 && !!hit && arrow.contains(hit);
+              }) &&
+              pagination.top >= viewport.bottom - 1 &&
               robots.length === 2 &&
               robots.every(
                 (box) =>
                   box.width > 0 &&
-                  box.left >= viewport.left - 1 &&
-                  box.right <= viewport.right + 1 &&
+                  box.left >= active.left - 1 &&
+                  box.right <= active.right + 1 &&
                   box.top >= viewport.top - 1 &&
-                  box.bottom <= viewport.bottom + 1,
+                  box.bottom <= active.top + 1,
               )
             );
           }),

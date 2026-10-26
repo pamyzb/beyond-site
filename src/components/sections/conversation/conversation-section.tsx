@@ -31,7 +31,7 @@ export function ConversationSection({
         <ButtonLink variant="primary-blue" className="conversation-cta" href={WHATSAPP}>
           <img
             className="conversation-cta-icon"
-            src="/assets/figma/form-whatsapp.svg"
+            src="/assets/compartilhados/form-whatsapp.svg"
             width={24}
             height={24}
             alt=""

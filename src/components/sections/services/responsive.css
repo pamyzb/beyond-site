@@ -15,22 +15,14 @@
   .service-editorial-card:nth-child(even),
   .service-editorial-card.service-agents {
     width: clamp(18rem, 70vw, 35rem);
-    margin-top: 0;
   }
   .services-rail {
-    gap: 2rem;
+    gap: 3rem;
     padding: 3rem var(--page-gutter);
-  }
-  .services-route {
-    display: none;
   }
   .services-controls {
     margin-inline: var(--page-gutter);
     transform: none;
-  }
-  .services-pagination button {
-    width: 2.75rem;
-    min-height: 2.75rem;
   }
 }
 
@@ -49,33 +41,63 @@
   }
 }
 @media (max-width: 89.999em), (hover: none), (pointer: coarse) {
+  .service-editorial-card:not(.service-agents) {
+    padding: 1.25rem;
+    border-radius: 1.75rem;
+  }
   .services-editorial .services-stage {
     grid-template-rows: auto auto;
   }
+  .services-editorial .services-window {
+    grid-row: 1;
+    min-height: 0;
+  }
   .services-editorial .services-rail {
-    padding-top: 5rem;
-    padding-bottom: 1.5rem;
+    padding-top: 3.5rem;
+    padding-bottom: var(--space-4);
   }
   .services-editorial .services-navigation {
-    grid-row: 2;
-    grid-template-rows: auto;
+    grid-row: 1 / span 2;
+    grid-template-rows: subgrid;
     align-items: center;
     margin: 0 var(--page-gutter) 1rem;
   }
   .services-editorial .services-controls {
     grid-column: 1;
     grid-row: 1;
-    align-self: center;
+    align-self: start;
     margin: 0;
-    transform: none;
+    /* Anchor to the image area instead of the varying title/content height. */
+    transform: translateY(calc(3.5rem + 1.25rem + clamp(10rem, 26vh, 17.5rem) / 2 - 1.375rem));
+  }
+  .services-editorial .services-arrow {
+    width: 2.75rem;
+    height: 2.75rem;
+    min-height: 0;
+    padding: 0;
+  }
+  .services-editorial .services-arrow .button-icon {
+    width: 1.25rem;
+    height: 1.25rem;
   }
   .services-editorial .services-pagination {
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 2;
     align-self: center;
     justify-self: center;
     margin: 0 3.5rem;
-    padding-block: 0.75rem;
+    padding-block: 0;
     pointer-events: none;
+  }
+}
+
+/* Leave room for the route and builders above and below intermediate cards. */
+@media (min-width: 60em) and (max-width: 89.999em) and (hover: hover) and (pointer: fine) {
+  .services-editorial .services-rail {
+    padding-top: 5rem;
+    padding-bottom: 6rem;
+  }
+  .services-editorial .services-controls {
+    transform: translateY(calc(5rem + 1.25rem + clamp(10rem, 26vh, 17.5rem) / 2 - 1.375rem));
   }
 }

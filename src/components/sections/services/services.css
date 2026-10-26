@@ -186,6 +186,7 @@
 }
 .services-controls .services-arrow:disabled {
   visibility: hidden;
+  cursor: default;
   pointer-events: none;
 }
 .services-pagination {

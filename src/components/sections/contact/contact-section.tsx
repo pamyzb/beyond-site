@@ -11,8 +11,8 @@ export function ContactSection({ section, artwork }: { section: SectionData; art
       <div className="section-content section-content--contato">
         <FigmaSectionHeading section={section} />
         <ContactForm />
+        <ReflowArtwork name="contato-bleed" />
       </div>
-      <ReflowArtwork name="contact-full" />
     </SectionShell>
   );
 }

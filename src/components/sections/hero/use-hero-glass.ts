@@ -4,6 +4,7 @@ import { createHeroGlassMap } from '@/lib/animation/hero-glass-map';
 import {
   ambientPose,
   HERO_FRAME_MS,
+  usesHeroPointer,
   HERO_VIDEO_FRAME_MS,
   videoSampleSize,
 } from '@/lib/animation/hero-motion';
@@ -22,7 +23,10 @@ export function useHeroGlass() {
       content = sample.current!;
     const hero = glass.parentElement!;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-    const desktop = matchMedia('(min-width: 90em) and (hover: hover) and (pointer: fine)');
+    const desktop = matchMedia('(hover: hover) and (pointer: fine)');
+    const touch = matchMedia('(any-pointer: coarse)');
+    const pointerMode = () =>
+      usesHeroPointer(desktop.matches, touch.matches, navigator.maxTouchPoints);
     let mode = '',
       visible = false,
       ready = false,
@@ -184,7 +188,7 @@ export function useHeroGlass() {
     const rebuild = () => {
       resizeFrame = 0;
       if (disposed) return;
-      const nextMode = reduced.matches ? 'reduced' : desktop.matches ? 'pointer' : 'auto';
+      const nextMode = reduced.matches ? 'reduced' : pointerMode() ? 'pointer' : 'auto';
       if (mode !== nextMode) {
         mode = nextMode;
         interacted = false;
@@ -276,7 +280,7 @@ export function useHeroGlass() {
         else {
           x = targetX = (bounds.width - w) / 2;
           y = targetY =
-            mode === 'reduced' && !desktop.matches
+            mode === 'reduced' && !pointerMode()
               ? Math.max(area.bottom, bounds.height - h - 96)
               : (bounds.height - h) / 2;
         }
@@ -337,6 +341,7 @@ export function useHeroGlass() {
     window.addEventListener('scroll', scroll, { passive: true });
     document.addEventListener('visibilitychange', requestRebuild);
     desktop.addEventListener('change', requestRebuild);
+    touch.addEventListener('change', requestRebuild);
     reduced.addEventListener('change', requestRebuild);
     requestRebuild();
     return () => {
@@ -352,6 +357,7 @@ export function useHeroGlass() {
       window.removeEventListener('scroll', scroll);
       document.removeEventListener('visibilitychange', requestRebuild);
       desktop.removeEventListener('change', requestRebuild);
+      touch.removeEventListener('change', requestRebuild);
       reduced.removeEventListener('change', requestRebuild);
       hero.dispatchEvent(new Event('hero-ambient-pause'));
     };

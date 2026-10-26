@@ -23,7 +23,12 @@ export function ServiceCard({
     <article className={`service-editorial-card${agent ? ' service-agents' : ''}`}>
       {agent ? (
         <div className="agent-construction" aria-hidden="true">
-          <img className="agent-art" src="/assets/service-agents-team.png" alt="" loading="lazy" />
+          <img
+            className="agent-art"
+            src="/assets/servicos/agenticos-cards.jpg"
+            alt=""
+            loading="lazy"
+          />
         </div>
       ) : (
         <div className={`service-image ${imageClass}`}>
@@ -40,7 +45,7 @@ export function ServiceCard({
             {cta}
             <img
               className="button-icon"
-              src="/assets/figma/header-button-arrow.svg"
+              src="/assets/compartilhados/header-button-arrow.svg"
               width={18}
               height={18}
               alt=""

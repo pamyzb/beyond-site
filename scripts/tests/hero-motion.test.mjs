@@ -2,8 +2,22 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { loadTypeScript } from './load-typescript.mjs';
 
-const { ambientPose, videoSampleSize, inkPath, HERO_INK_POINTS, HERO_INK_SEGMENTS } =
-  loadTypeScript('src/lib/animation/hero-motion.ts');
+const {
+  ambientPose,
+  videoSampleSize,
+  inkPath,
+  HERO_INK_POINTS,
+  HERO_INK_SEGMENTS,
+  usesHeroPointer,
+} = loadTypeScript('src/lib/animation/hero-motion.ts');
+
+test('touch devices use automatic painting even with a paired hover pointer', () => {
+  assert.equal(usesHeroPointer(false, true, 5), false);
+  assert.equal(usesHeroPointer(true, true, 5), false);
+  assert.equal(usesHeroPointer(true, false, 5), false);
+  assert.equal(usesHeroPointer(false, false, 0), false);
+  assert.equal(usesHeroPointer(true, false, 0), true);
+});
 
 test('ambient motion stays inside its reserved area across compact layouts', () => {
   for (const area of [

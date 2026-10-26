@@ -74,7 +74,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
           }}
         >
           <div ref={rail} className="services-rail">
-            <ServiceCard agent {...content.agent} href={SITE_LINKS.contact} />
+            <ServiceCard agent {...content.agent} href={SITE_LINKS.agentService} />
             {content.cards.map((card, index) => (
               <ServiceCard
                 key={card.id}
@@ -104,7 +104,6 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
               className="button testimonial-arrow services-arrow"
               aria-label="Serviço anterior"
               disabled={!canGoBack}
-              aria-hidden={!canGoBack}
               aria-controls="services-carousel"
               onClick={() => navigate(-1)}
             >
@@ -115,7 +114,6 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
               className="button testimonial-arrow services-arrow"
               aria-label="Próximo serviço"
               disabled={atEnd}
-              aria-hidden={atEnd}
               aria-controls="services-carousel"
               onClick={() => navigate(1)}
             >

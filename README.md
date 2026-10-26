@@ -146,7 +146,7 @@ python scripts/figma/build-figma.py tmp/figma-reference/ia-friendly.svg --optimi
 python scripts/figma/build-bleed-art.py
 ```
 
-O exportador agora grava em `public/assets/figma/`. Ele preserva as versões clara/escura do aplicativo e o overlay inline da seção de conversa. A otimização continua verificando igualdade dos pixels antes de converter PNG para WebP lossless.
+O exportador grava nas pastas de seção de `public/assets/`, conforme `src/data/asset-paths.json`. Consulte o [guia de assets](public/assets/README.md). Ele preserva as versões clara/escura do aplicativo e o overlay inline da seção de conversa. A otimização continua verificando igualdade dos pixels antes de converter PNG para WebP lossless.
 
 Antes de `dev` e `build`, `prepare-artwork.mjs` gera os derivados SVG inline em
 `.generated/artwork/` e extrai imagens para `public/assets/generated/`, usando

@@ -1,4 +1,15 @@
 /* Section-owned rules; import position preserves the V1 cascade. */
+.section-contato > .conversation-artwork {
+  inset: 17.8125rem 0 auto auto;
+  width: 33.75rem;
+  height: auto;
+  aspect-ratio: 540 / 619;
+}
+.section-contato > .conversation-artwork > svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .section-contato .section-heading-title {
   max-width: none;
 }

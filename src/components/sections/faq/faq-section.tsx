@@ -11,7 +11,10 @@ export function FaqSection({ section, artwork }: { section: SectionData; artwork
       <div className="section-content section-content--faq">
         <FigmaSectionHeading section={section} />
         <div className="faq-content-row">
-          <ReflowArtwork name="faq-team" className="faq-team-art" />
+          <picture className="faq-team-picture">
+            <source media="(max-width: 89.999em)" srcSet="/assets/faq/faq-team-mobile.svg" />
+            <ReflowArtwork name="faq-team" className="faq-team-art" />
+          </picture>
           <FaqAccordion />
         </div>
       </div>

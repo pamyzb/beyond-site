@@ -5,13 +5,12 @@ The SVG is a source artifact, never used as a screenshot of the website.
 Text becomes HTML data; only original illustration/vector geometry stays in SVG.
 """
 from pathlib import Path
+from asset_paths import asset_path, ASSET_PATHS
 import base64, copy, json, re, sys
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = Path(sys.argv[1])
-OUT = ROOT / 'public' / 'assets' / 'figma'
-OUT.mkdir(parents=True, exist_ok=True)
 NS = 'http://www.w3.org/2000/svg'
 ET.register_namespace('', NS)
 ET.register_namespace('xlink', 'http://www.w3.org/1999/xlink')
@@ -120,7 +119,7 @@ def write_art(name, nodes, box, remove_text=False):
    if (weight,style) not in used:continue
    styles.append("@font-face{font-family:Poppins;font-weight:"+weight+";font-style:"+style+";src:url(data:font/ttf;base64,"+base64.b64encode(p.read_bytes()).decode()+")}")
   ET.SubElement(d,'{%s}style'%NS).text=''.join(styles)
- (OUT/(name+'.svg')).write_text(ET.tostring(result,encoding='unicode'),encoding='utf8')
+ asset_path(name+'.svg').write_text(ET.tostring(result,encoding='unicode'),encoding='utf8')
  if name=='aplicativo':
   light=copy.deepcopy(result)
   def light_palette(n):
@@ -129,9 +128,9 @@ def write_art(name, nodes, box, remove_text=False):
    if n.get('id') in {'Vector_42','Vector_44'}:n.set('stroke','#EAEFF9')
    for c in n:light_palette(c)
   light_palette(light)
-  (OUT/'aplicativo-light.svg').write_text(ET.tostring(light,encoding='unicode'),encoding='utf8')
+  asset_path('aplicativo-light.svg').write_text(ET.tostring(light,encoding='unicode'),encoding='utf8')
 
- return 'assets/figma/'+name+'.svg'
+ return ASSET_PATHS[name+'.svg']
 
 def text_data(section, y):
  groups={}

@@ -246,7 +246,7 @@
 .section-processo .section-content--processo {
   /* Card composition follows the approved staggered desktop layout. */
   --process-card-width: 33.125rem;
-  --process-column-gap: max(0, min(9.25rem, calc(100% - 2 * var(--process-card-width))));
+  --process-column-gap: 9rem;
   --process-content-top: 9rem;
   --process-cards-gap: 5.5rem;
   --process-left-column-offset: 2.5rem;
@@ -263,6 +263,7 @@
   grid-template-columns: repeat(2, minmax(0, var(--process-card-width)));
   grid-template-rows: auto auto;
   column-gap: var(--process-column-gap);
+  justify-content: center;
   align-content: start;
   width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
   min-height: var(--section-height);
@@ -351,9 +352,7 @@
   transform-origin: left center;
 }
 .section-conversa .section-content {
-  /* The copy is registered against decorative art; retain this desktop anchor. */
-  --conversation-content-top: 23.8125rem;
-  --conversation-content-indent: 0;
+  /* The logo is centered in the section; center the complete copy stack with it. */
   --conversation-copy-gap: 1.5rem;
   --conversation-action-gap: 2.125rem;
   position: relative;
@@ -361,10 +360,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
   height: auto;
+  min-height: var(--section-height);
   margin-inline: auto;
-  padding: var(--conversation-content-top) 0 0 var(--conversation-content-indent);
+  padding: 0;
 }
 .section-conversa .flow-copy {
   position: relative;

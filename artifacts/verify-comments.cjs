@@ -1,0 +1,2 @@
+const {chromium}=require('@playwright/test');
+(async()=>{const b=await chromium.launch({channel:'msedge'});const p=await b.newPage({viewport:{width:1543,height:930},reducedMotion:'reduce'});await p.goto('http://127.0.0.1:4173/colaboradores-agenticos/');await p.evaluate(()=>document.fonts.ready);for(const id of ['inicio','aplicacoes','rodape']){await p.locator('#'+id).scrollIntoViewIfNeeded();await p.waitForTimeout(700);await p.screenshot({path:'artifacts/revision-'+id+'.png'});}await b.close();})();

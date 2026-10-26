@@ -1,0 +1,132 @@
+/**
+ * Beyond — design system v2
+ * Referência visual: Figma / Beyond | Site institucional / node 15857:1601
+ * Paleta: variáveis oficiais fornecidas pela equipe.
+ */
+:root {
+  /* Brand / Primary */
+  --color-primary-50: #eaeff9;
+  --color-primary-100: #d0dcf2;
+  --color-primary-200: #b5c2f4;
+  --color-primary-300: #9baaf5;
+  --color-primary-400: #808ff7;
+  --color-primary-700: #2f43fc;
+  --color-primary-900: #0b2c65;
+  --color-primary-950: #071a3d;
+
+  /* Brand / Secondary */
+  --color-secondary: #aaed35;
+
+  /* Neutral */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+
+  /* Semantic */
+  --color-page: var(--color-white);
+  --color-surface: var(--color-gray-50);
+  --color-surface-raised: var(--color-gray-100);
+  --color-text: var(--color-black);
+  --color-text-subtle: var(--color-gray-600);
+  --color-text-on-light: var(--color-black);
+  --color-border-dark: rgba(255, 255, 255, 0.14);
+  --color-border-light: var(--color-gray-200);
+  --color-action: var(--color-primary-700);
+  --color-action-hover: var(--color-primary-900);
+  --color-action-pressed: var(--color-primary-950);
+  --color-accent: var(--color-secondary);
+  --color-focus: var(--color-secondary);
+
+  /* Typography */
+  --font-sans: "Poppins", "Helvetica Neue", Arial, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --tracking-display: -0.055em;
+  --tracking-heading: -0.04em;
+  --tracking-label: 0.12em;
+
+  /* Spacing — sempre múltiplos de 4 px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-30: 120px;
+  --space-36: 144px;
+
+  /* Layout */
+  --content-max: 1200px;
+  --content-gutter: clamp(20px, 4vw, 64px);
+  --section-space: clamp(80px, 10vw, 160px);
+  --section-space-compact: clamp(56px, 7vw, 96px);
+  --grid-gap: clamp(16px, 2vw, 32px);
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+}
+
+/* Aplicar no trecho em que a página transita para o dark mode. */
+.theme-dark {
+  --color-page: var(--color-black);
+  --color-surface: var(--color-gray-800);
+  --color-surface-raised: var(--color-gray-700);
+  --color-text: var(--color-white);
+  --color-text-subtle: var(--color-gray-400);
+  --color-border-light: var(--color-border-dark);
+}
+.ds-display {
+  font: var(--font-weight-medium) clamp(48px, 7vw, 104px) / 0.94 var(--font-sans);
+  letter-spacing: var(--tracking-display);
+}
+
+.ds-heading-1 {
+  font: var(--font-weight-medium) clamp(40px, 5vw, 72px) / 0.98 var(--font-sans);
+  letter-spacing: var(--tracking-heading);
+}
+
+.ds-heading-2 {
+  font: var(--font-weight-medium) clamp(32px, 3.5vw, 52px) / 1 var(--font-sans);
+  letter-spacing: var(--tracking-heading);
+}
+
+.ds-heading-3 {
+  font: var(--font-weight-medium) 28px / 1.08 var(--font-sans);
+  letter-spacing: -0.03em;
+}
+
+.ds-body-lg { font: var(--font-weight-regular) 18px / 1.55 var(--font-sans); }
+.ds-body { font: var(--font-weight-regular) 16px / 1.6 var(--font-sans); }
+.ds-body-sm { font: var(--font-weight-regular) 14px / 1.55 var(--font-sans); }
+.ds-label {
+  font: var(--font-weight-semibold) 12px / 1.25 var(--font-sans);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.ds-accent { color: var(--color-accent); }
+.ds-action { color: var(--color-action); }
+.ds-container { width: min(var(--content-max), calc(100% - 2 * var(--content-gutter))); margin-inline: auto; }
+.ds-section { padding-block: var(--section-space); }
+.ds-section--compact { padding-block: var(--section-space-compact); }
+.ds-focusable:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 4px; }
+
+

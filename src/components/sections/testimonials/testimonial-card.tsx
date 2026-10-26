@@ -18,7 +18,7 @@ export function TestimonialTextCard({ quote, name, role }: TestimonialProps) {
       <div className="testimonial-person">
         <div className="testimonial-portrait">
           <Artwork
-            src="assets/natalia-example.jpg"
+            src="assets/depoimentos/natalia-example.jpg"
             width={323}
             height={379}
             className="testimonial-portrait-image"
@@ -46,7 +46,7 @@ export function TestimonialVideoCard({
   return (
     <>
       <Artwork
-        src="assets/natalia-example.jpg"
+        src="assets/depoimentos/natalia-example.jpg"
         width={1168}
         height={613}
         className="testimonial-video-poster"

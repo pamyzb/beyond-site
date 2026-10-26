@@ -1,4 +1,5 @@
 import { asset } from '@/lib/figma/design';
+import assetPaths from '@/data/asset-paths.json';
 
 // Original SVGs carry masks, embedded photos and exact Figma geometry.
 // Native images preserve these assets without rasterization by an image optimizer.
@@ -36,5 +37,7 @@ export function ReflowArtwork({
   name: string;
   className?: string;
 }) {
-  return <Artwork src={`assets/figma/${name}.svg`} className={className} />;
+  const source = assetPaths[`${name}.svg` as keyof typeof assetPaths];
+  if (!source) throw new Error(`Unknown artwork: ${name}`);
+  return <Artwork src={source} className={className} />;
 }

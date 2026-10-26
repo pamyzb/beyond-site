@@ -99,9 +99,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 9.75rem;
-  width: 33.75rem;
-  height: 9.75rem;
+  flex: 0 0 calc(9.75 * var(--app-qr-unit));
+  width: calc(33.75 * var(--app-qr-unit));
+  height: calc(9.75 * var(--app-qr-unit));
   margin-top: var(--app-qr-top-gap);
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions .app-qr-surface {

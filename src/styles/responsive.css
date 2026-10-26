@@ -74,6 +74,9 @@ video {
     writing-mode: horizontal-tb;
     transform: none;
   }
+  .section-heading-icon {
+    order: -1;
+  }
   .section-heading-title,
   .section-heading-subtitle {
     grid-column: 1;

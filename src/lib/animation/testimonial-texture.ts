@@ -5,7 +5,7 @@ export async function paintTestimonialTexture(surface: HTMLElement, dpr: number)
   const images = [...surface.querySelectorAll('img')];
   await Promise.all(images.map((image) => image.decode()));
   const artwork = new Image();
-  artwork.src = '/assets/figma/testimonial-card-art.svg?v=rounded-2';
+  artwork.src = '/assets/depoimentos/testimonial-card-art.svg?v=proportional-4';
   await artwork.decode();
   const width = surface.clientWidth;
   const height = surface.clientHeight;

@@ -7,7 +7,7 @@ import { normalizePhoneScreens } from './normalize-phone-screens.mjs';
 for (const name of ['phone-project', 'phone-cases', 'aplicativo-bleed', 'aplicativo-light-bleed']) {
   test(`${name}: phone content keeps its placement without transforming nested SVG viewports`, async () => {
     const source = await readFile(
-      new URL(`../../public/assets/figma/${name}.svg`, import.meta.url),
+      new URL(`../../public/assets/aplicativo/${name}.svg`, import.meta.url),
       'utf8',
     );
     const parse = (svg) =>

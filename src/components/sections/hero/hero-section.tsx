@@ -46,7 +46,7 @@ export function HeroSection({ section }: { section: SectionData }) {
               <div className="hero-description-group">
                 <img
                   className="hero-description-arrow"
-                  src="/assets/figma/hero-description-arrow.svg"
+                  src="/assets/inicio/hero-description-arrow.svg"
                   width={27}
                   height={27}
                   alt=""
@@ -63,7 +63,7 @@ export function HeroSection({ section }: { section: SectionData }) {
             <ButtonLink variant="primary-blue" className="hero-cta" href={WHATSAPP}>
               <img
                 className="hero-cta-icon"
-                src="/assets/figma/form-whatsapp.svg"
+                src="/assets/compartilhados/form-whatsapp.svg"
                 width={24}
                 height={24}
                 alt=""

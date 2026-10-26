@@ -43,21 +43,49 @@ export function ProcessSection({
       route.setAttribute('stroke-width', '1.5');
       route.setAttribute('stroke-dasharray', '5 9');
       svg.appendChild(route);
-      const anchor = (box: DOMRect, side: 'left' | 'right', vertical: number) => ({
-        x: side === 'left' ? box.left : box.right,
-        y: box.top + box.height * vertical,
-      });
+      const anchor = (
+        target: HTMLElement,
+        side: 'left' | 'right' | 'top' | 'bottom',
+        fraction: number,
+      ) => {
+        const face = target.querySelector<SVGGraphicsElement>('.process-card-surface rect');
+        const matrix = face?.getScreenCTM();
+        if (face && matrix) {
+          const box = face.getBBox();
+          // Use the actual rotated edge, with a small overlap beneath the face.
+          return new DOMPoint(
+            side === 'left'
+              ? box.x + 2
+              : side === 'right'
+                ? box.x + box.width - 2
+                : box.x + box.width * fraction,
+            side === 'top'
+              ? box.y + 2
+              : side === 'bottom'
+                ? box.y + box.height - 2
+                : box.y + box.height * fraction,
+          ).matrixTransform(matrix);
+        }
+        const box = target.getBoundingClientRect();
+        return {
+          x:
+            side === 'left'
+              ? box.left
+              : side === 'right'
+                ? box.right
+                : box.left + box.width * fraction,
+          y:
+            side === 'top'
+              ? box.top
+              : side === 'bottom'
+                ? box.bottom
+                : box.top + box.height * fraction,
+        };
+      };
       const measure = () => {
         const bounds = root.getBoundingClientRect();
         svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
         markerSvg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
-        // The layout wrapper includes the exported SVG's transparent margins.
-        // Anchor to the painted card face instead, so the connector visibly
-        // meets the card even when the artwork is rotated or scaled.
-        const boxes = targets.map((target) => {
-          const face = target.querySelector<SVGGraphicsElement>('.process-card-surface rect');
-          return face?.getBoundingClientRect() ?? target.getBoundingClientRect();
-        });
         // These entry and exit points retain the intentional hand-drawn flow
         // of the reference: 1 → 2 descends, 2 → 3 bends back, then 3 → 4 exits.
         const connections = [
@@ -65,30 +93,41 @@ export function ProcessSection({
           { from: 'left', fromY: 0.54, to: 'right', toY: 0.38 },
           { from: 'right', fromY: 0.48, to: 'left', toY: 0.45 },
         ] as const;
-        const parts = boxes.slice(0, -1).map((box, index) => {
-          const next = boxes[index + 1];
-          const connection = connections[index];
-          const start = anchor(box, connection.from, connection.fromY);
+        const parts = targets.slice(0, -1).map((target, index) => {
+          const next = targets[index + 1];
+          const stacked = getComputedStyle(targets[0].parentElement!).display === 'contents';
+          const connection = stacked
+            ? {
+                from: 'bottom' as const,
+                fromY: index % 2 ? 0.35 : 0.65,
+                to: 'top' as const,
+                toY: index % 2 ? 0.65 : 0.35,
+              }
+            : connections[index];
+          const start = anchor(target, connection.from, connection.fromY);
           const end = anchor(next, connection.to, connection.toY);
           const sx = start.x - bounds.left,
             sy = start.y - bounds.top,
             ex = end.x - bounds.left,
             ey = end.y - bounds.top;
+          if (stacked) {
+            const bend = Math.max(16, (ey - sy) * 0.5);
+            return `M${sx} ${sy} C${sx} ${sy + bend},${ex} ${ey - bend},${ex} ${ey}`;
+          }
           const bend = Math.max(56, Math.min(150, Math.abs(ex - sx) * 0.42));
           const direction = connection.from === 'right' ? 1 : -1;
-          // Extend a fraction of a pixel into the painted face to avoid a seam
-          // caused by anti-aliasing between the SVG line and rotated card edge.
-          const overlap = 1.25;
-          const startX = sx + direction * overlap,
-            endX = ex - direction * overlap;
-          return `M${startX} ${sy} C${sx + bend * direction} ${sy},${ex - bend * direction} ${ey},${endX} ${ey}`;
+          return `M${sx} ${sy} C${sx + bend * direction} ${sy},${ex - bend * direction} ${ey},${ex} ${ey}`;
         });
         route.setAttribute('d', parts.join(' '));
       };
       const place = (progress: number) => {
         const point = route.getPointAtLength(route.getTotalLength() * progress);
         // The imported marker's centre is at these original Figma coordinates.
-        gsap.set(marker, { x: point.x - 649.05, y: point.y - 7913.4 });
+        const scale = Math.min(1, Math.max(0.65, targets[0].getBoundingClientRect().width / 530));
+        marker.setAttribute(
+          'transform',
+          `translate(${point.x} ${point.y}) scale(${scale}) translate(-649.05 -7913.4)`,
+        );
       };
       measure();
       place(0);
@@ -97,27 +136,85 @@ export function ProcessSection({
         ScrollTrigger.refresh();
       });
       resize.observe(root);
+      targets.forEach((target) => resize.observe(target));
+      // Refresh also runs after layout/font changes, including reduced motion.
+      ScrollTrigger.addEventListener('refresh', measure);
       const media = gsap.matchMedia();
-      media.add('(prefers-reduced-motion:no-preference)', () => {
-        const position = { progress: 0 };
-        const tween = gsap.to(position, {
-          progress: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: root,
-            start: 'top 25%',
-            end: 'bottom 65%',
-            scrub: 0.65,
-            invalidateOnRefresh: true,
-            onRefresh: () => {
+      media.add(
+        { motion: '(prefers-reduced-motion:no-preference)', compact: '(max-width:89.999em)' },
+        (context) => {
+          if (!context.conditions?.motion) return;
+          const position = { progress: 0 };
+          const entrance = gsap.timeline({
+            scrollTrigger: {
+              trigger: targets[0],
+              start: 'top 85%',
+              toggleActions: 'play none none none',
+            },
+            onUpdate: () => {
+              // Keep the connectors attached while the cards slide into place.
               measure();
               place(position.progress);
             },
-          },
-          onUpdate: () => place(position.progress),
-        });
-        return () => tween.kill();
-      });
+          });
+          if (context.conditions.compact) {
+            targets.forEach((target, index) => {
+              gsap.fromTo(
+                target,
+                { x: index % 2 === 0 ? -80 : 80, opacity: 0 },
+                {
+                  x: 0,
+                  opacity: 1,
+                  duration: 1.65,
+                  ease: 'power4.out',
+                  scrollTrigger: {
+                    trigger: target,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none',
+                  },
+                  onUpdate: () => {
+                    measure();
+                    place(position.progress);
+                  },
+                },
+              );
+            });
+          } else {
+            entrance.fromTo(
+              targets,
+              { x: (index) => (index % 2 === 0 ? -160 : 160), opacity: 0 },
+              { x: 0, opacity: 1, duration: 1.65, ease: 'power4.out', stagger: 0.16 },
+              0,
+            );
+          }
+          entrance.fromTo(
+            [svg, markerSvg],
+            { opacity: 0 },
+            { opacity: 1, duration: 1, ease: 'power2.out' },
+            0.4,
+          );
+          const tween = gsap.to(position, {
+            progress: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: root,
+              start: 'top 25%',
+              end: 'bottom 65%',
+              scrub: 0.65,
+              invalidateOnRefresh: true,
+              onRefresh: () => {
+                measure();
+                place(position.progress);
+              },
+            },
+            onUpdate: () => place(position.progress),
+          });
+          return () => {
+            entrance.kill();
+            tween.kill();
+          };
+        },
+      );
       media.add(
         '(min-width:1440px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)',
         () => {
@@ -152,6 +249,7 @@ export function ProcessSection({
       );
       return () => {
         resize.disconnect();
+        ScrollTrigger.removeEventListener('refresh', measure);
         route.remove();
         media.revert();
       };

@@ -72,19 +72,31 @@ export function CasePanel({
           </div>
           <ButtonLink className="case-explore" href={SITE_LINKS.contact}>
             {cta}
-            <img src="/assets/figma/header-button-arrow.svg" width={18} height={18} alt="" />
+            <img
+              src="/assets/compartilhados/header-button-arrow.svg"
+              width={18}
+              height={18}
+              alt=""
+            />
           </ButtonLink>
         </div>
         <div className="case-visual">
           {active === 0 ? (
             <Artwork
-              src="assets/figma/case-editorial-screen.svg"
+              src="assets/cases/institut-pasteur-tomovault.png"
               className="case-project-image"
-              width={689}
-              height={510}
+              width={722}
+              height={557}
             />
           ) : (
-            <DemoScreen kind={active} />
+            <Artwork
+              src={
+                active === 1 ? 'assets/cases/case-segundo.png' : 'assets/cases/case-terceiro.png'
+              }
+              className="case-project-image"
+              width={active === 1 ? 720 : 727}
+              height={active === 1 ? 563 : 564}
+            />
           )}
         </div>
       </div>
@@ -103,7 +115,7 @@ export function CasePanel({
           {active === 0 ? (
             <>
               <Artwork
-                src="assets/figma/testimonial-photo.svg"
+                src="assets/depoimentos/testimonial-photo.svg"
                 className="case-author-photo"
                 width={64}
                 height={64}
@@ -126,7 +138,7 @@ export function CasePanel({
 export function CaseTabIcon({ index }: { index: number }) {
   return index === 0 ? (
     <Artwork
-      src="assets/figma/client-pasteur.svg"
+      src="assets/clientes/client-pasteur.svg"
       className="case-tab-logo"
       width={24}
       height={24}

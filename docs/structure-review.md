@@ -133,7 +133,7 @@ com comparação visual, em vez de perpetuar medições sem consumidor.
 
 ### 5. Originais e propostas estão no diretório publicado
 
-- `public/assets/clients/pasteur-photo.png` tem 36.649.392 bytes, cerca de
+- `public/assets/clientes/pasteur-photo.png` tem 36.649.392 bytes, cerca de
   36,6 MB. A seção ativa usa `pasteur-photo.jpg`, de 381.977 bytes. O PNG
   deve ser preservado como original em `design/source-assets/` caso ainda
   seja necessário; não foi encontrada referência a ele em `src/`.
@@ -144,7 +144,7 @@ com comparação visual, em vez de perpetuar medições sem consumidor.
   A presença de `out/proposals/metrics-editorial.html` confirma que são
   publicados pela exportação. O destino adequado é `design/proposals/`,
   salvo se houver intenção explícita de oferecer essas páginas no site.
-- `public/assets/ai-visual.png` e `public/assets/natalia.png` têm conteúdo
+- `public/assets/servicos/ai-visual.png` e `public/assets/depoimentos/natalia.png` têm conteúdo
   idêntico por SHA-256. Essa duplicação é pequena; não é a prioridade de
   desempenho.
 

@@ -9,6 +9,7 @@ import { writeGeneratedFile } from './write-generated-file.mjs';
 import { processFragments } from './process-fragments.mjs';
 import { normalizePhoneScreens } from './normalize-phone-screens.mjs';
 import { annotateArtworkRoles } from './artwork-roles.mjs';
+import { replaceConversationPhotos } from './conversation-photos.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 if (process.argv.includes('--clean-export')) {
@@ -41,7 +42,7 @@ await writeGeneratedFile(
   JSON.stringify(fontReport, null, 2),
 );
 const heroSource = await readFile(
-  path.join(root, 'public/assets/figma/inicio-glass-bleed-no-cta-orphan-arrow.svg'),
+  path.join(root, 'public/assets/inicio/inicio-glass-bleed-no-cta-orphan-arrow.svg'),
   'utf8',
 );
 const hero = pruneSvgDefs(heroSource);
@@ -61,7 +62,8 @@ await writeGeneratedFile(
 const uniqueAssets = new Map();
 let sharedFontFaces = 0;
 for (const [key, input] of Object.entries(inputs)) {
-  const source = await readFile(path.join(root, 'public', input), 'utf8');
+  let source = await readFile(path.join(root, 'public', input), 'utf8');
+  if (key === 'conversation') source = pruneSvgDefs(replaceConversationPhotos(source)).svg;
   const shared = stripSharedSvgFonts(source, sharedFonts);
   sharedFontFaces += shared.removedFonts;
   const result = extractRasterAssets(normalizePhoneScreens(annotateArtworkRoles(key, shared.svg)));

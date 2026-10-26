@@ -15,6 +15,7 @@ export function ConversationArtwork({
       const section = desktop.current?.parentElement;
       if (!section) return;
       const mobile = section.querySelector<HTMLImageElement>(':scope > .component-art');
+      const faqPhoto = section.querySelector<HTMLImageElement>('.faq-team-art');
       const mobilePhotos = Array.from(
         section.querySelectorAll<HTMLElement>('.conversation-mobile-artwork .conversation-photo'),
       );
@@ -52,15 +53,20 @@ export function ConversationArtwork({
               );
             }
           }
-          const targets = context.conditions.desktop
-            ? Array.from(
-                desktop.current!.querySelectorAll<SVGGElement>('[data-artwork-role="photo"]'),
-              )
-            : context.conditions.compact && variant === 'conversation'
-              ? mobilePhotos
-              : mobile
-                ? [mobile]
-                : [];
+          const targets =
+            variant === 'faq'
+              ? faqPhoto
+                ? [faqPhoto]
+                : []
+              : context.conditions.desktop
+                ? Array.from(
+                    desktop.current!.querySelectorAll<SVGGElement>('[data-artwork-role="photo"]'),
+                  )
+                : context.conditions.compact && variant === 'conversation'
+                  ? mobilePhotos
+                  : mobile
+                    ? [mobile]
+                    : [];
           const parallax = variant === 'conversation' && context.conditions.pointer;
           const floats = (variant !== 'conversation' || parallax ? [] : targets).map(
             (target, index) =>
@@ -188,17 +194,15 @@ export function ConversationArtwork({
               }),
           });
           ScrollTrigger.create({
-            trigger: context.conditions.desktop
-              ? section
-              : variant === 'conversation'
-                ? section
-                : (mobile ?? section),
-            start:
-              context.conditions.desktop && variant !== 'conversation'
-                ? variant === 'faq'
-                  ? 'top+=288 82%'
-                  : 'top+=225 82%'
-                : 'top 82%',
+            trigger:
+              variant === 'faq'
+                ? (faqPhoto ?? section)
+                : context.conditions.desktop
+                  ? section
+                  : variant === 'conversation'
+                    ? section
+                    : (mobile ?? section),
+            start: context.conditions.desktop && variant === 'contact' ? 'top+=225 82%' : 'top 82%',
             toggleActions: 'play none none none',
             onEnter: () => entry.play(),
           });
@@ -224,22 +228,22 @@ export function ConversationArtwork({
         <div className="conversation-mobile-artwork" aria-hidden="true">
           <img
             className="conversation-photo conversation-photo-top-left"
-            src="/assets/figma/conversation-photo-top-left.svg"
+            src="/assets/conversa/conversation-photo-top-left.svg"
             alt=""
           />
           <img
             className="conversation-photo conversation-photo-top-right"
-            src="/assets/figma/conversation-photo-top-right.svg"
+            src="/assets/conversa/conversation-photo-top-right.svg"
             alt=""
           />
           <img
             className="conversation-photo conversation-photo-bottom-left"
-            src="/assets/figma/conversation-photo-bottom-left.svg"
+            src="/assets/conversa/conversation-photo-bottom-left.svg"
             alt=""
           />
           <img
             className="conversation-photo conversation-photo-bottom-right"
-            src="/assets/figma/conversation-photo-bottom-right.svg"
+            src="/assets/conversa/conversation-photo-bottom-right.svg"
             alt=""
           />
         </div>

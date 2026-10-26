@@ -1,5 +1,31 @@
 /* Responsive rules owned by this component; loaded after base styles. */
 
+.case-browser-toolbar {
+  container-type: inline-size;
+  container-name: case-toolbar;
+}
+
+/* Use the card's available width, including before React hydrates. */
+@container case-toolbar (max-width: 32rem) {
+  .case-tabs .case-tab {
+    flex: 1 1 0;
+    min-width: 2.75rem;
+    padding-inline: 0.75rem;
+  }
+  .case-tabs .case-tab-label {
+    display: none;
+  }
+}
+
+.case-tabs[data-icons-only='true'] .case-tab {
+  flex: 1 1 0;
+  min-width: 2.75rem;
+  padding-inline: 0.75rem;
+}
+.case-tabs[data-icons-only='true'] .case-tab-label {
+  display: none;
+}
+
 .cases-editorial .case-browser,
 .cases-editorial #case-panel {
   grid-template-columns: minmax(0, 1fr);
@@ -26,11 +52,8 @@
   .cases-editorial .case-testimonial {
     height: auto;
     min-height: 0;
-    grid-template-columns: 2rem minmax(0, 1fr);
+    grid-template-columns: 2rem minmax(0, 1fr) auto;
     gap: 1rem;
-  }
-  .case-quote-author {
-    grid-column: 2;
   }
   .cases-editorial :is(.case-project-image, .case-demo-screen) {
     height: auto;
@@ -89,9 +112,13 @@
   }
 }
 
-@media (max-width: 37.499em) {
-  .case-navigation {
-    display: none;
+@media (max-width: 59.999em) {
+  .cases-editorial .case-testimonial {
+    grid-template-columns: 2rem minmax(0, 1fr);
+  }
+  .case-quote-author {
+    grid-column: 2;
+    grid-row: 2;
   }
 }
 @media (max-height: 47.999em), (prefers-reduced-motion: reduce) {

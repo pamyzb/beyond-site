@@ -5,6 +5,36 @@ Data: 24/10/2026. Escopo: implementação ativa na raiz do repositório, incluin
 
 ## Diagnóstico e correções
 
+- Download do app (26/10/2026): Android, iPhone e iPad recebem o botão
+  primário verde com ícone de download. iPadOS em modo desktop é reconhecido
+  pela identificação Macintosh com múltiplos pontos de toque. Computadores,
+  inclusive notebooks Windows touch, mantêm o QR, independentemente da largura.
+  Os links Android/iOS em `src/data/app-download.ts` usam os destinos fornecidos:
+  busca por Beyond the Bytes no Google Play e página do app na App Store.
+  O botão abre a loja correspondente ao sistema detectado. Tipos, cascata CSS
+  e testes de identificação passaram. Conferência visual pendente.
+- Hero mobile (26/10/2026): abaixo de 37.5em, título e descrição ficam
+  centralizados, com a seta verde apontando para baixo acima da descrição e CTA na largura do
+  conteúdo. O bloco principal é centralizado na área disponível entre o
+  cabeçalho e o indicador de rolagem. Formatação e cascata CSS verificadas;
+  conferência visual pendente porque o navegador de teste não iniciou no ambiente.
+- O fundo dos depoimentos abaixo de 90em usa três SVGs independentes:
+  cantos superior e inferior ancorados nas bordas e contorno proporcional.
+  Isso evita que o recorte de uma imagem única esconda os demais elementos.
+- A foto do FAQ abaixo de 60em usa `faq-team-mobile.svg`, derivado do original
+  com viewport `60 11153.59 540 619`, sem as margens transparentes. Assim, sua
+  área visível acompanha a largura e a proporção da foto de Contato.
+- No rodapé abaixo de 56.25em, logo, navegação e conteúdo ficam centralizados,
+  com espaçamento vertical de `--space-10` entre os grupos e `--space-6`
+  entre o logo e a navegação.
+- Abaixo de 60em, o cabeçalho de Processos ocupa toda a largura do grid de
+  conteúdo, alinhado aos demais títulos. Apenas os cards mantêm o limite de
+  largura e a centralização.
+- Nos depoimentos abaixo de 90em, a arte do card mantém a proporção e fica
+  ancorada no canto inferior direito. Nome e cargo usam tamanhos fluidos menores
+  que a frase, tanto no card de texto quanto no de vídeo.
+- Nos títulos de seção horizontais abaixo de 60em, o ícone fica à esquerda,
+  antes do texto do rótulo. A composição vertical de desktop é preservada.
 - As seções tinham geometria de desktop sem uma adaptação completa para
   larguras menores. Foram adicionados contratos para cabeçalho/menu, hero,
   métricas, serviços, cases, conversa, aplicativo, depoimentos, processo,
@@ -46,6 +76,19 @@ A raiz usa `100%`, sem impor 16px ou aplicar 62.5%.
 
 Os breakpoints principais são 90em, 60em e 37.5em (1440, 960 e 600px
 na referência padrão). O rodapé conserva seus próprios pontos de quebra.
+
+No depoimento dos cases, foto e identificação ficam ao lado da frase a partir
+de 60em. Abaixo desse limite, a identificação fica abaixo da frase.
+
+Na seção de conversa de 45 minutos, as quatro fotos respeitam a margem lateral
+do conteúdo (`--content-gutter`) nos layouts abaixo de 90em.
+As fotos superiores e inferiores têm também um recuo de `--space-20` (5rem)
+em relação ao início e ao fim da seção; o padding vertical cresce pelo mesmo
+valor para preservar a distância entre as fotos e o texto.
+As quatro fotos preservam seus formatos e recortes originais no responsivo.
+Todas usam a mesma escala responsiva com base de 1000px, limitada às larguras
+originais de 316, 171, 190 e 345px e altura automática. Assim, a relação de
+tamanho entre as quatro fotos permanece igual à do desktop.
 
 Nos cinco CSS revisados, as ocorrências numéricas de `px`, desconsiderando
 comentários, caíram de 1.223 para 118. Não restaram declarações de
@@ -140,3 +183,16 @@ cases Starlog/Ayalla ilustrativos, vídeo de depoimento não fornecido,
 seletor de idioma sem tradução e formulário com confirmação simulada.
 Esses itens não foram transformados em conteúdo ou serviços de produção
 sem os dados correspondentes.
+
+O convite QR do aplicativo usa a mesma composição desktop em todas as larguras. A unidade --app-qr-unit reduz proporcionalmente o conjunto quando a coluna tem menos de 540px, preservando cartão, sombra e contornos.
+
+O fundo dos depoimentos usa `preserveAspectRatio="none"` no SVG para preencher o card em qualquer proporção, mantendo o recorte preto superior esquerdo alinhado às duas bordas, tanto no HTML quanto na textura WebGL.
+
+Nos depoimentos entre 600 e 1439px, a foto pode encolher dentro da área útil do card para preservar o padding de 3rem abaixo do nome e cargo. Validado no Edge em 390, 768, 1280 e 1439px, com captura visual e medição das margens.
+
+### Serviços: controles compactos
+Nos layouts compactos e de toque, as setas ficam nas laterais, centralizadas sobre o carrossel como em Depoimentos. A linha exclusiva acima dos cards foi removida; o espaço superior de 3.5 rem preserva os robôs. Paginação segue abaixo. Verificados CSS e navegação na prévia mobile.
+
+
+A altura do carrossel compacto considera o maior card, sem recalcular pelo conjunto visível durante o swipe. Isso estabiliza setas e paginação. Validado na prévia: altura de 633 px e posição vertical dos controles idênticas antes/depois da navegação.
+

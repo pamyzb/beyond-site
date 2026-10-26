@@ -45,6 +45,14 @@
   --color-border-soft: #dfe5ef;
   --color-border-strong: #c6cfdd;
   --color-error: #ff595e;
+  /* Solid inset shadows from Figma Metrics 16023:389. */
+  --press-glass-fill: rgb(255 255 255 / 0.22);
+  --press-glass-highlight: rgb(255 255 255 / 0.4);
+  --press-glass-edge: rgb(255 255 255 / 0.35);
+  --press-glass-shade: rgb(78 99 151 / 0.05);
+  --color-metric-primary-depth: #8793ff;
+  --color-metric-neutral-depth: #ddddde;
+  --color-metric-lilac-depth: #c8d3fd;
   --color-forest: #102e1d;
   --font-sans: 'Poppins', sans-serif;
   --weight-regular: 400;

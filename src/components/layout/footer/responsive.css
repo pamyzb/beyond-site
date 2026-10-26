@@ -3,6 +3,21 @@
 .footer-nav {
   flex-wrap: wrap;
 }
+
+@media (max-width: 32.5em) {
+  .section-rodape .footer-slogan {
+    line-height: var(--leading-tight);
+  }
+  .section-rodape .footer-bottom-art--1,
+  .section-rodape .footer-bottom-art--3,
+  .section-rodape .footer-bottom-art--5 {
+    width: clamp(3.5rem, 16cqw, 5.5rem);
+  }
+  .section-rodape .footer-bottom-art--7,
+  .section-rodape .footer-bottom-art--9 {
+    width: clamp(2.25rem, 10.5cqw, 3.5rem);
+  }
+}
 .footer-contact a {
   overflow-wrap: anywhere;
 }
@@ -22,4 +37,36 @@
 .footer-socials .footer-social.button {
   width: 2.75rem;
   height: 2.75rem;
+}
+
+@media (max-width: 56.25em) {
+  .section-rodape .footer-layout {
+    justify-items: center;
+    row-gap: var(--space-10);
+    text-align: center;
+  }
+  .section-rodape .footer-brand-link,
+  .section-rodape .footer-badges {
+    grid-column: 1 / -1;
+  }
+  .section-rodape .footer-brand-link {
+    margin-bottom: calc(var(--space-6) - var(--space-10));
+  }
+  .section-rodape .footer-nav,
+  .section-rodape .footer-socials {
+    justify-content: center;
+  }
+  .section-rodape .footer-slogan,
+  .section-rodape .footer-address-copy {
+    text-align: center;
+  }
+  .section-rodape .footer-address,
+  .section-rodape .footer-contact,
+  .section-rodape .footer-badges {
+    align-items: center;
+  }
+  .section-rodape .footer-contact {
+    min-width: 0;
+    max-width: 100%;
+  }
 }

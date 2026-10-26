@@ -1,5 +1,11 @@
 # Revisão dos cards de Processos
 
+Ajuste de 26/10/2026: o grid centraliza as duas colunas horizontalmente e
+mantém um intervalo de 9rem (144px na base de 16px), inclusive no layout
+intermediário. Abaixo de 60em, os cards continuam em uma única coluna.
+As conexões 1 → 2 → 3 → 4 usam pontos nas bordas transformadas das faces SVG,
+com recálculo no redimensionamento dos cards e no refresh das animações.
+
 Data: 24/10/2026. Escopo: V1, atualmente na raiz do repositório.
 
 Os quatro cards exibiam título, descrição e número uma vez. A faixa cinza
@@ -31,3 +37,34 @@ Validação: 15 testes, tipos, build estático, formatação, `css:check` e
 duplicação, referências SVG resolvidas e ausência de definições de outros
 cards. A comparação de dimensões e estilos em 320, 390, 768, 1024, 1440 e
 1920 px não mostrou diferenças na geometria dos cards.
+
+## Cards preservados em todas as larguras — 26/10/2026
+
+Os breakpoints compactos agora reutilizam a superfície SVG, os ícones, a
+inclinação, a sombra e os marcadores originais do desktop. Cada card mantém
+seu sistema de coordenadas de 530px, com escala CSS calculada pela largura
+da coluna. A altura continua acompanhando o conteúdo; títulos e descrições
+compensam a redução de escala para manter pelo menos 24px e 14px visuais,
+respectivamente, na configuração padrão de fontes.
+
+Abaixo de 60em, a sequência 01–04 fica em uma coluna centralizada, limitada
+à largura original. As conexões externas continuam ocultas abaixo de 90em.
+O layout a partir de 90em não foi alterado.
+
+Validação desta alteração: capturas no Chrome em 320, 390, 768, 1024,
+1328 e 1440px, com movimento reduzido. Arte visível nos quatro cards e
+larguras dentro da viewport em todos esses tamanhos. Formatação e análise
+da cascata CSS conferidas. Safari/iPhone não foi validado nesta alteração.
+
+### Trajeto e marcador responsivos
+
+O trajeto usa as bordas laterais nas duas colunas e liga a base de cada
+card ao topo do seguinte na coluna �nica, com curvas alternadas que evitam
+a numera��o. As �ncoras s�o medidas na superf�cie SVG transformada, incluindo
+a escala dos cards. O marcador mant�m o movimento por rolagem e adapta sua
+escala; o rec�lculo existente acompanha mudan�as de tamanho. Movimento
+reduzido conserva o trajeto e mant�m o marcador oculto, como no desktop.
+
+Valida��o: Chrome em 320, 390, 1024 e 1440px, com marcador vis�vel e mudan�a
+de posi��o ap�s rolagem nas quatro larguras, sem erros de p�gina. TypeScript
+e an�lise de cascata CSS aprovados.

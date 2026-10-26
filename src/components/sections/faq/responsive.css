@@ -1,5 +1,14 @@
 /* Responsive rules owned by this component; loaded after base styles. */
 
+.faq-team-picture {
+  display: contents;
+}
+
+/* Source selects the image; it must not become an item in the parent grid. */
+.faq-team-picture > source {
+  display: none;
+}
+
 @media (max-width: 89.999em) {
   .section-faq > .conversation-artwork {
     display: none;
@@ -13,12 +22,13 @@
     padding-top: 0;
   }
   .section-faq .faq-content-row {
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    gap: var(--space-8);
   }
   .section-faq .faq-team-art {
-    width: 100%;
-    max-width: 100%;
+    width: 28rem;
+    max-width: none;
+    justify-self: end;
   }
 }
 
@@ -26,7 +36,12 @@
   .section-faq .faq-content-row {
     grid-template-columns: minmax(0, 1fr);
   }
+  .section-faq .faq-accordion {
+    grid-column: 1;
+    grid-row: 1;
+  }
   .section-faq .faq-team-art {
+    grid-row: 2;
     width: min(28rem, 100%);
     justify-self: center;
   }

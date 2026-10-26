@@ -1,14 +1,29 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Menu as MenuIcon, X } from 'lucide-react';
 import type { SectionData } from '@/lib/figma/design';
 import { Artwork } from '@/components/ui/artwork';
 import { HeaderNavigation } from '@/components/layout/header/header-navigation';
 
-export function SiteHeader({ section }: { section: SectionData }) {
+export function SiteHeader({
+  section,
+  homePath = '',
+}: {
+  section: SectionData;
+  homePath?: string;
+}) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   const header = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const desktop = matchMedia('(min-width: 90em)');
+    const sync = () => {
+      const navigation = header.current?.querySelector<HTMLElement>('#mobile-navigation');
+      if (navigation) navigation.inert = !desktop.matches && !open;
+    };
+    sync();
+    desktop.addEventListener('change', sync);
+    return () => desktop.removeEventListener('change', sync);
+  }, [open]);
   useEffect(() => {
     const desktop = matchMedia('(min-width: 90em)');
     const close = () => setOpen(false);
@@ -62,7 +77,7 @@ export function SiteHeader({ section }: { section: SectionData }) {
           lazy={false}
         />
         <Artwork
-          src="assets/figma/cabecalho-dark.svg"
+          src="assets/compartilhados/cabecalho-dark.svg"
           width={1440}
           height={87}
           className="figma-art header-logo-dark"
@@ -71,21 +86,21 @@ export function SiteHeader({ section }: { section: SectionData }) {
         <div className="header-content">
           <a
             className="brand-link"
-            href="#inicio"
+            href={`${homePath}#inicio`}
             aria-label="Beyond the Bytes — voltar ao topo"
             onClick={() => setOpen(false)}
           />
-          <HeaderNavigation onNavigate={() => setOpen(false)} />
+          <HeaderNavigation homePath={homePath} onNavigate={() => setOpen(false)} />
         </div>
       </div>
       <a
         className="mobile-brand"
-        href="#inicio"
+        href={`${homePath}#inicio`}
         aria-label="Beyond the Bytes — voltar ao topo"
         onClick={() => setOpen(false)}
       >
         <Artwork
-          src="assets/figma/brand.svg"
+          src="assets/compartilhados/brand.svg"
           width={220}
           height={23}
           alt="Beyond the Bytes"
@@ -93,7 +108,7 @@ export function SiteHeader({ section }: { section: SectionData }) {
           lazy={false}
         />
         <Artwork
-          src="assets/figma/brand-dark.svg"
+          src="assets/compartilhados/brand-dark.svg"
           width={220}
           height={23}
           className="brand-logo header-logo-dark"
@@ -109,11 +124,11 @@ export function SiteHeader({ section }: { section: SectionData }) {
         aria-controls="mobile-navigation"
         onClick={() => setOpen((current) => !current)}
       >
-        {open ? (
-          <X className="menu-icon" size={24} aria-hidden="true" />
-        ) : (
-          <MenuIcon className="menu-icon" size={24} aria-hidden="true" />
-        )}
+        <span className="menu-icon" aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </span>
       </button>
     </header>
   );

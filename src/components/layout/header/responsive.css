@@ -2,9 +2,28 @@
 
 @media (max-width: 89.999em) {
   .site-header {
+    --menu-open-duration: 560ms;
+    --menu-close-duration: 280ms;
+    --menu-item-duration: 480ms;
+    --menu-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --menu-panel-ease: cubic-bezier(0.65, 0, 0.2, 1);
     height: 5rem;
-    background: var(--scroll-canvas);
-    box-shadow: 0 1px 0 #8796b233;
+    background: transparent;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--header-glass);
+    border-bottom: 1px solid var(--header-border);
+    box-shadow: var(--header-shadow);
+    -webkit-backdrop-filter: blur(1.5rem) saturate(180%);
+    backdrop-filter: blur(1.5rem) saturate(180%);
+    pointer-events: none;
+    transition:
+      background-color var(--theme-duration) var(--theme-ease),
+      border-color var(--theme-duration) var(--theme-ease),
+      box-shadow var(--theme-duration) var(--theme-ease);
   }
   .site-header .header-frame {
     height: auto;
@@ -48,10 +67,7 @@
     color: #fff;
   }
   .site-header .desktop-nav {
-    display: none;
     margin: 0;
-  }
-  .site-header.menu-open .desktop-nav {
     position: absolute;
     inset: 5rem 0 auto;
     display: flex;
@@ -63,6 +79,113 @@
     background: var(--scroll-canvas);
     color: var(--scroll-ink);
     box-shadow: 0 1rem 2rem #0002;
+    visibility: hidden;
+    pointer-events: none;
+    clip-path: inset(0 0 100% 0 round 0 0 1.5rem 1.5rem);
+    transition:
+      clip-path var(--menu-close-duration) var(--menu-panel-ease),
+      visibility 0s var(--menu-close-duration);
+  }
+  .site-header.menu-open .desktop-nav {
+    visibility: visible;
+    pointer-events: auto;
+    clip-path: inset(0 0 -3rem 0 round 0 0 0 0);
+    transition-duration: var(--menu-open-duration), 0s;
+    transition-delay: 0s;
+  }
+  .site-header .header-nav-link,
+  .site-header .header-language,
+  .site-header .header-cta {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity var(--menu-item-duration) ease,
+      transform var(--menu-item-duration) var(--menu-ease);
+  }
+  .site-header.menu-open .header-nav-link,
+  .site-header.menu-open .header-language,
+  .site-header.menu-open .header-cta {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: var(--menu-item-delay, 660ms);
+  }
+  .header-nav-link:nth-child(1) {
+    --menu-item-delay: 180ms;
+  }
+  .header-nav-link:nth-child(2) {
+    --menu-item-delay: 260ms;
+  }
+  .header-nav-link:nth-child(3) {
+    --menu-item-delay: 340ms;
+  }
+  .header-nav-link:nth-child(4) {
+    --menu-item-delay: 420ms;
+  }
+  .header-nav-link:nth-child(5) {
+    --menu-item-delay: 500ms;
+  }
+  .header-nav-link:nth-child(6) {
+    --menu-item-delay: 580ms;
+  }
+  .site-header .header-cta {
+    --menu-item-delay: 740ms;
+  }
+  .menu-toggle .menu-icon {
+    position: relative;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .menu-toggle .menu-icon > span {
+    position: absolute;
+    left: 0.1875rem;
+    top: calc(50% - 1px);
+    width: 1.125rem;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transition:
+      transform 320ms var(--menu-ease),
+      opacity 180ms ease;
+  }
+  .menu-icon > span:first-child {
+    transform: translateY(-0.375rem);
+  }
+  .menu-icon > span:last-child {
+    transform: translateY(0.375rem);
+  }
+  .menu-open .menu-icon > span:first-child {
+    transform: rotate(45deg);
+  }
+  .menu-open .menu-icon > span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  .menu-open .menu-icon > span:last-child {
+    transform: rotate(-45deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header .desktop-nav {
+      clip-path: none;
+      opacity: 0;
+      transition:
+        opacity 90ms ease,
+        visibility 0s 90ms;
+    }
+    .site-header.menu-open .desktop-nav {
+      opacity: 1;
+      transition-delay: 0s;
+    }
+    .site-header .header-nav-link,
+    .site-header .header-language,
+    .site-header .header-cta,
+    .menu-toggle .menu-icon > span {
+      transition: none;
+    }
+    .site-header .header-nav-link,
+    .site-header .header-language,
+    .site-header .header-cta {
+      transform: none;
+    }
   }
   .site-header .header-nav-links {
     width: 100%;

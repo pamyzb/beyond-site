@@ -1,5 +1,4 @@
-/* Responsive rules owned by this component; loaded after base styles. */
-
+/* Keep the desktop artwork and scale its coordinate system with each column. */
 @media (max-width: 89.999em) {
   .section-processo {
     height: auto;
@@ -7,51 +6,41 @@
     padding-block: var(--section-space);
   }
   .section-processo .section-content--processo {
-    width: min(var(--content-width), calc(100% - 2 * var(--content-gutter)));
     min-height: 0;
     padding-top: 0;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem;
-    --process-card-padding: 3rem 2rem;
-    --process-cards-gap: 2rem;
+    grid-template-columns: repeat(2, minmax(0, var(--process-card-width)));
+    row-gap: 2rem;
+    --process-column-gap: clamp(2rem, 6vw, 9rem);
+    --process-cards-gap: 4rem;
   }
-  .section-processo .process-card-title {
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
-    transform: none;
-  }
-  .section-processo .process-card-copy {
-    transform: none;
-    max-width: none;
+  .section-processo .process-card-entry {
+    container-type: inline-size;
   }
   .section-processo .process-card {
-    background: var(--color-action);
-    border-radius: var(--radius-card);
-    min-height: 21rem;
+    --process-scale: min(1, calc(100cqw / 530px));
+    width: 530px;
+    zoom: var(--process-scale);
   }
-  .section-processo .process-card-art,
-  .process-route-layer,
-  .process-marker-layer {
-    display: none;
+  .section-processo .process-card-title {
+    font-size: max(2.5rem, calc(1.5rem / var(--process-scale)));
   }
-  .section-processo .process-card-step {
-    position: static;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 50%;
-    background: var(--color-accent);
-    margin-bottom: 1.5rem;
+  .section-processo .process-card-copy {
+    font-size: max(var(--text-body), calc(0.875rem / var(--process-scale)));
   }
 }
 
 @media (max-width: 59.999em) {
   .section-processo .section-content--processo {
     grid-template-columns: minmax(0, 1fr);
+    row-gap: 3rem;
   }
   .section-processo .process-card-column {
     display: contents;
   }
   .section-processo .process-card-entry {
     grid-column: 1;
+    max-width: var(--process-card-width);
+    justify-self: center;
   }
   .section-processo .process-card-entry[data-step='0'] {
     grid-row: 2;
@@ -64,18 +53,5 @@
   }
   .section-processo .process-card-entry[data-step='3'] {
     grid-row: 5;
-  }
-  .section-processo .process-card {
-    min-height: 0;
-  }
-}
-
-@media (max-width: 37.499em) {
-  .section-processo .process-card {
-    padding: 2rem;
-  }
-  .section-processo .process-card-title {
-    font-size: clamp(1.5rem, 6.5vw, 2rem);
-    overflow-wrap: anywhere;
   }
 }

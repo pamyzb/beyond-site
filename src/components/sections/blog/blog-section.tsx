@@ -78,7 +78,7 @@ export function BlogSection({ section }: { section: SectionData }) {
           {expanded && (
             <img
               className="button-icon"
-              src="/assets/figma/header-button-arrow.svg"
+              src="/assets/compartilhados/header-button-arrow.svg"
               width={18}
               height={18}
               alt=""

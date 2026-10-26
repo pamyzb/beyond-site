@@ -15,8 +15,32 @@
   }
   .testimonial-text {
     grid-template-columns: minmax(0, 1fr) 30%;
-    padding: 3rem;
+    padding: 3rem 4rem;
     gap: 2rem;
+  }
+  .testimonial-text,
+  .testimonial-text::before {
+    background-image:
+      url('/assets/depoimentos/testimonial-corner-top.svg'),
+      url('/assets/depoimentos/testimonial-corner-bottom.svg'),
+      url('/assets/depoimentos/testimonial-outline.svg');
+    background-size:
+      4rem auto,
+      6rem auto,
+      85% auto;
+    background-position:
+      left top,
+      right bottom,
+      left center;
+    background-repeat: no-repeat;
+  }
+  .testimonial-slide strong {
+    font-size: clamp(var(--text-body-lg), 2vw, var(--text-card));
+    overflow-wrap: anywhere;
+  }
+  .testimonial-slide p span {
+    font-size: clamp(var(--text-small), 1.5vw, var(--text-body));
+    overflow-wrap: anywhere;
   }
   .testimonial-portrait {
     width: 100%;
@@ -31,7 +55,7 @@
     height: 34rem;
   }
   .testimonial-video-copy {
-    padding: 3rem;
+    padding: 4rem;
   }
   .testimonial-arrow {
     top: calc(17rem - 1.75rem);
@@ -44,10 +68,30 @@
   }
 }
 
+/* Keep the portrait and attribution inside the card's padded content area. */
+@media (min-width: 37.5em) and (max-width: 89.999em) {
+  .testimonial-text {
+    grid-template-rows: minmax(0, 1fr);
+  }
+  .testimonial-person {
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    min-height: 0;
+  }
+  .testimonial-portrait {
+    min-height: 0;
+    flex-shrink: 1;
+  }
+  .testimonial-person p {
+    flex-shrink: 0;
+  }
+}
+
 @media (max-width: 37.499em) {
   .testimonial-text {
     grid-template-columns: minmax(0, 1fr);
-    padding: 1.75rem;
+    padding: 1.75rem 3rem;
     gap: 1.5rem;
     align-content: center;
   }
@@ -65,7 +109,7 @@
     font-size: var(--text-body-lg);
   }
   .testimonial-video-copy {
-    padding: 1.75rem;
+    padding: 3rem;
   }
   .testimonial-track,
   .testimonial-slide {

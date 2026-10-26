@@ -1,6 +1,6 @@
 /* Figma 15948:360: client ribbon followed by the inset metrics panel. */
 :root .impact-figma {
-  background: var(--scroll-canvas);
+  background: var(--section-soft-canvas);
   padding: 0;
   color: var(--scroll-ink);
 }
@@ -177,7 +177,7 @@
   width: 1.125rem;
   height: 1.125rem;
   background: currentColor;
-  mask: url('/assets/figma/header-button-arrow.svg') center/contain no-repeat;
+  mask: url('/assets/compartilhados/header-button-arrow.svg') center/contain no-repeat;
   transform: rotate(90deg);
 }
 :root[data-scroll-theme='dark'] .impact-brand img {

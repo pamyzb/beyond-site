@@ -7,7 +7,7 @@ import { loadTypeScript } from '../tests/load-typescript.mjs';
 
 const { buildProcessArtwork } = loadTypeScript('src/lib/server/process-artwork.ts');
 const source = await readFile(
-  new URL('../../public/assets/figma/processo.svg', import.meta.url),
+  new URL('../../public/assets/processos/processo.svg', import.meta.url),
   'utf8',
 );
 

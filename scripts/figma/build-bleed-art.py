@@ -4,10 +4,10 @@ Run after build-figma.py. Original exports remain untouched. Nested SVG
 viewports anchor edge artwork to the page and keep central artwork at 1440px.
 """
 from pathlib import Path
+from asset_paths import asset_path
 import copy
 import xml.etree.ElementTree as ET
 
-ROOT = Path(__file__).resolve().parents[2] / 'public/assets/figma'
 NS = 'http://www.w3.org/2000/svg'
 ET.register_namespace('', NS)
 ET.register_namespace('xlink', 'http://www.w3.org/1999/xlink')
@@ -15,7 +15,7 @@ ET.register_namespace('xlink', 'http://www.w3.org/1999/xlink')
 RULES = {
     'inicio': {'left': ['Container']},
     'conversa': {'left': ['Container_21'], 'right': ['Container_22']},
-    'contato': {'right': ['contact-image']},
+    # contato-bleed.svg is now a standalone photo export shared by both layouts.
     'aplicativo': {'stretch': ['Vector_42']},
     'aplicativo-light': {'stretch': ['Vector_42']},
     'metricas': {'stretch': ['patterns', 'patterns_2']},
@@ -24,7 +24,7 @@ RULES = {
 }
 
 for name, rules in RULES.items():
-    source = ET.parse(ROOT / f'{name}.svg').getroot()
+    source = ET.parse(asset_path(f'{name}.svg')).getroot()
     _, y, _, height = map(float, source.get('viewBox').split())
     result = ET.Element(f'{{{NS}}}svg', width='100%', height='100%', fill='none')
     defs = source.find(f'{{{NS}}}defs')
@@ -54,4 +54,4 @@ for name, rules in RULES.items():
         origin = {'stretch': 0, 'center': 720, 'left': 0, 'right': 1440}[key]
         viewport = ET.SubElement(result, f'{{{NS}}}svg', x=x, width='100%' if key == 'stretch' else '1440', height=str(height), viewBox=f'{origin} {y} 1440 {height}', overflow='visible', preserveAspectRatio='none')
         viewport.extend(nodes)
-    ET.ElementTree(result).write(ROOT / f'{name}-bleed.svg', encoding='utf-8', xml_declaration=True)
+    ET.ElementTree(result).write(asset_path(f'{name}-bleed.svg'), encoding='utf-8', xml_declaration=True)

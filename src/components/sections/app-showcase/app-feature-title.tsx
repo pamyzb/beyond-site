@@ -5,6 +5,7 @@ export function AppFeatureTitle({ block, project }: { block: DesignBlock; projec
   return (
     <Title
       as="h3"
+      id={project ? 'app-project-title' : undefined}
       variant="app-feature"
       className="text-block app-feature-title"
       data-source={block.source}

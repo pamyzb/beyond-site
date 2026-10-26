@@ -39,27 +39,45 @@
     padding-block: var(--section-space);
   }
   .section-contato .section-content--contato {
+    --contact-columns-gap: var(--space-8);
     padding-top: 0;
-  }
-  .section-contato .section-content--contato {
-    display: block;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: center;
   }
   .section-contato .contact-form {
-    width: min(100%, 48rem);
-    margin: 3rem auto 0;
+    width: 100%;
+    max-width: var(--contact-form-width);
+    margin: 3rem 0 0;
   }
   .section-contato .section-heading-subtitle {
     padding-left: 0;
   }
-  .section-contato > .component-art {
+  .section-contato .component-art {
     display: block;
     position: relative;
-    width: min(28rem, calc(100% - 2 * var(--page-gutter)));
+    grid-column: 2;
+    grid-row: 2;
+    width: 28rem;
+    max-width: none;
     height: auto;
-    margin: 3rem auto 0;
+    margin: 3rem 0 0;
   }
   .section-contato {
     margin-bottom: 0;
+  }
+}
+
+/* Below this width the form and a useful slice of the artwork no longer fit. */
+@media (max-width: 59.999em) {
+  .section-contato .section-content--contato {
+    display: block;
+  }
+  .section-contato .contact-form {
+    max-width: none;
+  }
+  .section-contato .component-art {
+    width: min(28rem, 100%);
+    margin-inline: auto;
   }
 }
 
