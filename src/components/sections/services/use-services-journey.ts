@@ -255,7 +255,11 @@ export function useServicesJourney({
         if (entries.some((entry) => entry.isIntersecting)) showCompactCard();
       });
       visibilityObserver.observe(element);
-      const observer = new ResizeObserver(measure);
+      let measureFrame = 0;
+      const observer = new ResizeObserver(() => {
+        cancelAnimationFrame(measureFrame);
+        measureFrame = requestAnimationFrame(measure);
+      });
       observer.observe(track);
       observer.observe(element);
       track.querySelectorAll(':scope > article').forEach((card) => observer.observe(card));
@@ -322,6 +326,7 @@ export function useServicesJourney({
       return () => {
         clearTimeout(settleTimer);
         compactTween?.kill();
+        cancelAnimationFrame(measureFrame);
         observer.disconnect();
         visibilityObserver.disconnect();
         reduced.removeEventListener('change', paint);

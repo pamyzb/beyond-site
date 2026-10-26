@@ -23,17 +23,22 @@ export function CasesSection({ content }: { content: CasesContent }) {
     const tabs = scope.current?.querySelector<HTMLElement>('.case-tabs');
     if (!tabs) return;
     let disposed = false;
+    let measureFrame = 0;
     const measure = () => {
       if (disposed) return;
       delete tabs.dataset.iconsOnly;
       if (tabs.scrollWidth > tabs.clientWidth + 1) tabs.dataset.iconsOnly = 'true';
     };
-    const observer = new ResizeObserver(measure);
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(measureFrame);
+      measureFrame = requestAnimationFrame(measure);
+    });
     observer.observe(tabs);
     measure();
     void document.fonts.ready.then(measure);
     return () => {
       disposed = true;
+      cancelAnimationFrame(measureFrame);
       observer.disconnect();
     };
   }, [names, revealed, active]);

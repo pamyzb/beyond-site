@@ -56,10 +56,15 @@ export function CircularCarousel({ items }: { items: readonly CarouselItem[] }) 
           };
           updateLayout.current = layout;
           layout(false);
-          const observer = new ResizeObserver(() => layout(false));
+          let layoutFrame = 0;
+          const observer = new ResizeObserver(() => {
+            cancelAnimationFrame(layoutFrame);
+            layoutFrame = requestAnimationFrame(() => layout(false));
+          });
           observer.observe(stage);
           cards.forEach((card) => observer.observe(card));
           return () => {
+            cancelAnimationFrame(layoutFrame);
             observer.disconnect();
             updateLayout.current = null;
           };

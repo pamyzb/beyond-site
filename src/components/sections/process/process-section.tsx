@@ -131,9 +131,13 @@ export function ProcessSection({
       };
       measure();
       place(0);
+      let resizeFrame = 0;
       const resize = new ResizeObserver(() => {
-        measure();
-        ScrollTrigger.refresh();
+        cancelAnimationFrame(resizeFrame);
+        resizeFrame = requestAnimationFrame(() => {
+          measure();
+          ScrollTrigger.refresh();
+        });
       });
       resize.observe(root);
       targets.forEach((target) => resize.observe(target));
@@ -248,6 +252,7 @@ export function ProcessSection({
         },
       );
       return () => {
+        cancelAnimationFrame(resizeFrame);
         resize.disconnect();
         ScrollTrigger.removeEventListener('refresh', measure);
         route.remove();
