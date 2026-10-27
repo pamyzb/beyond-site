@@ -1,6 +1,6 @@
 /* Restore the animated QR composition while retaining the approved QR treatment and instruction copy. */
 .section-aplicativo .app-download-cta {
-  align-self: flex-start;
+  align-self: center;
   margin-top: var(--space-8);
   max-width: 100%;
 }
