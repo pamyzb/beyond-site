@@ -1,5 +1,28 @@
 import { test, expect } from '@playwright/test';
 
+test('application cards stay centered after navigation and resize', async ({ page }) => {
+  await page.goto('/colaboradores-agenticos/');
+  const stage = page.locator('.circular-carousel-stage');
+  const card = page.locator('.circular-carousel-card[data-active="true"]');
+  for (const width of [390, 320, 768, 1440]) {
+    await page.setViewportSize({ width, height: 930 });
+    for (let index = 0; index < 4; index++) {
+      await expect
+        .poll(async () => {
+          const frame = await stage.boundingBox();
+          const active = await card.boundingBox();
+          if (!frame || !active) return Infinity;
+          return Math.abs(active.x + active.width / 2 - (frame.x + frame.width / 2));
+        })
+        .toBeLessThan(2);
+      const bounds = (await card.boundingBox())!;
+      expect(bounds.x).toBeGreaterThanOrEqual(0);
+      expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
+      await page.getByRole('button', { name: 'Próxima aplicação', exact: true }).click();
+    }
+  }
+});
+
 test('service integrates Home navigation, local anchors and static metadata', async ({ page }) => {
   const initialViewport = page.viewportSize()!;
   await page.emulateMedia({ reducedMotion: 'reduce' });

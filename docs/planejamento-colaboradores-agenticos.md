@@ -360,3 +360,9 @@ Decisão final sobre transparência: manter efeito circular, reflexos e contorno
 Pendências da Home tratadas em 26/10/2026: corrigidas expectativas antigas em tests/e2e/site.spec.ts, sem alterar a interface. Cases valida nomes acessíveis e limites dos filhos visíveis, desconsiderando o rótulo oculto no modo de ícones. Serviços valida controles dentro do viewport com alvos clicáveis de pelo menos 44px, paginação abaixo e robôs sobre o card selecionado, em vez de exigir setas acima e robôs presos ao card agêntico. Quatro cenários focados passaram no Edge desktop/mobile; TypeScript e formatação passaram. Isso substitui as duas pendências registradas na Tarefa E.
 
 Validação final da correção da Home: os 22 cenários de site.spec.ts passaram no Edge desktop/mobile. As duas pendências de teste da Tarefa E estão resolvidas.
+
+### Correção de centralização do carrossel — 27/10/2026
+
+Corrigido o deslocamento horizontal dos cards de Aplicações relatado no celular. A centralização usa `transform` no CSS inicial e `xPercent: -50` explícito no GSAP, mantendo o mesmo referencial durante navegação e redimensionamento. Preservados visual, conteúdo e controles existentes.
+
+Regressão de geometria adicionada em `tests/e2e/agent-service.spec.ts`: quatro cards, larguras 320, 390, 768 e 1440 px. Passou no Chromium mobile com animação ativa. TypeScript, cascata CSS e formatação dos arquivos alterados passaram. WebKit não executou porque o binário da versão atual do Playwright não está instalado; Safari no iPhone permanece pendente. Alteração local, sem deploy.

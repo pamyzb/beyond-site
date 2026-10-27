@@ -44,6 +44,7 @@ export function CircularCarousel({ items }: { items: readonly CarouselItem[] }) 
               const front = offset === 0;
               gsap.set(card, { zIndex: front ? 3 : 1 });
               gsap.to(card, {
+                xPercent: -50,
                 x: Math.sin(angle) * radius,
                 y: front ? 0 : (1 - Math.cos(angle)) * 60,
                 scale: front ? 1 : 0.82,

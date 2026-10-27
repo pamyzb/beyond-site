@@ -646,7 +646,7 @@
   left: 50%;
   width: min(26rem, 88%);
   min-height: 20rem;
-  translate: -50% 0;
+  transform: translateX(-50%);
   padding: var(--space-8);
   border: 0.0625rem solid color-mix(in srgb, var(--color-white) 18%, transparent);
   border-radius: var(--radius-card);
