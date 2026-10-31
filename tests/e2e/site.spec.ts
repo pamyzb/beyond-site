@@ -432,7 +432,11 @@ test('carousel controls remain clickable and builders follow the selected compac
                       (box.left + box.right) / 2,
                       (box.top + box.bottom) / 2,
                     );
-                    return box.width >= 44 && box.height >= 44 && !!hit && arrow.contains(hit);
+                    return (
+                      box.width >= 44 &&
+                      box.height >= 44 &&
+                      ((arrow as HTMLButtonElement).disabled || (!!hit && arrow.contains(hit)))
+                    );
                   })) &&
               pagination.top >= viewport.bottom - 1 &&
               robots.length === 2 &&

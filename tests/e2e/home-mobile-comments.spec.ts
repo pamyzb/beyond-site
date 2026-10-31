@@ -35,7 +35,11 @@ test('narrow computer scrolls through services and still opens the service link'
   browser,
   baseURL,
 }) => {
-  const context = await browser.newContext({ viewport: { width: 522, height: 930 } });
+  const context = await browser.newContext({
+    viewport: { width: 522, height: 930 },
+    hasTouch: false,
+    isMobile: false,
+  });
   const page = await context.newPage();
   await page.goto(baseURL!);
   await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
