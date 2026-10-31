@@ -33,6 +33,9 @@
 }
 
 @media (max-width: 59.999em) {
+  .section-faq .faq-team-picture {
+    display: none;
+  }
   .section-faq .faq-content-row {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -48,6 +51,16 @@
 }
 
 @media (max-width: 37.499em) {
+  .section-faq .faq-content-row {
+    gap: var(--space-6);
+  }
+  .section-faq .faq-team-art {
+    grid-row: 1;
+    width: min(16rem, 70%);
+  }
+  .section-faq .faq-accordion {
+    grid-row: 1;
+  }
   .section-faq .faq-question {
     padding: 1.5rem 2.75rem 1rem 0.5rem;
     min-height: 0;

@@ -1,6 +1,19 @@
 # Planejamento — Colaboradores agênticos
 
-Atualizado em 26/10/2026. Este é o documento principal para continuar o trabalho em outras conversas. Em caso de divergência com registros antigos, prevalecem as decisões mais recentes abaixo.
+Atualizado em 30/10/2026. Para os ajustes atuais, prevalece o [planejamento de 30/10/2026](../design-plans/2026-10-30-agenticos.md). As decisões e a copy de 26/10 abaixo ficam como registro histórico.
+
+## Ajustes de 30/10/2026 — implementação
+
+Ordem atual na V1: Hero → Benefícios → Como operam → Forma de remuneração → Cases (`#resultados`) → Aplicações → Eficiência → Entrega → Contato e rodapé existentes.
+
+- Hero, três cards de responsabilidade, carrossel de aplicações e contato preservados.
+- Composição de Sobre reaproveitada em Remuneração. A remuneração deixou de aparecer em Entrega.
+- Cases com três empresas, métricas e frases fictícias, identificadas visivelmente como conteúdo ilustrativo; dados antigos por setor continuam separados no modelo para preservar sua origem.
+- Cases reutilizam o hook de movimento da Home com material de vidro em HTML/CSS, prévias laterais, teclado, paginação e arraste. A textura WebGL original depende da arte e de duas texturas de depoimentos; foi desativada somente nos cases para preservar a Home e evitar retratos ou dados incorretos. O resultado usa blur local nas prévias e superfície translúcida.
+- Operação ilustrada por dois robôs e passagem automática de uma caixa; a demonstração financeira local concilia R$ 1.250,00 e reinicia após a conclusão. Ambas pausam fora de tela, em aba oculta e respeitam movimento reduzido.
+- Entrega destaca o conhecimento presencial de pessoas, sistemas, rotinas e gargalos. Não foram acrescentadas condições comerciais.
+
+Comandos, capturas e ressalvas da validação estão em `artifacts/agenticos-adjustments/verification.md`. Não houve commit, publicação ou alteração de tokens globais.
 
 ## Objetivo e fontes
 
@@ -127,12 +140,12 @@ Os colaboradores agênticos executam os fluxos para os quais foram desenvolvidos
 
 Veja os resultados apresentados pelas operações atendidas pela Beyond.
 
-| Indicador | Distribuidoras | Indústria |
-| --- | --- | --- |
-| Economia na folha | 42% a 72% | 38% a 67% |
-| Assertividade no faturamento | 4,2× mais | 3,5× mais |
-| Agilidade nos pedidos | 36× mais | 24× mais |
-| Tempo por pedido | 18 minutos → 30 segundos | 12 minutos → 30 segundos |
+| Indicador                    | Distribuidoras           | Indústria                |
+| ---------------------------- | ------------------------ | ------------------------ |
+| Economia na folha            | 42% a 72%                | 38% a 67%                |
+| Assertividade no faturamento | 4,2× mais                | 3,5× mais                |
+| Agilidade nos pedidos        | 36× mais                 | 24× mais                 |
+| Tempo por pedido             | 18 minutos → 30 segundos | 12 minutos → 30 segundos |
 
 Contexto: distribuidoras com faturamento anual entre R$ 40 milhões e R$ 300 milhões; recorte de indústria entre R$ 20 milhões e R$ 230 milhões. Resultados variam conforme o contexto de cada empresa.
 
@@ -189,24 +202,24 @@ Não duplicar o componente para trocar texto. Preservar contatos atuais da Home,
 
 ## Mapa de arquivos
 
-| Arquivo | Responsabilidade |
-| --- | --- |
-| `src/app/colaboradores-agenticos/page.tsx` | Rota e metadata |
-| `src/app/colaboradores-agenticos/service.css` | Estilos e responsividade específicos |
-| `src/data/agent-service.ts` | Copy e URL; ainda guarda métricas não exibidas no hero |
-| `src/components/sections/hero/agent-scene.tsx` | Spline e luz do cursor |
-| `src/components/sections/hero/hero-typewriter.tsx` | Digitação compartilhada |
-| `src/components/ui/title.tsx` | Títulos compartilhados |
-| `src/components/ui/section-heading.tsx` | Cabeçalhos de seção |
-| `src/components/ui/secondary-section-heading.tsx` | Títulos editoriais secundários |
-| `src/components/ui/button.tsx` | Botões e links existentes |
-| `src/components/layout/header/` | Header; `homePath` opcional |
-| `src/components/layout/footer/` | Footer; `homePath` opcional |
-| `src/components/sections/contact/` | Contato compartilhado |
-| `src/components/motion/motion-root.tsx` | Tema; `themeTrigger` e `themeStart` opcionais |
-| `src/components/sections/services/services-section.tsx` | Botão de entrada a atualizar no fim |
-| `src/styles/tokens.css` | Paleta, fontes e espaçamentos |
-| `src/app/page.tsx` | Home, referência de composição |
+| Arquivo                                                 | Responsabilidade                                       |
+| ------------------------------------------------------- | ------------------------------------------------------ |
+| `src/app/colaboradores-agenticos/page.tsx`              | Rota e metadata                                        |
+| `src/app/colaboradores-agenticos/service.css`           | Estilos e responsividade específicos                   |
+| `src/data/agent-service.ts`                             | Copy e URL; ainda guarda métricas não exibidas no hero |
+| `src/components/sections/hero/agent-scene.tsx`          | Spline e luz do cursor                                 |
+| `src/components/sections/hero/hero-typewriter.tsx`      | Digitação compartilhada                                |
+| `src/components/ui/title.tsx`                           | Títulos compartilhados                                 |
+| `src/components/ui/section-heading.tsx`                 | Cabeçalhos de seção                                    |
+| `src/components/ui/secondary-section-heading.tsx`       | Títulos editoriais secundários                         |
+| `src/components/ui/button.tsx`                          | Botões e links existentes                              |
+| `src/components/layout/header/`                         | Header; `homePath` opcional                            |
+| `src/components/layout/footer/`                         | Footer; `homePath` opcional                            |
+| `src/components/sections/contact/`                      | Contato compartilhado                                  |
+| `src/components/motion/motion-root.tsx`                 | Tema; `themeTrigger` e `themeStart` opcionais          |
+| `src/components/sections/services/services-section.tsx` | Botão de entrada a atualizar no fim                    |
+| `src/styles/tokens.css`                                 | Paleta, fontes e espaçamentos                          |
+| `src/app/page.tsx`                                      | Home, referência de composição                         |
 
 Consultar `AGENTS.md`, `README.md`, `docs/architecture/structure.md`, `docs/architecture/maintenance.md`, `docs/typography.md`, `docs/themes.md` e `docs/animations.md` conforme a tarefa.
 
@@ -288,7 +301,6 @@ Revisão de alinhamento e contornos: títulos centralizados verticalmente em rel
 Revisão do contorno: substituído o scrub cumulativo por ativação exclusiva do nível na zona de leitura. O contorno surge e desenha seu perímetro ao ativar (GSAP power2.inOut); anterior e seguintes ficam neutros, inclusive rótulo Humano/IA. Ao subir, o nível anterior é reativado. Movimento reduzido troca o destaque sem desenhar. Verificado no Edge nos três níveis e retorno, com somente um contorno visível; TypeScript, CSS e formatação passaram. Esta decisão substitui o desenho cumulativo anterior.
 
 Revisão mais recente: stroke inferior do hero restaurado (0.0625rem, branco 12%); somente os divisores externos das seções seguintes permanecem removidos. Foto `assets/servicos/service-agents-team.png` da Home inserida à esquerda do texto de Sobre, empilhada no mobile. Removidos os pontos finais dos quatro destaques entre chaves (hero, Sobre, dores e Como atuam). Frase final centralizada com o diagrama e quebra antes de “Menos acompanhamento manual.”. TypeScript, CSS e formatação passaram; foto, stroke e responsividade de 390 px conferidos no Edge.
-
 
 ### Tarefa C — implementada em 26/10/2026
 

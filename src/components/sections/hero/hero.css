@@ -20,10 +20,9 @@
   background: rgba(220, 232, 255, 0.12);
   transform-origin: 0 0;
   visibility: hidden;
+  transform: translate3d(calc(50vw - 50%), 12rem, 0);
 }
-.hero-glass[data-motion-state='idle'],
-.hero-glass[data-motion-state='running'],
-.hero-glass[data-motion-state='reduced'] {
+.hero-glass[data-manual='true'] {
   visibility: visible;
 }
 .hero-glass[data-motion-state='paused'],
@@ -71,7 +70,7 @@
 .hero-glass[data-motion-mode='auto'] .hero-glass-sheen {
   opacity: 1;
   background:
-    url('/assets/inicio/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
+    url('/assets/inicio/hero-glass-rim.svg') center/100% 100% no-repeat,
     linear-gradient(118deg, transparent 24%, #ffffff28 31%, transparent 39%),
     linear-gradient(132deg, #ffffff80, transparent 13%, transparent 85%, #ffffff90);
   box-shadow:
@@ -221,6 +220,9 @@
 .hero-grid-title > span {
   display: block;
   white-space: nowrap;
+}
+.hero-mobile-join {
+  display: none;
 }
 .hero-grid-title .hero-grid-title-bottom {
   display: flex;

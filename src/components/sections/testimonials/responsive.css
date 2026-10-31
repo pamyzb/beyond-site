@@ -20,18 +20,25 @@
   }
   .testimonial-text,
   .testimonial-text::before {
+    background-color: var(--color-gray-800);
     background-image:
       url('/assets/depoimentos/testimonial-corner-top.svg'),
       url('/assets/depoimentos/testimonial-corner-bottom.svg'),
-      url('/assets/depoimentos/testimonial-outline.svg');
+      url('/assets/depoimentos/testimonial-outline.svg'),
+      radial-gradient(ellipse at 20% 0%, rgb(215 231 255 / 8%), transparent 70%),
+      linear-gradient(145deg, rgb(31 41 55 / 92%), rgb(17 24 39 / 88%));
     background-size:
-      4rem auto,
-      6rem auto,
-      85% auto;
+      6.5rem auto,
+      8.375rem auto,
+      85% auto,
+      100% 100%,
+      100% 100%;
     background-position:
       left top,
       right bottom,
-      left center;
+      left center,
+      center,
+      center;
     background-repeat: no-repeat;
   }
   .testimonial-slide strong {
@@ -89,11 +96,27 @@
 }
 
 @media (max-width: 37.499em) {
+  .section-depoimentos .testimonial-carousel {
+    width: calc(100% - 2rem);
+    margin-inline: auto;
+  }
   .testimonial-text {
     grid-template-columns: minmax(0, 1fr);
-    padding: 1.75rem 3rem;
+    padding: 1.5rem 2rem;
     gap: 1.5rem;
     align-content: center;
+    background-size:
+      6.5rem auto,
+      8.375rem auto,
+      85% auto,
+      100% 100%,
+      100% 100%;
+    background-position:
+      left top,
+      right bottom,
+      center,
+      center,
+      center;
   }
   .testimonial-portrait {
     width: 7rem;
@@ -103,20 +126,25 @@
   }
   .testimonial-slide blockquote {
     font-size: 1.5rem;
+    line-height: 1.4;
     letter-spacing: -0.025em;
   }
   .testimonial-slide strong {
     font-size: var(--text-body-lg);
   }
+  .testimonial-video-copy blockquote {
+    font-size: 1.5rem;
+    line-height: 1.4;
+  }
   .testimonial-video-copy {
-    padding: 3rem;
+    padding: 2rem;
   }
   .testimonial-track,
   .testimonial-slide {
-    height: 38rem;
+    height: 35rem;
   }
   .testimonial-arrow {
-    top: calc(19rem - 1.375rem);
+    top: calc(17.5rem - 1.375rem);
     width: 2.75rem;
     height: 2.75rem;
   }
@@ -130,5 +158,72 @@
   .testimonial-pagination button {
     width: 2.75rem;
     height: 2.75rem;
+  }
+}
+
+/* Oversized outline shares the compact HTML and GPU card composition. */
+@media (max-width: 59.999em) {
+  .section-depoimentos .section-heading-title {
+    text-wrap: wrap;
+  }
+  .section-depoimentos .section-heading-title :is(span, em) {
+    display: inline;
+  }
+  .section-depoimentos .section-heading-title em {
+    white-space: nowrap;
+  }
+  .section-depoimentos .section-heading-title br {
+    display: none;
+  }
+  .section-depoimentos {
+    padding-top: var(--space-8);
+  }
+  .section-aplicativo {
+    padding-bottom: var(--space-8);
+  }
+  .testimonial-carousel[data-glass-renderer='webgl'] .testimonial-reading-window {
+    /* Match the GPU handoff: a crisp center and a narrow moving lens at each
+       edge. At rest the inset is zero, leaving the complete reading card. */
+    mask-image: linear-gradient(
+      to right,
+      transparent var(--testimonial-lens-inset, 0px),
+      black calc(var(--testimonial-lens-inset, 0px) + 12px),
+      black calc(100% - var(--testimonial-lens-inset, 0px) - 12px),
+      transparent calc(100% - var(--testimonial-lens-inset, 0px))
+    );
+    width: calc(100% + 24px);
+    margin-inline: -12px;
+    padding-inline: 12px;
+  }
+  .testimonial-text::before,
+  .testimonial-video-poster {
+    filter: none;
+  }
+  .testimonial-text {
+    background: transparent;
+  }
+  .testimonial-text::before {
+    background-image:
+      url('/assets/depoimentos/testimonial-corner-top.svg'),
+      url('/assets/depoimentos/testimonial-corner-bottom.svg'),
+      url('/assets/depoimentos/testimonial-outline.svg'),
+      radial-gradient(ellipse at 20% 0%, rgb(215 231 255 / 8%), transparent 70%),
+      linear-gradient(145deg, rgb(31 41 55 / 92%), rgb(17 24 39 / 88%));
+    background-size:
+      6.5rem auto,
+      8.375rem auto,
+      85% auto,
+      100% 100%,
+      100% 100%;
+    background-position:
+      left top,
+      right bottom,
+      center,
+      center,
+      center;
+  }
+  .testimonial-text strong,
+  .testimonial-video-copy strong {
+    font-size: var(--text-body-lg);
   }
 }

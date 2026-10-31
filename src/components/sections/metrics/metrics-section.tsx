@@ -1,10 +1,15 @@
 'use client';
+import type { SectionData } from '@/lib/figma/design';
+import { BlogCard } from '@/components/sections/blog/blog-card';
 import { useRef, type PointerEvent } from 'react';
-import { ClientDetailsCarousel } from '@/components/sections/metrics/client-carousel';
-import { ButtonLink } from '@/components/ui/button';
+import {
+  ClientDetailsCarousel,
+  ClientCarousel,
+} from '@/components/sections/metrics/client-carousel';
 import { CountUp } from '@/components/sections/metrics/count-up';
 import { Title } from '@/components/ui/title';
-import { gsap, SplitText, useGSAP } from '@/lib/animation/gsap';
+import { ButtonLink } from '@/components/ui/button';
+import { gsap, ScrollTrigger, SplitText, useGSAP } from '@/lib/animation/gsap';
 
 const clients = [
   {
@@ -57,12 +62,26 @@ const clients = [
   },
 ];
 
-export function MetricsSection() {
+export function MetricsSection({ blogSection }: { blogSection: SectionData }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const anchorScroll = useRef<gsap.core.Tween | null>(null);
   useGSAP(
     () => {
       const section = sectionRef.current!;
       const media = gsap.matchMedia();
+      media.add('(max-width: 37.499em) and (prefers-reduced-motion: no-preference)', () => {
+        section.querySelectorAll<HTMLElement>('.impact-stat').forEach((card) => {
+          gsap.fromTo(
+            card,
+            { '--mobile-card-tilt': '-1deg' },
+            {
+              '--mobile-card-tilt': '1deg',
+              ease: 'none',
+              scrollTrigger: { trigger: card, start: 'top bottom', end: 'bottom top', scrub: true },
+            },
+          );
+        });
+      });
       media.add('(prefers-reduced-motion: no-preference)', () => {
         const reveal = (selector: string, triggerSelector: string, stagger = 0) => {
           const targets = section.querySelectorAll<HTMLElement>(selector);
@@ -80,7 +99,7 @@ export function MetricsSection() {
               clearProps: 'transform,opacity',
               scrollTrigger: {
                 trigger,
-                start: 'top 90%',
+                start: 'top 85%',
                 toggleActions: 'play none none none',
               },
             },
@@ -105,12 +124,15 @@ export function MetricsSection() {
             });
           });
         // Animate the outer wrapper, leaving the continuously moving logo track untouched.
-        reveal('.client-inline-carousel', '.client-inline-carousel');
+        reveal('#clientes', '#clientes');
         reveal('.impact-press', '.impact-press');
-        reveal('.impact-press-logos > *, .impact-press-link', '.impact-press', 0.07);
+        reveal('.impact-press-logos, .impact-press-link', '.impact-press', 0.07);
         return () => splits.forEach((split) => split.revert());
       });
-      return () => media.revert();
+      return () => {
+        anchorScroll.current?.kill();
+        media.revert();
+      };
     },
     { scope: sectionRef },
   );
@@ -167,7 +189,7 @@ export function MetricsSection() {
             className={`impact-pattern impact-pattern-${corner}`}
             src={
               corner === 'top-right'
-                ? '/assets/metricas/padroes/vector 2.svg'
+                ? '/assets/metricas/padroes/vector 1.svg'
                 : corner === 'bottom-left'
                   ? '/assets/metricas/padroes/vector 1.svg'
                   : `/assets/metricas/metrics-pattern-${corner}.svg`
@@ -188,76 +210,167 @@ export function MetricsSection() {
             {' '}
             <div className="impact-grid">
               <article className="impact-stat" {...tiltEvents}>
-                <Title as="h3" variant="metric-stat" data-motion="static" aria-label="214.126">
-                  <span className="impact-live-dot" aria-hidden="true" />
-                  <CountUp value={214126} />
-                </Title>
-                <p>Usuários ativos nas nossas plataformas</p>
-              </article>
-              <article className="impact-stat" {...tiltEvents}>
-                <Title as="h3" variant="metric-stat" data-motion="static" aria-label="Mais de 200">
-                  <span aria-hidden="true">+</span>
-                  <CountUp value={200} />
-                </Title>
-                <p>Negócios transformados por tecnologia</p>
-              </article>
-              <article className="impact-stat" {...tiltEvents}>
                 <Title
                   as="h3"
                   variant="metric-stat"
                   data-motion="static"
-                  aria-label="Mais de 50 milhões"
+                  aria-label="Mais de 100 milhões em valor recuperado"
                 >
                   <span aria-hidden="true">+</span>
-                  <CountUp value={50} suffix="M" />
+                  <CountUp value={100} suffix="M" />
                 </Title>
-                <p>
-                  Em valor recuperado através de eficiência
-                  <br className="impact-desktop-break" /> operacional
+                <p>Em valor recuperado</p>
+              </article>
+              <article className="impact-stat impact-stat-users" {...tiltEvents}>
+                <Title
+                  as="h3"
+                  variant="metric-stat"
+                  data-motion="static"
+                  aria-label="200 mil usuários ativos no mês"
+                >
+                  <span className="impact-live-dot" aria-hidden="true" />
+                  <CountUp value={200} suffix=" mil" />
+                </Title>
+                <p>Usuários ativos no mês</p>
+              </article>
+              <article className="impact-stat" {...tiltEvents}>
+                <Title as="h3" variant="metric-stat" data-motion="static">
+                  Top 3
+                </Title>
+                <p className="impact-softdex-caption">
+                  na{' '}
+                  <span className="impact-softdex-logo">
+                    <img
+                      src="/assets/metricas/imprensa/softdex-logo.png"
+                      alt="Softdex"
+                      width="120"
+                      height="38"
+                    />
+                  </span>
                 </p>
               </article>
             </div>
             <div className="impact-press">
               <p>
-                DESTAQUE NA <span className="impact-press-accent">{'{MÍDIA}'}</span>
+                Destaque na <span className="impact-press-accent">{'{mídia}'}</span>
               </p>
-              <div className="impact-press-logos">
-                <img
-                  src="/assets/metricas/imprensa/estadao.png"
-                  alt="Estadão"
-                  width="140"
-                  height="48"
-                />
-                <img
-                  src="/assets/metricas/imprensa/pegn.png"
-                  alt="Pequenas Empresas & Grandes Negócios"
-                  width="150"
-                  height="60"
-                />
-                <img
-                  src="/assets/metricas/imprensa/valor.png"
-                  alt="Valor Econômico"
-                  width="130"
-                  height="48"
-                />
-                <a
-                  className="impact-press-profile"
-                  href="https://softdex.com.br/empresa/beyond-the-bytes"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Beyond the Bytes na Softdex (abre em nova aba)"
-                >
-                  <img
-                    src="/assets/metricas/imprensa/softex.png"
-                    alt="Top 3 software house na Softdex"
-                    width="180"
-                    height="56"
-                  />
-                </a>
-              </div>
-              <ButtonLink className="impact-press-link" href="#blog">
-                Ver matérias
-                <span className="impact-press-arrow" aria-hidden="true" />
+              <ClientCarousel
+                media
+                clients={[
+                  {
+                    key: 'estadao',
+                    name: 'Estadão',
+                    summary: 'Conteúdo no blog da Beyond.',
+                    href: '#blog-post-0-0',
+                    preview: (
+                      <BlogCard
+                        card={{ key: 'Article_19', art: 'blog-19', width: 204, height: 34 }}
+                        blocks={blogSection.blocks.filter((b) =>
+                          b.ancestors.includes('Article_19'),
+                        )}
+                        href="#blog-post-0-0"
+                        id="press-preview-estadao"
+                        layout="preview"
+                      />
+                    ),
+                    image: '/assets/metricas/imprensa/estadao.png',
+                  },
+                  {
+                    key: 'pegn',
+                    name: 'Pequenas Empresas & Grandes Negócios',
+                    summary: 'Conteúdo no blog da Beyond.',
+                    href: '#blog-post-0-1',
+                    preview: (
+                      <BlogCard
+                        card={{ key: 'Article_20', art: 'blog-20', width: 170, height: 25 }}
+                        blocks={blogSection.blocks.filter((b) =>
+                          b.ancestors.includes('Article_20'),
+                        )}
+                        href="#blog-post-0-1"
+                        id="press-preview-pegn"
+                        layout="preview"
+                      />
+                    ),
+                    image: '/assets/metricas/imprensa/pegn.png',
+                  },
+                  {
+                    key: 'valor',
+                    name: 'Valor Econômico',
+                    summary: 'Conteúdo no blog da Beyond.',
+                    href: '#blog-post-0-3',
+                    preview: (
+                      <BlogCard
+                        card={{ key: 'Article_21', art: 'blog-21', width: 136, height: 34 }}
+                        blocks={blogSection.blocks.filter((b) =>
+                          b.ancestors.includes('Article_21'),
+                        )}
+                        href="#blog-post-0-3"
+                        id="press-preview-valor"
+                        layout="preview"
+                      />
+                    ),
+                    image: '/assets/metricas/imprensa/valor.png',
+                  },
+                ]}
+              />
+              <ButtonLink
+                variant="tertiary-dark"
+                className="impact-media-link impact-press-link"
+                href="#blog"
+                onClick={(event) => {
+                  if (
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  )
+                    return;
+                  const target = document.getElementById('blog');
+                  if (!target) return;
+                  event.preventDefault();
+                  window.dispatchEvent(
+                    new CustomEvent('site:anchor-navigation', { detail: { targetId: 'blog' } }),
+                  );
+                  // Settle pinned sections before jumping: refresh restores its
+                  // saved scroll position on the following animation frame.
+                  ScrollTrigger.refresh();
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      if (location.hash !== '#blog') history.pushState(null, '', '#blog');
+                      anchorScroll.current?.kill();
+                      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        target.scrollIntoView({ behavior: 'instant', block: 'start' });
+                        ScrollTrigger.update();
+                        return;
+                      }
+                      const position = { y: window.scrollY };
+                      const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+                      const destination =
+                        target.getBoundingClientRect().top + window.scrollY - margin;
+                      const cancel = () => anchorScroll.current?.kill();
+                      const cleanup = () => {
+                        window.removeEventListener('wheel', cancel);
+                        window.removeEventListener('touchstart', cancel);
+                      };
+                      window.addEventListener('wheel', cancel, { passive: true });
+                      window.addEventListener('touchstart', cancel, { passive: true });
+                      anchorScroll.current = gsap.to(position, {
+                        y: destination,
+                        duration: 1.25,
+                        ease: 'power2.inOut',
+                        onUpdate: () => {
+                          window.scrollTo({ top: position.y, behavior: 'instant' });
+                          ScrollTrigger.update();
+                        },
+                        onComplete: cleanup,
+                        onInterrupt: cleanup,
+                      });
+                    });
+                  });
+                }}
+              >
+                Ver matérias <span className="impact-press-arrow" aria-hidden="true" />
               </ButtonLink>
             </div>
           </div>

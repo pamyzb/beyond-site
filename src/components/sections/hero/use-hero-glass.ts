@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 import { createHeroGlassMap } from '@/lib/animation/hero-glass-map';
 import {
   ambientPose,
+  isHeroAmbient,
   HERO_FRAME_MS,
   usesHeroPointer,
   HERO_VIDEO_FRAME_MS,
@@ -123,10 +124,10 @@ export function useHeroGlass() {
         // Counter-rotate the sampled scene inside a lens-sized filter viewport.
         content.style.transform = `translate(${cx}px,${cy}px) rotate(${-angle}deg) translate3d(${-x - cx}px,${-y - cy}px,0)`;
         copy.style.transformOrigin = `${x + cx}px ${y + cy}px`;
-        copy.style.transform = mode === 'auto' ? 'scale(1.3)' : 'scale(1.26)';
+        copy.style.transform = 'scale(1.05)';
         syncSample();
       }
-      if (mode === 'auto' && active()) {
+      if (isHeroAmbient(mode, interacted, performance.now(), pointerTime) && active()) {
         hero.dispatchEvent(
           new CustomEvent('hero-ambient-position', {
             detail: { x: x + cx, y: y + cy, time: performance.now() },
@@ -139,16 +140,24 @@ export function useHeroGlass() {
         frame = 0;
         return;
       }
-      if (mode === 'auto' && now - lastPaint < HERO_FRAME_MS) {
+      if (now - lastPaint < HERO_FRAME_MS) {
         frame = requestAnimationFrame(tick);
         return;
       }
       const dt = lastTick ? Math.min(0.05, (now - lastTick) / 1000) : 1 / 30;
       lastTick = lastPaint = now;
-      clock += dt;
-      if (mode === 'auto') {
-        ({ x, y, angle } = ambientPose(area, clock));
+      const ambientSpeed = bounds.width < 600 ? 1.6 : 1;
+      clock += dt * ambientSpeed;
+      if (isHeroAmbient(mode, interacted, now, pointerTime)) {
+        const pose = ambientPose(area, clock);
+        const follow = 1 - Math.exp(-dt * 3 * ambientSpeed);
+        x += (pose.x - x) * follow;
+        y += (pose.y - y) * follow;
+        angle += (pose.angle - angle) * follow;
+        velocity = speed = 0;
+        glass.dataset.motionActivity = 'ambient';
       } else {
+        glass.dataset.motionActivity = 'pointer';
         const idle = Math.max(0, now - pointerTime - 40);
         const desired = Math.min(6, speed * 2.5) * Math.exp(-idle / 110);
         velocity += (desired - velocity) * (1 - Math.pow(0.75, dt * 60));
@@ -160,6 +169,7 @@ export function useHeroGlass() {
       paint();
       if (
         mode === 'auto' ||
+        mode === 'pointer' ||
         Math.abs(targetX - x) + Math.abs(targetY - y) > 0.15 ||
         velocity > 0.003
       )
@@ -181,8 +191,8 @@ export function useHeroGlass() {
         hero.dispatchEvent(new Event('hero-ambient-pause'));
       } else {
         syncSample();
-        state(mode === 'auto' || frame ? 'running' : 'idle');
-        if ((mode === 'auto' || interacted) && !frame) frame = requestAnimationFrame(tick);
+        state('running');
+        if (!frame) frame = requestAnimationFrame(tick);
       }
     };
     const rebuild = () => {
@@ -192,6 +202,7 @@ export function useHeroGlass() {
       if (mode !== nextMode) {
         mode = nextMode;
         interacted = false;
+        delete glass.dataset.manual;
         key = '';
         stopSample();
       }
@@ -210,7 +221,7 @@ export function useHeroGlass() {
         top,
         bottom: Math.max(top, Math.min(bounds.height - h - 24, bottom.top - bounds.top - h - 16)),
       };
-      if (nextMode === 'auto') {
+      if (nextMode !== 'reduced') {
         const lines = Array.from(headingElement.querySelectorAll(':scope > span'));
         const firstLine = lines.at(0)?.getBoundingClientRect() ?? heading;
         const lastLine = lines.at(-1)?.getBoundingClientRect() ?? heading;
@@ -268,15 +279,12 @@ export function useHeroGlass() {
             filter.current.setAttribute('y', '-16');
             filter.current.setAttribute('width', String(w + 32));
             filter.current.setAttribute('height', String(h + 32));
-            displacement.current?.setAttribute(
-              'scale',
-              String(map.scale * (mode === 'auto' ? 1.8 : 1)),
-            );
+            displacement.current?.setAttribute('scale', String(map.scale * 0.3));
           }
         }
       }
       if (!interacted || mode !== 'pointer') {
-        if (mode === 'auto') ({ x, y, angle } = ambientPose(area, clock));
+        if (mode !== 'reduced') ({ x, y, angle } = ambientPose(area, clock));
         else {
           x = targetX = (bounds.width - w) / 2;
           y = targetY =
@@ -308,6 +316,11 @@ export function useHeroGlass() {
       }
       previousPointer = { x: event.clientX, y: event.clientY, time: now };
       pointerTime = now;
+      if (!interacted) {
+        x = event.clientX - bounds.left - w / 2;
+        y = event.clientY - bounds.top - h / 2;
+        glass.dataset.manual = 'true';
+      }
       interacted = true;
       targetX = event.clientX - bounds.left - w / 2;
       targetY = event.clientY - bounds.top - h / 2;
@@ -336,6 +349,7 @@ export function useHeroGlass() {
         requestRebuild();
       }
     });
+    hero.addEventListener('pointerenter', move);
     hero.addEventListener('pointermove', move);
     hero.addEventListener('pointerleave', leave);
     window.addEventListener('scroll', scroll, { passive: true });
@@ -352,6 +366,8 @@ export function useHeroGlass() {
       observer.disconnect();
       resize.disconnect();
       content.replaceChildren();
+      delete glass.dataset.manual;
+      hero.removeEventListener('pointerenter', move);
       hero.removeEventListener('pointermove', move);
       hero.removeEventListener('pointerleave', leave);
       window.removeEventListener('scroll', scroll);

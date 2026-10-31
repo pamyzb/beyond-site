@@ -4,9 +4,23 @@ export async function paintTestimonialTexture(surface: HTMLElement, dpr: number)
   await document.fonts.ready;
   const images = [...surface.querySelectorAll('img')];
   await Promise.all(images.map((image) => image.decode()));
+  const agent = surface.classList.contains('agent-result-surface');
+  const compact = !agent && matchMedia('(max-width: 59.999em)').matches;
   const artwork = new Image();
-  artwork.src = '/assets/depoimentos/testimonial-card-art.svg?v=proportional-4';
-  await artwork.decode();
+  const compactArtwork: HTMLImageElement[] = [];
+  if (compact && surface.classList.contains('testimonial-text')) {
+    // Use the same outline and corner artwork as the desktop and compact HTML cards.
+    const background = getComputedStyle(surface, '::before').backgroundImage;
+    for (const match of background.matchAll(/url\(["']?(.*?)["']?\)/g)) {
+      const image = new Image();
+      image.src = match[1];
+      compactArtwork.push(image);
+    }
+    await Promise.all(compactArtwork.map((image) => image.decode()));
+  } else if (!agent) {
+    artwork.src = '/assets/depoimentos/testimonial-card-art.svg?v=proportional-4';
+    await artwork.decode();
+  }
   const width = surface.clientWidth;
   const height = surface.clientHeight;
   const canvas = document.createElement('canvas');
@@ -29,7 +43,40 @@ export async function paintTestimonialTexture(surface: HTMLElement, dpr: number)
   ctx.roundRect(0, 0, width, height, parseFloat(getComputedStyle(surface).borderTopLeftRadius));
   ctx.clip();
   const video = surface.classList.contains('testimonial-video');
-  if (!video) {
+  if (agent) {
+    ctx.fillStyle = getComputedStyle(surface).backgroundColor;
+    ctx.fillRect(0, 0, width, height);
+    const tint = document.createElement('span');
+    tint.style.color = 'color-mix(in srgb, var(--color-action) 12%, transparent)';
+    surface.appendChild(tint);
+    const gradient = ctx.createRadialGradient(0, 0, 0, 0, 0, width * 0.9);
+    gradient.addColorStop(0, getComputedStyle(tint).color);
+    gradient.addColorStop(1, 'transparent');
+    tint.remove();
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+    for (const panel of surface.querySelectorAll<HTMLElement>(
+      '.agent-result-company, .agent-result-metrics li',
+    )) {
+      const bounds = rect(panel);
+      const style = getComputedStyle(panel);
+      ctx.fillStyle = style.backgroundColor;
+      ctx.beginPath();
+      ctx.roundRect(
+        bounds.x,
+        bounds.y,
+        bounds.width,
+        bounds.height,
+        parseFloat(style.borderTopLeftRadius),
+      );
+      ctx.fill();
+      if (parseFloat(style.borderTopWidth)) {
+        ctx.strokeStyle = style.borderTopColor;
+        ctx.lineWidth = parseFloat(style.borderTopWidth);
+        ctx.stroke();
+      }
+    }
+  } else if (!video) {
     // Match the CSS material's angle, alpha and ellipse, instead of painting
     // an opaque approximation that changes color as a card crosses the seam.
     const background = document.createElement('canvas');
@@ -62,9 +109,19 @@ export async function paintTestimonialTexture(surface: HTMLElement, dpr: number)
     material.fillStyle = light;
     material.fillRect((-width * 0.2) / rx, 0, width / rx, height / ry);
     material.restore();
-    material.drawImage(artwork, 0, 0, width, height);
+    if (compactArtwork.length === 3) {
+      const rootRem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const widths = [6.5 * rootRem, 8.375 * rootRem, width * 0.85];
+      compactArtwork.forEach((image, index) => {
+        const drawnWidth = widths[index];
+        const drawnHeight = drawnWidth * (image.naturalHeight / image.naturalWidth);
+        const x = index === 0 ? 0 : index === 1 ? width - drawnWidth : 0;
+        const y = index === 0 ? 0 : index === 1 ? height - drawnHeight : (height - drawnHeight) / 2;
+        material.drawImage(image, x, y, drawnWidth, drawnHeight);
+      });
+    } else material.drawImage(artwork, 0, 0, width, height);
     ctx.save();
-    ctx.filter = 'blur(3px)';
+    if (!compact) ctx.filter = 'blur(3px)';
     ctx.drawImage(background, 0, 0, width, height);
     ctx.restore();
   } else {
@@ -87,13 +144,17 @@ export async function paintTestimonialTexture(surface: HTMLElement, dpr: number)
       );
       ctx.clip();
     }
-    if (video) ctx.filter = 'blur(3px) saturate(1.15)';
-    const ratio = Math.max(bounds.width / image.naturalWidth, bounds.height / image.naturalHeight);
+    if (video && !compact) ctx.filter = 'blur(3px) saturate(1.15)';
+    const logo = image.classList.contains('agent-result-logo');
+    const ratio = (logo ? Math.min : Math.max)(
+      bounds.width / image.naturalWidth,
+      bounds.height / image.naturalHeight,
+    );
     const drawnWidth = image.naturalWidth * ratio;
     const drawnHeight = image.naturalHeight * ratio;
     ctx.drawImage(
       image,
-      bounds.x + (bounds.width - drawnWidth) / 2,
+      bounds.x + (logo ? 0 : (bounds.width - drawnWidth) / 2),
       bounds.y + (bounds.height - drawnHeight) * (video ? 0.35 : 0.5),
       drawnWidth,
       drawnHeight,
@@ -104,7 +165,15 @@ export async function paintTestimonialTexture(surface: HTMLElement, dpr: number)
     ctx.fillStyle = 'rgba(24,33,48,.74)';
     ctx.fillRect(0, 0, width, height);
   }
-  for (const element of surface.querySelectorAll<HTMLElement>('blockquote, strong, p > span')) {
+  const textElements = agent
+    ? [...surface.querySelectorAll<HTMLElement>('h3, p, span, strong, blockquote, li')].filter(
+        (element) =>
+          [...element.childNodes].some(
+            (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+          ),
+      )
+    : surface.querySelectorAll<HTMLElement>('blockquote, strong, p > span');
+  for (const element of textElements) {
     const style = getComputedStyle(element);
     ctx.font = `${style.fontStyle} ${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
     ctx.fillStyle = style.color;
@@ -123,6 +192,7 @@ export async function paintTestimonialTexture(surface: HTMLElement, dpr: number)
     const range = document.createRange();
     while (walker.nextNode()) {
       const node = walker.currentNode;
+      if (agent && node.parentElement !== element) continue;
       for (let index = 0; index < (node.textContent?.length ?? 0); index++) {
         range.setStart(node, index);
         range.setEnd(node, index + 1);

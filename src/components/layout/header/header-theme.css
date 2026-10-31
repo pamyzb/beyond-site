@@ -12,7 +12,7 @@
 }
 .site-header .header-logo-light,
 .site-header .header-logo-dark {
-  transition: opacity var(--theme-duration) var(--theme-ease);
+  transition: none;
 }
 .site-header .header-logo-dark {
   opacity: 0;
@@ -86,7 +86,7 @@
 }
 
 :root .site-header.hero-header-reveal {
-  --header-glass: rgb(18 21 27 / calc(0.86 * var(--header-collapse)));
+  --header-glass: rgb(18 21 27 / 0.86);
   --header-border: transparent;
   --header-shadow: none;
 }

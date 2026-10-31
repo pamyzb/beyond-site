@@ -1,4 +1,6 @@
 /* Section-owned rules; import position preserves the V1 cascade. */
 .section-heading-icon {
+  width: 2rem;
+  height: 1.25rem;
   background: var(--section-heading-accent);
 }

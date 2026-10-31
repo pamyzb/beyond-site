@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
-import { TrendingUp, ClipboardClock, FileWarning, Funnel, Bot, Hammer } from 'lucide-react';
-import { CountUp } from '@/components/sections/metrics/count-up';
+import { Bot, Hammer, User } from 'lucide-react';
+import { AgentResultsCarousel } from '@/components/sections/agent-service/agent-results-carousel';
+import { AgentOperationComparison } from '@/components/sections/agent-service/agent-operation-comparison';
+import { AgentOperationScene } from '@/components/sections/agent-service/agent-operation-scene';
+import { AgentFinanceDemo } from '@/components/sections/agent-service/agent-finance-demo';
 import { SiteHeader } from '@/components/layout/header/site-header';
 import { FooterRunner } from '@/components/layout/footer/footer-runner';
 import { MotionRoot } from '@/components/motion/motion-root';
 import { HeroTypewriter } from '@/components/sections/hero/hero-typewriter';
 import { AgentScene } from '@/components/sections/hero/agent-scene';
 import { ContactSection } from '@/components/sections/contact/contact-section';
-import { AboutCard } from '@/components/sections/about/about-card';
 import { SectionShell } from '@/components/sections/shared/section-shell';
 import { ButtonLink } from '@/components/ui/button';
 import { Title } from '@/components/ui/title';
@@ -20,7 +22,6 @@ import { agentService } from '@/data/agent-service';
 import { WHATSAPP } from '@/data/navigation';
 import { readArtwork, readNamespacedArtwork, stripSvgXml } from '@/lib/server/svg';
 import './service.css';
-import { readProcessArtwork } from '@/lib/server/process-artwork';
 
 export const metadata: Metadata = {
   title: 'Colaboradores agênticos — Beyond the Bytes',
@@ -28,20 +29,23 @@ export const metadata: Metadata = {
 };
 
 export default async function AgentServicePage() {
-  const challengeIcons = [TrendingUp, ClipboardClock, FileWarning, Funnel];
-  const [contact, footer, process] = await Promise.all([
+  const roleIcons = [User, User, Bot];
+  const [contact, footer] = await Promise.all([
     readNamespacedArtwork('contact', 'contact-art'),
     Promise.all(
       Array.from({ length: 10 }, (_, index) =>
         readArtwork(`footer-${index + 1}` as Parameters<typeof readArtwork>[0]).then(stripSvgXml),
       ),
     ),
-    readProcessArtwork(),
   ]);
 
   return (
-    <MotionRoot themeTrigger="#resultados .section-heading" themeReverse whatsappTrigger="#sobre">
-      <SiteHeader section={siteSection('cabecalho')} homePath="/" />
+    <MotionRoot
+      themeTrigger="#resultados .section-heading"
+      themeReverse
+      whatsappTrigger="#beneficios"
+    >
+      <SiteHeader section={siteSection('cabecalho')} homePath="/" mobileVariant="home" />
       <main className="agent-service-page">
         <section id="inicio" className="agent-hero theme-dark" aria-labelledby="agent-title">
           <div className="agent-hero-inner">
@@ -69,64 +73,41 @@ export default async function AgentServicePage() {
                 </ButtonLink>
               </div>
             </div>
-            <AgentScene
-              scene={agentService.scene}
-              marker={process.marker.replace(
-                'viewBox="0 7449.59 1440 1148"',
-                'viewBox="624.05 7888.4 50 50"',
-              )}
-            />
+            <AgentScene scene={agentService.scene} />
           </div>
         </section>
         <div className="agent-service-content theme-dark">
           <section
-            id="sobre"
+            id="beneficios"
             className="agent-service-section"
-            aria-label={agentService.about.label}
+            aria-label={agentService.benefits.label}
           >
             <SectionHeading
-              label={agentService.about.label}
+              label={agentService.benefits.label}
               title={
                 <>
-                  {agentService.about.title} <em>{`{${agentService.about.accent}}`}</em>
+                  {agentService.benefits.title} <em>{`{${agentService.benefits.accent}}`}</em>
                 </>
               }
             />
-            <div className="agent-about-layout">
-              <Artwork
-                src="assets/servicos/agenticos-sobre.svg"
-                width={1039}
-                height={647}
-                alt="Equipe da Beyond trabalhando em computadores no escritório"
-                className="agent-about-photo"
-              />
-              <div className="agent-service-prose">
-                {agentService.about.paragraphs.map((paragraph) => (
-                  <p key={paragraph}>{paragraph}</p>
-                ))}
-                <p className="agent-service-statement">{agentService.about.closing}</p>
-              </div>
-            </div>
-          </section>
-          <section
-            id="o-que-resolvem"
-            className="agent-service-section agent-challenges"
-            aria-label={agentService.challenges.label}
-          >
-            <SectionHeading
-              label={agentService.challenges.label}
-              title={
-                <>
-                  {agentService.challenges.title} <em>{`{${agentService.challenges.accent}}`}</em>
-                </>
-              }
-              subtitle={agentService.challenges.description}
-            />
-            <div className="agent-challenge-list">
-              {agentService.challenges.items.map((item, index) => {
-                const Icon = challengeIcons[index];
+            <div className="agent-benefit-editorial">
+              {agentService.benefits.items.map((item, index) => {
                 return (
-                  <AboutCard key={item.title} content={item} icon={<Icon strokeWidth={1.75} />} />
+                  <article key={item.title} className="agent-benefit-item">
+                    <div className="about-card-body">
+                      <Title as="h3" variant="figma" className="about-card-title">
+                        {index === 0 ? (
+                          <>
+                            Economia de até <strong className="agent-benefit-number">50%</strong> da
+                            sua folha.
+                          </>
+                        ) : (
+                          item.title
+                        )}
+                      </Title>
+                      {item.description && <p className="about-card-copy">{item.description}</p>}
+                    </div>
+                  </article>
                 );
               })}
             </div>
@@ -145,37 +126,103 @@ export default async function AgentServicePage() {
               }
               subtitle={agentService.roles.description}
             />
+
             <div
-              className="agent-role-diagram"
+              className="agent-challenge-list agent-role-list"
               aria-label="Níveis de responsabilidade entre pessoas e IA"
             >
-              {agentService.roles.items.map((item) => (
-                <article key={item.title} className="agent-role">
-                  <svg className="agent-role-outline" aria-hidden="true" focusable="false">
-                    <rect pathLength="1000" />
-                  </svg>
-                  <p className="agent-role-owner">{item.owner}</p>
-                  <Title as="h3" variant="service">
-                    {item.title}
-                  </Title>
-                  <p className="agent-role-description">{item.description}</p>
-                </article>
-              ))}
+              {agentService.roles.items.map((item, index) => {
+                const Icon = roleIcons[index];
+                return (
+                  <article key={item.title} className="about-panel-card">
+                    <div className="about-card-body">
+                      <div className="about-icon about-icon--lucide" aria-hidden="true">
+                        <span
+                          className={
+                            index === 1
+                              ? 'about-icon-surface agent-human-bot'
+                              : 'about-icon-surface'
+                          }
+                        >
+                          {index === 1 ? (
+                            <>
+                              <User strokeWidth={1.75} />
+                              <Bot strokeWidth={1.75} />
+                            </>
+                          ) : (
+                            <Icon strokeWidth={1.75} />
+                          )}
+                        </span>
+                      </div>
+                      <p className="agent-role-owner">{item.owner}</p>
+                      <Title as="h3" variant="figma" className="about-card-title">
+                        {item.title}
+                      </Title>
+                      <p className="about-card-copy">{item.description}</p>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
-            <SecondarySectionHeading
-              className="agent-roles-closing"
-              title={agentService.roles.closing.map((line) => (
-                <span className="agent-closing-line" key={line}>
-                  {line}
-                </span>
-              ))}
+            <div className="agent-roles-summary">
+              <SecondarySectionHeading
+                className="agent-roles-closing"
+                subtitle="Colaboradores humanos naquilo que realmente importa."
+                title={agentService.roles.closing.map((line) => (
+                  <span className="agent-closing-line" key={line}>
+                    {line}
+                  </span>
+                ))}
+              />
+              <p className="agent-remuneration-transition">
+                O custo de não fazer nada é muito grande.
+              </p>
+            </div>
+            <AgentOperationScene comparison={<AgentOperationComparison />} />
+          </section>
+          <section
+            id="remuneracao"
+            className="agent-service-section"
+            aria-label={agentService.remuneration.label}
+          >
+            <SectionHeading
+              label={agentService.remuneration.label}
+              title={
+                <>
+                  {agentService.remuneration.title}{' '}
+                  <em>{`{${agentService.remuneration.accent}}`}</em>
+                </>
+              }
             />
+            <div className="agent-about-layout">
+              <Artwork
+                src="assets/servicos/agenticos-sobre.svg"
+                width={1039}
+                height={647}
+                alt="Profissional ao lado de um robô trabalhando em uma estação de computador"
+                className="agent-about-photo"
+              />
+              <div className="agent-service-prose">
+                <p>{agentService.remuneration.description}</p>
+                <p className="agent-service-statement">{agentService.remuneration.closing}</p>
+              </div>
+            </div>
           </section>
           <section
             id="resultados"
             className="agent-service-section"
             aria-label={agentService.results.label}
           >
+            <div className="impact-patterns" aria-hidden="true">
+              {['top-left', 'top-right', 'bottom-left', 'bottom-right'].map((corner) => (
+                <img
+                  key={corner}
+                  className={`impact-pattern impact-pattern-${corner}`}
+                  src={`/assets/metricas/metrics-pattern-${corner}.svg`}
+                  alt=""
+                />
+              ))}
+            </div>
             <SectionHeading
               label={agentService.results.label}
               title={
@@ -185,36 +232,7 @@ export default async function AgentServicePage() {
               }
               subtitle={agentService.results.description}
             />
-            <div className="agent-results-grid">
-              {agentService.results.sectors.map((sector) => (
-                <article className="agent-result-sector" key={sector.name}>
-                  <Title as="h3" variant="service">
-                    {sector.name}
-                  </Title>
-                  <p className="agent-result-context">{sector.context}</p>
-                  <dl className="agent-result-metrics">
-                    <div className="agent-result-savings">
-                      <dt>Economia na folha</dt>
-                      <dd aria-label={sector.savings}>
-                        <CountUp value={Number(sector.savings.split('%')[0])} suffix="%" />
-                        <span aria-hidden="true"> a </span>
-                        <CountUp
-                          value={Number(sector.savings.split(' a ')[1].replace('%', ''))}
-                          suffix="%"
-                        />
-                      </dd>
-                    </div>
-                    {sector.metrics.map((metric) => (
-                      <div className="agent-result-row" key={metric.label}>
-                        <dt>{metric.label}</dt>
-                        <dd>{metric.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </article>
-              ))}
-            </div>
-            <p className="agent-results-note">{agentService.results.note}</p>
+            <AgentResultsCarousel items={agentService.illustrativeCases} />
           </section>
           <section
             id="aplicacoes"
@@ -244,6 +262,32 @@ export default async function AgentServicePage() {
             <CircularCarousel items={agentService.applications.items} />
           </section>
           <section
+            id="eficiencia"
+            className="agent-service-section"
+            aria-label={agentService.efficiency.label}
+          >
+            <div className="impact-patterns" aria-hidden="true">
+              {['top-left', 'top-right', 'bottom-left', 'bottom-right'].map((corner) => (
+                <img
+                  key={corner}
+                  className={`impact-pattern impact-pattern-${corner}`}
+                  src={`/assets/metricas/metrics-pattern-${corner}.svg`}
+                  alt=""
+                />
+              ))}
+            </div>
+            <SectionHeading
+              label={agentService.efficiency.label}
+              title={
+                <>
+                  {agentService.efficiency.title} <em>{`{${agentService.efficiency.accent}}`}</em>
+                </>
+              }
+              subtitle={agentService.efficiency.description}
+            />
+            <AgentFinanceDemo />
+          </section>
+          <section
             id="contratacao-e-entrega"
             className="agent-service-section"
             aria-label={agentService.delivery.label}
@@ -252,7 +296,8 @@ export default async function AgentServicePage() {
               label={agentService.delivery.label}
               title={
                 <>
-                  {agentService.delivery.title} <em>{`{${agentService.delivery.accent}}`}</em>
+                  {agentService.delivery.title} <em>{`{${agentService.delivery.accent}}`}</em>{' '}
+                  {agentService.delivery.titleEnd}
                 </>
               }
               subtitle={agentService.delivery.description}
@@ -281,24 +326,25 @@ export default async function AgentServicePage() {
                 ))}
               </ol>
             </div>
-            <div className="agent-delivery-remuneration">
-              <SecondarySectionHeading
-                title={
-                  <>
-                    {agentService.delivery.remunerationTitle}{' '}
-                    <em>{`{${agentService.delivery.remunerationAccent}}`}</em>
-                  </>
-                }
-              />
-              <p>{agentService.delivery.remunerationDescription}</p>
-            </div>
           </section>
         </div>
-        <div className="section-band theme-dark">
+        <div className="section-band theme-dark agent-contact-band">
+          <div className="impact-patterns agent-contact-patterns" aria-hidden="true">
+            <img
+              className="impact-pattern impact-pattern-top-left"
+              src="/assets/metricas/metrics-pattern-top-left.svg"
+              alt=""
+            />
+            <img
+              className="impact-pattern impact-pattern-top-right"
+              src="/assets/metricas/padroes/vector 1.svg"
+              alt=""
+            />
+          </div>
           <ContactSection section={siteSection('contato')} artwork={contact} />
         </div>
       </main>
-      <div className="footer-frame">
+      <div className="footer-frame footer-frame--home mx-auto">
         <SectionShell section={siteSection('rodape')}>
           <FooterRunner bottomArtwork={footer} homePath="/" />
         </SectionShell>

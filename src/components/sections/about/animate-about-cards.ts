@@ -9,7 +9,7 @@ export function animateAboutCards(root: HTMLElement) {
         (stroke) => typeof stroke.getTotalLength === 'function',
       );
       if (!strokes.length) return;
-      const drawing = gsap.fromTo(
+      gsap.fromTo(
         strokes,
         {
           strokeDasharray: (_, stroke: SVGGeometryElement) => stroke.getTotalLength(),
@@ -23,11 +23,6 @@ export function animateAboutCards(root: HTMLElement) {
           scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' },
         },
       );
-      const replay = () => {
-        if (!drawing.isActive()) drawing.restart();
-      };
-      card.addEventListener('pointerenter', replay);
-      cleanups.push(() => card.removeEventListener('pointerenter', replay));
     });
     const bodies = root.querySelectorAll('.about-card-body');
     bodies.forEach((body, index) =>
@@ -52,7 +47,9 @@ export function animateAboutCards(root: HTMLElement) {
   });
   media.add('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)', () => {
     const cleanups = Array.from(root.querySelectorAll('.about-panel-card')).map((card, index) => {
-      const glyph = card.querySelector('[data-artwork-role="about-glyph"], .lucide');
+      const glyph = card.querySelector(
+        '.agent-human-bot, [data-artwork-role="about-glyph"], .lucide',
+      );
       if (!glyph) return () => {};
       const motion = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' } });
       if (index === 0) {
@@ -66,7 +63,7 @@ export function animateAboutCards(root: HTMLElement) {
           })
           .to(glyph, { x: 3, y: -1, rotation: 6, duration: 0.32 })
           .to(glyph, { x: 0, y: 0, rotation: 0, duration: 0.26 });
-      } else if (index === 1 && !glyph.classList.contains('lucide')) {
+      } else if (index === 1 && !glyph.matches('.lucide, .agent-human-bot')) {
         const blocks = glyph.querySelectorAll('rect');
         motion.fromTo(
           blocks,

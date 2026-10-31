@@ -1,4 +1,40 @@
 /* Language selection preview; content remains in Portuguese. */
+@media (min-width: 70.625em) {
+  .site-header .header-frame > .figma-art {
+    display: none;
+  }
+  .site-header .header-frame::before {
+    left: 1rem;
+    right: 1rem;
+  }
+  .site-header .mobile-brand {
+    position: absolute;
+    display: block;
+    left: max(3.75rem, calc((100% - 90rem) / 2 + 3.75rem));
+    top: 2rem;
+    width: 13.75rem;
+    height: 1.4375rem;
+  }
+  .site-header .mobile-brand .brand-logo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .site-header .header-content .brand-link {
+    visibility: hidden;
+  }
+  .header-nav-link.header-home-responsive {
+    display: none;
+  }
+}
+.language-full {
+  display: none;
+}
+.menu-background-mark {
+  display: none;
+}
 .header-language {
   position: relative;
   display: flex;
@@ -28,7 +64,7 @@
   transition: transform 180ms ease;
   pointer-events: none;
 }
-.language-trigger[aria-expanded='true'] svg {
+.language-trigger[aria-expanded='true'] svg:not(.language-flag) {
   transform: rotate(180deg);
 }
 .language-trigger:hover,
@@ -102,7 +138,7 @@
   right: 4rem;
 }
 .header-frame::before {
-  right: calc(0.25rem + 2.5rem * var(--header-collapse));
+  right: 2rem;
 }
 
 /* Override the legacy coordinate rules above after they have been declared. */
@@ -196,4 +232,47 @@
 .site-header:not(.hero-header-reveal) .header-language .language-trigger {
   color: var(--color-black);
   background: transparent;
+}
+
+/* Center navigation in the free space between the brand and header actions. */
+.header-nav-center,
+.header-nav-actions {
+  display: contents;
+}
+@media (min-width: 70.625em) {
+  .header-content {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .header-content .brand-link {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+  .site-header .desktop-nav {
+    display: contents;
+  }
+  .header-nav-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .header-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 70.625em) {
+  .desktop-nav .header-language,
+  .desktop-nav .header-cta {
+    margin-left: 0;
+  }
 }

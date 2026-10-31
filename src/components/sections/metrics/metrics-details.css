@@ -475,4 +475,5 @@
 
 .impact-press-accent {
   color: var(--color-action);
+  font-style: italic;
 }

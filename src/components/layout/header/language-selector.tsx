@@ -1,6 +1,41 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
+function LanguageLabel({ value }: { value: 'pt' | 'en' }) {
+  return (
+    <>
+      <span className="language-abbreviation">{value.toUpperCase()}</span>
+      <span className="language-full">
+        <svg
+          className="language-flag"
+          width="20"
+          height="14"
+          viewBox="0 0 20 14"
+          aria-hidden="true"
+        >
+          {value === 'pt' ? (
+            <>
+              <path fill="#009739" d="M0 0h20v14H0z" />
+              <path fill="#FFDF00" d="m10 1 8 6-8 6-8-6z" />
+              <circle fill="#012169" cx="10" cy="7" r="3.3" />
+              <path d="M7 6.3q3-1 6 1.6" fill="none" stroke="white" strokeWidth=".7" />
+            </>
+          ) : (
+            <>
+              <path fill="#012169" d="M0 0h20v14H0z" />
+              <path stroke="white" strokeWidth="4" d="m0 0 20 14M20 0 0 14" />
+              <path stroke="#C8102E" strokeWidth="1.5" d="m0 0 20 14M20 0 0 14" />
+              <path stroke="white" strokeWidth="6" d="M10 0v14M0 7h20" />
+              <path stroke="#C8102E" strokeWidth="3.5" d="M10 0v14M0 7h20" />
+            </>
+          )}
+        </svg>
+        <span>{value === 'pt' ? 'Português' : 'English'}</span>
+      </span>
+    </>
+  );
+}
+
 export function LanguageSelector() {
   const [language, setLanguage] = useState<'pt' | 'en'>('pt');
   const [open, setOpen] = useState(false);
@@ -16,6 +51,8 @@ export function LanguageSelector() {
       const bounds = trigger.current?.getBoundingClientRect();
       if (!bounds || !popup.current) return;
       const unit = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const compact = matchMedia('(max-width: 70.624em)').matches;
+      popup.current.style.width = compact ? `${bounds.width}px` : '';
       const width = popup.current.getBoundingClientRect().width || 6.75 * unit;
       popup.current.style.top = `${bounds.bottom + 0.5 * unit}px`;
       popup.current.style.left = `${Math.max(0.75 * unit, Math.min(bounds.right - width, window.innerWidth - width - 0.75 * unit))}px`;
@@ -70,7 +107,7 @@ export function LanguageSelector() {
           }
         }}
       >
-        {language.toUpperCase()}
+        <LanguageLabel value={language} />
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
           <path
             d="m3 4.5 3 3 3-3"
@@ -123,7 +160,7 @@ export function LanguageSelector() {
                 trigger.current?.focus();
               }}
             >
-              {value.toUpperCase()}
+              <LanguageLabel value={value} />
               <span aria-hidden="true">{language === value ? '✓' : ''}</span>
             </button>
           ))}

@@ -15,8 +15,19 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
   const rail = useRef<HTMLDivElement>(null);
   const paintJourney = useRef<() => void>(() => {});
   const scrollJourney = useRef<ScrollTrigger | null>(null);
-  const { canGoBack, atEnd, activeGroup, destination, updatePagination, navigate } =
-    useServicesNavigation({ viewport, rail, scrollJourney });
+  const {
+    canGoBack,
+    atEnd,
+    activeGroup,
+    groupCount,
+    destination,
+    updatePagination,
+    navigate,
+    startDrag,
+    moveDrag,
+    endDrag,
+    suppressClick,
+  } = useServicesNavigation({ viewport, rail, scrollJourney });
   useServicesJourney({ scope, viewport, rail, paintJourney, scrollJourney, updatePagination });
   return (
     <section
@@ -52,8 +63,22 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
             )
               destination.current = null;
           }}
-          onPointerDown={() => {
-            destination.current = null;
+          onPointerDown={startDrag}
+          onPointerMove={moveDrag}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onLostPointerCapture={endDrag}
+          onPointerLeave={(event) => {
+            if (!event.currentTarget.hasPointerCapture(event.pointerId)) endDrag(event);
+          }}
+          onDragStart={(event) => {
+            if (window.matchMedia('(max-width: 59.999em)').matches) event.preventDefault();
+          }}
+          onClickCapture={(event) => {
+            if (!suppressClick.current || event.detail === 0) return;
+            suppressClick.current = false;
+            event.preventDefault();
+            event.stopPropagation();
           }}
           onWheel={() => {
             destination.current = null;
@@ -121,11 +146,11 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
             </button>
           </div>
           <div className="services-pagination" role="group" aria-label="Páginas de serviços">
-            {[0, 1, 2].map((group) => (
+            {Array.from({ length: groupCount }, (_, group) => (
               <button
                 key={group}
                 type="button"
-                aria-label={`Ir para o grupo ${group + 1} de 3 de serviços`}
+                aria-label={`Ir para o grupo ${group + 1} de ${groupCount} de serviços`}
                 aria-current={activeGroup === group ? 'true' : undefined}
                 aria-controls="services-carousel"
                 onClick={() => navigate({ group })}

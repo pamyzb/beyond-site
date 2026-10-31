@@ -68,18 +68,17 @@ export function ConversationArtwork({
                     ? [mobile]
                     : [];
           const parallax = variant === 'conversation' && context.conditions.pointer;
-          const floats = (variant !== 'conversation' || parallax ? [] : targets).map(
-            (target, index) =>
-              gsap.to(target, {
-                y: index % 2 ? 8 : -8,
-                rotation: index % 2 ? -0.65 : 0.65,
-                duration: 3.2 + index * 0.35,
-                ease: 'sine.inOut',
-                repeat: -1,
-                yoyo: true,
-                paused: true,
-                transformOrigin: '50% 50%',
-              }),
+          const floats = (variant === 'conversation' ? targets : []).map((target, index) =>
+            gsap.to(target, {
+              yPercent: (index % 2 ? 1 : -1) * (context.conditions?.compact ? 4 : 2),
+              rotation: index % 2 ? -0.65 : 0.65,
+              duration: 3.2 + index * 0.35,
+              ease: 'sine.inOut',
+              repeat: -1,
+              yoyo: true,
+              paused: true,
+              transformOrigin: '50% 50%',
+            }),
           );
           let entered = false;
           // Reuse tweens so pointer events do not allocate animations or fight the entrance.

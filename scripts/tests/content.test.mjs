@@ -24,7 +24,7 @@ test('case and service copy is independent of Figma export block order', () => {
   assert.equal(cases.cta, 'Explorar case');
   assert.equal(
     servicesContent(sections.find((section) => section.id === 'servicos')).cards.length,
-    5,
+    3,
   );
 });
 

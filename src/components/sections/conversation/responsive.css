@@ -60,6 +60,19 @@
 }
 
 @media (max-width: 59.999em) {
+  .conversation-photo-bottom-left,
+  .conversation-photo-bottom-right {
+    bottom: calc(2 * var(--space-8));
+  }
+  .section-conversa .section-content--conversa {
+    padding-bottom: 13rem;
+    --conversation-copy-gap: var(--space-4);
+    --conversation-action-gap: var(--space-4);
+    gap: 0;
+  }
+  .section-conversa .flow-copy--h2 {
+    line-height: 1.2;
+  }
   .section-conversa .conversation-cta {
     max-width: 100%;
     width: auto;
@@ -72,7 +85,13 @@
 }
 
 @media (max-width: 37.499em) {
+  .conversation-photo {
+    width: min(
+      calc(100% * var(--conversation-photo-desktop-width) / 820),
+      calc(var(--conversation-photo-desktop-width) * 1rem / 16)
+    );
+  }
   .section-conversa .section-content {
-    padding-block: 7rem;
+    padding-block: 7rem 9rem;
   }
 }

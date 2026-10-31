@@ -43,6 +43,24 @@ export function ProcessSection({
       route.setAttribute('stroke-width', '1.5');
       route.setAttribute('stroke-dasharray', '5 9');
       svg.appendChild(route);
+      const markerRoute = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      markerRoute.setAttribute('class', 'process-marker-route');
+      markerRoute.setAttribute('fill', 'none');
+      markerSvg.appendChild(markerRoute);
+      const markerFace = marker.querySelector<SVGGraphicsElement>(':scope > path')!;
+      const markerBox = markerFace.getBBox();
+      const markerCenter = {
+        x: markerBox.x + markerBox.width / 2,
+        y: markerBox.y + markerBox.height / 2,
+      };
+      let markerLength = 0;
+      let markerScale = 1;
+      let currentProgress = 0;
+      let disposed = false;
+      const restingPoint = (point: DOMPoint, target: HTMLElement) => ({
+        x: point.x - Number(gsap.getProperty(target, 'x')),
+        y: point.y - Number(gsap.getProperty(target, 'y')),
+      });
       const anchor = (
         target: HTMLElement,
         side: 'left' | 'right' | 'top' | 'bottom',
@@ -53,18 +71,21 @@ export function ProcessSection({
         if (face && matrix) {
           const box = face.getBBox();
           // Use the actual rotated edge, with a small overlap beneath the face.
-          return new DOMPoint(
-            side === 'left'
-              ? box.x + 2
-              : side === 'right'
-                ? box.x + box.width - 2
-                : box.x + box.width * fraction,
-            side === 'top'
-              ? box.y + 2
-              : side === 'bottom'
-                ? box.y + box.height - 2
-                : box.y + box.height * fraction,
-          ).matrixTransform(matrix);
+          return restingPoint(
+            new DOMPoint(
+              side === 'left'
+                ? box.x + 2
+                : side === 'right'
+                  ? box.x + box.width - 2
+                  : box.x + box.width * fraction,
+              side === 'top'
+                ? box.y + 2
+                : side === 'bottom'
+                  ? box.y + box.height - 2
+                  : box.y + box.height * fraction,
+            ).matrixTransform(matrix),
+            target,
+          );
         }
         const box = target.getBoundingClientRect();
         return {
@@ -84,6 +105,8 @@ export function ProcessSection({
       };
       const measure = () => {
         const bounds = root.getBoundingClientRect();
+        markerScale = Math.min(1, Math.max(0.65, targets[0].getBoundingClientRect().width / 530));
+        const stacked = getComputedStyle(targets[0].parentElement!).display === 'contents';
         svg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
         markerSvg.setAttribute('viewBox', `0 0 ${bounds.width} ${bounds.height}`);
         // These entry and exit points retain the intentional hand-drawn flow
@@ -93,9 +116,10 @@ export function ProcessSection({
           { from: 'left', fromY: 0.54, to: 'right', toY: 0.38 },
           { from: 'right', fromY: 0.48, to: 'left', toY: 0.45 },
         ] as const;
+        const connectorEnds: { start: { x: number; y: number }; end: { x: number; y: number } }[] =
+          [];
         const parts = targets.slice(0, -1).map((target, index) => {
           const next = targets[index + 1];
-          const stacked = getComputedStyle(targets[0].parentElement!).display === 'contents';
           const connection = stacked
             ? {
                 from: 'bottom' as const,
@@ -110,6 +134,7 @@ export function ProcessSection({
             sy = start.y - bounds.top,
             ex = end.x - bounds.left,
             ey = end.y - bounds.top;
+          connectorEnds.push({ start: { x: sx, y: sy }, end: { x: ex, y: ey } });
           if (stacked) {
             const bend = Math.max(16, (ey - sy) * 0.5);
             return `M${sx} ${sy} C${sx} ${sy + bend},${ex} ${ey - bend},${ex} ${ey}`;
@@ -119,14 +144,50 @@ export function ProcessSection({
           return `M${sx} ${sy} C${sx + bend * direction} ${sy},${ex - bend * direction} ${ey},${ex} ${ey}`;
         });
         route.setAttribute('d', parts.join(' '));
+        if (stacked) {
+          // The exported green badge supplies the actual rotated/zoomed centre.
+          // A separate continuous route includes each numbered stop; the original
+          // dashed connectors remain behind the card faces.
+          const stops = targets.map((target) => {
+            const badge = target.querySelector<SVGGraphicsElement>(
+              '.process-card-art [fill="#AAED35"]',
+            )!;
+            const box = badge.getBBox();
+            const point = restingPoint(
+              new DOMPoint(box.x + box.width / 2, box.y + box.height / 2).matrixTransform(
+                badge.getScreenCTM()!,
+              ),
+              target,
+            );
+            return { x: point.x - bounds.left, y: point.y - bounds.top };
+          });
+          markerRoute.setAttribute(
+            'd',
+            `M${stops[0].x} ${stops[0].y} ` +
+              connectorEnds
+                .map(({ start, end }, index) => {
+                  const stop = stops[index];
+                  const next = stops[index + 1];
+                  const departure = (stop.y + start.y) / 2;
+                  const arrival = (end.y + next.y) / 2;
+                  // Join inside each card, then follow the visible connector exactly.
+                  return (
+                    `C${stop.x} ${departure},${start.x} ${departure},${start.x} ${start.y} ` +
+                    parts[index].replace(/^M[^C]+/, '') +
+                    ` C${end.x} ${arrival},${next.x} ${arrival},${next.x} ${next.y}`
+                  );
+                })
+                .join(' '),
+          );
+        } else markerRoute.setAttribute('d', parts.join(' '));
+        markerLength = markerRoute.getTotalLength();
       };
       const place = (progress: number) => {
-        const point = route.getPointAtLength(route.getTotalLength() * progress);
-        // The imported marker's centre is at these original Figma coordinates.
-        const scale = Math.min(1, Math.max(0.65, targets[0].getBoundingClientRect().width / 530));
+        currentProgress = progress;
+        const point = markerRoute.getPointAtLength(markerLength * progress);
         marker.setAttribute(
           'transform',
-          `translate(${point.x} ${point.y}) scale(${scale}) translate(-649.05 -7913.4)`,
+          `translate(${point.x} ${point.y}) scale(${markerScale}) translate(${-markerCenter.x} ${-markerCenter.y})`,
         );
       };
       measure();
@@ -135,14 +196,20 @@ export function ProcessSection({
       const resize = new ResizeObserver(() => {
         cancelAnimationFrame(resizeFrame);
         resizeFrame = requestAnimationFrame(() => {
-          measure();
           ScrollTrigger.refresh();
         });
       });
       resize.observe(root);
       targets.forEach((target) => resize.observe(target));
       // Refresh also runs after layout/font changes, including reduced motion.
-      ScrollTrigger.addEventListener('refresh', measure);
+      const refreshGeometry = () => {
+        measure();
+        place(currentProgress);
+      };
+      ScrollTrigger.addEventListener('refresh', refreshGeometry);
+      void document.fonts.ready.then(() => {
+        if (!disposed) ScrollTrigger.refresh();
+      });
       const media = gsap.matchMedia();
       media.add(
         { motion: '(prefers-reduced-motion:no-preference)', compact: '(max-width:89.999em)' },
@@ -155,11 +222,7 @@ export function ProcessSection({
               start: 'top 85%',
               toggleActions: 'play none none none',
             },
-            onUpdate: () => {
-              // Keep the connectors attached while the cards slide into place.
-              measure();
-              place(position.progress);
-            },
+            onComplete: refreshGeometry,
           });
           if (context.conditions.compact) {
             targets.forEach((target, index) => {
@@ -176,10 +239,7 @@ export function ProcessSection({
                     start: 'top 85%',
                     toggleActions: 'play none none none',
                   },
-                  onUpdate: () => {
-                    measure();
-                    place(position.progress);
-                  },
+                  onComplete: refreshGeometry,
                 },
               );
             });
@@ -252,10 +312,12 @@ export function ProcessSection({
         },
       );
       return () => {
+        disposed = true;
         cancelAnimationFrame(resizeFrame);
         resize.disconnect();
-        ScrollTrigger.removeEventListener('refresh', measure);
+        ScrollTrigger.removeEventListener('refresh', refreshGeometry);
         route.remove();
+        markerRoute.remove();
         media.revert();
       };
     },

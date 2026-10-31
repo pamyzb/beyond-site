@@ -3,6 +3,114 @@ import { test, expect, type Page, type Locator } from '@playwright/test';
 const runtimeErrors = new WeakMap<Page, string[]>();
 const phoneArtwork = '.component-art.app-drawn-art';
 
+test('mobile cases remain readable in scroll order and reduced motion restores manual controls', async ({
+  page,
+}, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile'), 'Mobile sequence');
+  const sequence = page.locator('.case-mobile-sequence');
+  await expect(sequence).toBeVisible();
+  const cases = sequence.locator('.case-sequence-window');
+  await expect(cases).toHaveCount(3);
+  await expect(cases.locator('.case-sequence-name')).toHaveText([
+    'Institut Pasteur',
+    'Starlog',
+    'Ayalla',
+  ]);
+  for (const card of await cases.all()) {
+    await card.locator('.case-explore').scrollIntoViewIfNeeded();
+    await expect(card.locator('.case-explore')).toBeVisible();
+    expect(
+      await card.evaluate((el) => {
+        const action = el.querySelector('.case-explore')!.getBoundingClientRect();
+        const quote = el.querySelector('.case-testimonial')!.getBoundingClientRect();
+        return action.top >= quote.bottom;
+      }),
+    ).toBe(true);
+  }
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(sequence).toBeHidden();
+  await expect(page.getByRole('tablist', { name: 'Cases', exact: true })).toBeVisible();
+});
+
+test('mobile process marker follows a continuous route', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile'), 'Stacked process');
+  const path = page.locator('.process-marker-route');
+  await expect(path).toHaveAttribute('d', /.+/);
+  const geometry = await path.evaluate((el) => {
+    const route = el as SVGPathElement;
+    const length = route.getTotalLength();
+    let maximum = 0;
+    let previous = route.getPointAtLength(0);
+    for (let index = 1; index <= 2000; index++) {
+      const point = route.getPointAtLength((length * index) / 2000);
+      maximum = Math.max(maximum, Math.hypot(point.x - previous.x, point.y - previous.y));
+      previous = point;
+    }
+    return { length, maximum };
+  });
+  expect(geometry.length).toBeGreaterThan(0);
+  expect(geometry.maximum).toBeLessThan(geometry.length / 1000 + 1);
+});
+
+test('mobile service pagination follows native scrolling and reaches the last card', async ({
+  page,
+}, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile'), 'Mobile pagination');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  const carousel = page.getByRole('region', { name: 'Serviços', exact: true });
+  await carousel.scrollIntoViewIfNeeded();
+  const dots = page.locator('.services-pagination button');
+  await carousel.evaluate((el) => {
+    const cards = el.querySelectorAll('article');
+    el.scrollTo({
+      left: cards[1].getBoundingClientRect().left - cards[0].getBoundingClientRect().left,
+      behavior: 'instant',
+    });
+  });
+  await expect(dots.nth(1)).toHaveAttribute('aria-current', 'true');
+  await carousel.evaluate((el) => el.scrollTo({ left: el.scrollWidth, behavior: 'instant' }));
+  await expect(dots.last()).toHaveAttribute('aria-current', 'true');
+  const last = carousel.locator('article').last();
+  expect(
+    await last.evaluate((el) => {
+      const bounds = el.getBoundingClientRect();
+      const viewport = el.closest('.services-window')!.getBoundingClientRect();
+      return bounds.right <= viewport.right + 1 && bounds.left >= viewport.left - 1;
+    }),
+  ).toBe(true);
+  await carousel.evaluate((el) => el.scrollTo({ left: 0, behavior: 'instant' }));
+  await expect(dots.first()).toHaveAttribute('aria-current', 'true');
+  await dots.nth(1).click();
+  await expect(dots.nth(1)).toHaveAttribute('aria-current', 'true');
+  expect(
+    await carousel
+      .locator('article')
+      .nth(1)
+      .evaluate((el) => el.getBoundingClientRect().left >= 0),
+  ).toBe(true);
+});
+
+test('touching a company twice closes its details and another company replaces them', async ({
+  page,
+}, testInfo) => {
+  test.skip(!testInfo.project.use.hasTouch, 'Touch interaction');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  const companies = page.locator('.client-strip .client-strip-item:not([aria-hidden])');
+  await companies.first().scrollIntoViewIfNeeded();
+  await companies.first().tap();
+  await expect(page.locator('.credibility-popover')).toBeVisible();
+  await companies.first().tap();
+  await expect(page.locator('.credibility-popover')).toHaveCount(0);
+  await companies.first().tap();
+  await companies.nth(1).tap();
+  await expect(page.locator('.credibility-popover')).toBeVisible();
+  await expect(companies.nth(1)).toHaveAttribute('aria-expanded', 'true');
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.credibility-popover')).toHaveCount(0);
+});
+
 function screenAppearance(phone: Locator) {
   return phone
     .locator('[data-screen-source] :is(rect,path,circle,ellipse,line,polyline,polygon,text,image)')
@@ -39,6 +147,7 @@ test.beforeEach(async ({ page }) => {
   // Each scenario also catches hydration failures and uncaught animation errors.
   runtimeErrors.set(page, errors);
   await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
 });
 
 test.afterEach(async ({ page }) => {
@@ -90,7 +199,7 @@ test('case tabs keep visible content inside their buttons and retain accessible 
   }
 });
 
-test('theme changes when the first app project title enters and returns when scrolling back', async ({
+test('theme changes when the 45 minute title is framed and returns when scrolling back', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -102,9 +211,9 @@ test('theme changes when the first app project title enters and returns when scr
     [100, 'dark'],
     [-100, 'light'],
   ] as const) {
-    await page.locator('#app-project-title').evaluate((section, offset) => {
+    await page.locator('#conversa h2').evaluate((section, offset) => {
       window.scrollTo({
-        top: section.getBoundingClientRect().top + scrollY - innerHeight + offset,
+        top: section.getBoundingClientRect().top + scrollY - innerHeight * 0.35 + offset,
         behavior: 'instant',
       });
     }, offset);
@@ -142,6 +251,8 @@ test('services carousel supports Home, End and arrow keys', async ({ page }) => 
 test('FAQ opens one answer at a time and supports keyboard toggling', async ({ page }) => {
   const questions = page.locator('.faq-question');
   await expect(questions).toHaveCount(6);
+  await expect(page.locator('.faq-question[aria-expanded="true"]')).toHaveCount(0);
+  await questions.nth(0).click();
   await expect(questions.nth(0)).toHaveAttribute('aria-expanded', 'true');
   await questions.nth(1).click();
   await expect(questions.nth(0)).toHaveAttribute('aria-expanded', 'false');
@@ -209,6 +320,23 @@ test('navigation hydrates and the compact menu opens and closes', async ({ page 
 
 test('hero motion runs, pauses offscreen and respects reduced motion', async ({ page }) => {
   const lens = page.locator('.hero-glass');
+  if ((page.viewportSize()?.width ?? 1440) < 600) {
+    await expect(lens).toHaveCSS('visibility', 'hidden');
+    const ink = page.locator('.hero-ink');
+    await expect(lens).toHaveAttribute('data-motion-mode', 'auto');
+    await expect(ink).toHaveAttribute('data-motion-state', 'running');
+    const trail = page.locator('.hero-ink-defs path');
+    const initial = await trail.getAttribute('d');
+    await expect.poll(() => trail.getAttribute('d')).not.toBe(initial);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveAccessibleName(
+      'Tecnologia que move negócios',
+    );
+    await page.locator('#servicos').scrollIntoViewIfNeeded();
+    await expect(ink).toHaveAttribute('data-motion-state', 'paused');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await expect(ink).toHaveAttribute('data-motion-state', 'reduced');
+    return;
+  }
   const pointer = await page.evaluate(
     () => matchMedia('(hover: hover) and (pointer: fine)').matches,
   );
@@ -259,11 +387,11 @@ test('carousel controls remain clickable and builders follow the selected compac
   const builders = carousel.locator('.services-rail > .builder');
   await expect(builders).toHaveCount(2);
   await carousel.scrollIntoViewIfNeeded();
-  for (let group = 1; group <= 3; group++) {
-    const button = page.getByRole('button', {
-      name: `Ir para o grupo ${group} de 3 de serviços`,
-      exact: true,
-    });
+  const pages = page.locator('.services-pagination button');
+  await expect.poll(() => pages.count()).toBeGreaterThan(1);
+  const pageCount = await pages.count();
+  for (let group = 0; group < pageCount; group++) {
+    const button = pages.nth(group);
     await button.click();
     await expect(button).toHaveAttribute('aria-current', 'true');
     await expect(builders).toHaveCount(2);
@@ -294,16 +422,18 @@ test('carousel controls remain clickable and builders follow the selected compac
             );
             const arrows = [...document.querySelectorAll('.services-controls button')];
             return (
-              controls.top >= viewport.top - 1 &&
-              controls.bottom <= viewport.bottom + 1 &&
-              arrows.every((arrow) => {
-                const box = arrow.getBoundingClientRect();
-                const hit = document.elementFromPoint(
-                  (box.left + box.right) / 2,
-                  (box.top + box.bottom) / 2,
-                );
-                return box.width >= 44 && box.height >= 44 && !!hit && arrow.contains(hit);
-              }) &&
+              (matchMedia('(max-width: 37.499em)').matches
+                ? getComputedStyle(document.querySelector('.services-controls')!).display === 'none'
+                : controls.top >= viewport.top - 1 &&
+                  controls.bottom <= viewport.bottom + 1 &&
+                  arrows.every((arrow) => {
+                    const box = arrow.getBoundingClientRect();
+                    const hit = document.elementFromPoint(
+                      (box.left + box.right) / 2,
+                      (box.top + box.bottom) / 2,
+                    );
+                    return box.width >= 44 && box.height >= 44 && !!hit && arrow.contains(hit);
+                  })) &&
               pagination.top >= viewport.bottom - 1 &&
               robots.length === 2 &&
               robots.every(
@@ -336,7 +466,7 @@ test('both phone screens finish drawing and restore all original content', async
     expect(
       appearance.some(
         (item) =>
-          item.tag === 'text' &&
+          ['text', 'path', 'image'].includes(item.tag) &&
           item.displayed &&
           item.visibility === 'visible' &&
           item.effectiveOpacity > 0,
@@ -395,7 +525,7 @@ test('reduced motion keeps the phone content visible without drawing clones', as
     expect(
       (await screenAppearance(phone)).filter(
         (item) =>
-          item.tag === 'text' &&
+          ['text', 'path', 'image'].includes(item.tag) &&
           item.displayed &&
           item.visibility === 'visible' &&
           item.effectiveOpacity > 0,

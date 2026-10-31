@@ -9,7 +9,7 @@
 }
 @keyframes clients-loop {
   to {
-    transform: translateX(-25%);
+    transform: translateX(var(--clients-loop-offset, -25%));
   }
 }
 .client-strip-item {

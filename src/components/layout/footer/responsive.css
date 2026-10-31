@@ -1,12 +1,58 @@
 /* Responsive rules owned by this component; loaded after base styles. */
 
+@media (max-width: 59.999em) {
+  .footer-frame--home .section-rodape .footer-layout {
+    grid-template-rows: auto;
+    row-gap: var(--space-6);
+  }
+  .footer-frame--home .section-rodape :is(.footer-socials, .footer-address) {
+    margin-top: 0;
+  }
+}
+@media (min-width: 56.251em) and (max-width: 59.999em) {
+  .footer-frame--home .footer-slogan {
+    grid-row: 2;
+  }
+  .footer-frame--home .footer-socials {
+    grid-row: 3;
+  }
+  .footer-frame--home .section-rodape .footer-address {
+    grid-row: 4;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .footer-frame--home .footer-contact,
+  .footer-frame--home .footer-badges {
+    display: none;
+  }
+  .footer-frame--home .footer-decoration--top-right {
+    height: calc(clamp(4.75rem, 7.1vw, 6.375rem) * 96 / 102);
+    width: auto;
+  }
+  .footer-frame--home .footer-address {
+    grid-row: 5;
+  }
+}
+
 .footer-nav {
-  flex-wrap: wrap;
+  grid-column: 5 / -1;
+  flex-wrap: nowrap;
+}
+
+@media (max-width: 56.25em) {
+  .footer-nav {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+  }
 }
 
 @media (max-width: 32.5em) {
   .section-rodape .footer-slogan {
     line-height: var(--leading-tight);
+  }
+  .footer-frame--home .footer-slogan-lead {
+    display: block;
   }
   .section-rodape .footer-bottom-art--1,
   .section-rodape .footer-bottom-art--3,
@@ -19,11 +65,15 @@
   }
 }
 .footer-contact a {
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
-.footer-slogan {
+.section-rodape .footer-slogan {
   font-size: clamp(2.625rem, 5vw, 4.5rem);
   white-space: normal;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 .footer-layout {
   width: min(var(--content-width), calc(100% - 2 * var(--page-gutter)));
@@ -68,5 +118,28 @@
   .section-rodape .footer-contact {
     min-width: 0;
     max-width: 100%;
+  }
+}
+
+@media (max-width: 32.5em) {
+  .section-rodape .footer-contact a {
+    font-size: var(--text-small);
+  }
+}
+
+@media (max-width: 37.499em) {
+  .footer-frame--home .section-rodape .footer-layout {
+    row-gap: var(--space-6);
+    padding-block: 3rem calc(1.875rem + clamp(2.875rem, 6.5cqw, 5.8125rem) + 1.5rem);
+  }
+  .footer-frame--home .section-rodape .footer-socials {
+    margin-top: var(--space-4);
+  }
+}
+
+@media (max-width: 37.499em) {
+  .footer-frame--home .footer-slogan {
+    font-size: clamp(1.75rem, 7.6vw, 2.0625rem);
+    letter-spacing: -0.055em;
   }
 }

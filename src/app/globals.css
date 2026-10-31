@@ -57,6 +57,7 @@
 @import '../components/sections/process/responsive.css';
 @import '../components/sections/faq/responsive.css';
 @import '../components/sections/blog/responsive.css';
+@import '../styles/home-section-spacing.css';
 
 /* Keep the approved Figma reset; Tailwind preflight is intentionally not imported. */
 @theme inline {

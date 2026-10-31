@@ -33,10 +33,20 @@ export function HeroSection({ section }: { section: SectionData }) {
               {eyebrow && <HeroTypewriter text={blockText(eyebrow)} />}
             </p>
             {title && (
-              <Title as="h1" variant="hero" className="hero-grid-title">
-                <span>Tecnologia que</span>
+              <Title
+                as="h1"
+                variant="hero"
+                className="hero-grid-title"
+                aria-label="Tecnologia que move negócios"
+              >
+                <span>
+                  Tecnologia<span className="hero-desktop-join"> que</span>
+                </span>
                 <span className="hero-grid-title-bottom">
-                  move <HeroVideoWord />
+                  <span>
+                    <span className="hero-mobile-join">que </span>move
+                  </span>{' '}
+                  <HeroVideoWord />
                 </span>
               </Title>
             )}

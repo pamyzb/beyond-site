@@ -30,7 +30,7 @@
   .service-editorial-card,
   .service-editorial-card:nth-child(even),
   .service-editorial-card.service-agents {
-    width: calc(100cqw - 2 * var(--page-gutter));
+    width: calc(86cqw - 2 * var(--page-gutter));
   }
   .service-editorial-card.service-agents {
     padding: 1.25rem;
@@ -38,6 +38,18 @@
   .service-caption p,
   .service-agents p {
     font-size: var(--text-body);
+  }
+}
+
+@media (max-width: 37.499em) {
+  .services-editorial .services-controls {
+    display: none;
+  }
+  .services-editorial .services-rail {
+    gap: var(--space-5);
+  }
+  .services-editorial .services-pagination {
+    margin-inline: 0;
   }
 }
 @media (max-width: 89.999em), (hover: none), (pointer: coarse) {
@@ -92,7 +104,25 @@
 }
 
 /* Leave room for the route and builders above and below intermediate cards. */
-@media (min-width: 60em) and (max-width: 89.999em) and (hover: hover) and (pointer: fine) {
+@media (hover: none), (pointer: coarse) {
+  .services-editorial .services-fade-ready > .service-editorial-card {
+    opacity: 1;
+    translate: 0 0;
+  }
+  .services-editorial .services-rail {
+    gap: 24px;
+  }
+  .services-editorial .services-window {
+    cursor: grab;
+  }
+  .services-editorial .services-window.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
+  }
+}
+
+@media (max-width: 89.999em) and (hover: hover) and (pointer: fine) {
   .services-editorial .services-rail {
     padding-top: 5rem;
     padding-bottom: 6rem;

@@ -12,12 +12,14 @@ export function MotionRoot({
   children,
   themeTrigger = '#app-project-title',
   themeStart = 'top bottom',
+  themeMobileStart,
   themeReverse = false,
   whatsappTrigger = '#metricas h3',
 }: {
   children: ReactNode;
   themeTrigger?: string;
-  themeStart?: 'top bottom' | 'top top';
+  themeStart?: 'top bottom' | 'top top' | 'top 35%';
+  themeMobileStart?: 'top bottom' | 'top top' | 'top 35%';
   themeReverse?: boolean;
   whatsappTrigger?: string;
 }) {
@@ -37,6 +39,9 @@ export function MotionRoot({
       let cleanupAgentDelivery: (() => void) | undefined;
       let cleanupAgentRoles: (() => void) | undefined;
       let desiredTheme = '';
+      const mobile = matchMedia('(max-width: 37.499em)');
+      const currentThemeStart = () =>
+        mobile.matches && themeMobileStart ? themeMobileStart : themeStart;
       const setTheme = (theme: string) => {
         if (desiredTheme === theme) return;
         desiredTheme = theme;
@@ -45,7 +50,9 @@ export function MotionRoot({
       const syncTheme = () => {
         setTheme(
           appProjectTitle.getBoundingClientRect().top <=
-            (themeStart === 'top top' ? 0 : window.innerHeight)
+            (currentThemeStart() === 'top top'
+              ? 0
+              : window.innerHeight * (currentThemeStart() === 'top 35%' ? 0.35 : 1))
             ? themeReverse
               ? 'light'
               : 'dark'
@@ -56,6 +63,7 @@ export function MotionRoot({
       };
       syncTheme();
       window.addEventListener('scroll', syncTheme, { passive: true });
+      window.addEventListener('resize', syncTheme);
       const createTrigger = contextSafe(() => {
         cleanupTitles = animateSectionTitles(element);
         const journey = element.querySelector<HTMLElement>('.agent-delivery-journey');
@@ -85,7 +93,7 @@ export function MotionRoot({
         const themeTrigger = ScrollTrigger.create({
           id: 'app-scroll-theme',
           trigger: appProjectTitle,
-          start: themeStart,
+          start: currentThemeStart,
           end: 'max',
           onEnter: syncTheme,
           onLeaveBack: syncTheme,
@@ -115,6 +123,7 @@ export function MotionRoot({
         cleanupAgentDelivery?.();
         window.removeEventListener('pageshow', refresh);
         window.removeEventListener('scroll', syncTheme);
+        window.removeEventListener('resize', syncTheme);
         delete root.dataset.scrollTheme;
         delete root.dataset.ready;
         if (whatsapp) {
@@ -127,7 +136,7 @@ export function MotionRoot({
     },
     {
       scope,
-      dependencies: [themeTrigger, themeStart, themeReverse, whatsappTrigger],
+      dependencies: [themeTrigger, themeStart, themeMobileStart, themeReverse, whatsappTrigger],
       revertOnUpdate: true,
     },
   );

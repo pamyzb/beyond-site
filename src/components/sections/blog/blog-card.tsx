@@ -8,11 +8,13 @@ export function BlogCard({
   blocks,
   id,
   layout,
+  href,
 }: {
   card: BlogCardData;
   blocks: DesignBlock[];
   id: string;
   layout: string;
+  href?: string;
 }) {
   const title = blocks
     .find((block) => block.role === 'h3')!
@@ -48,7 +50,11 @@ export function BlogCard({
           </p>
         ))}
       </div>
-      <button type="button" className="blog-card-hit" aria-labelledby={id} />
+      {href ? (
+        <a className="blog-card-hit" href={href} aria-labelledby={id} />
+      ) : (
+        <button type="button" className="blog-card-hit" aria-labelledby={id} />
+      )}
     </article>
   );
 }

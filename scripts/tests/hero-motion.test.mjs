@@ -147,3 +147,13 @@ test('smooth contours preserve the reference radius, organic shape and 1800ms re
     }
   }
 });
+
+test('hero paints automatically until pointer entry and then keeps manual control', () => {
+  const { isHeroAmbient } = loadTypeScript('src/lib/animation/hero-motion.ts');
+  assert.equal(isHeroAmbient('pointer', false, 0, 0), true);
+  assert.equal(isHeroAmbient('pointer', true, 2400, 1000), false);
+  assert.equal(isHeroAmbient('pointer', true, 2500, 1000), false);
+  assert.equal(isHeroAmbient('pointer', true, 60000, 1000), false);
+  assert.equal(isHeroAmbient('auto', true, 1000, 1000), true);
+  assert.equal(isHeroAmbient('reduced', false, 0, 0), false);
+});

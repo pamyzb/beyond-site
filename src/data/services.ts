@@ -20,18 +20,6 @@ const definitions = [
     description:
       'Desenvolvemos aplicativos e plataformas web sob medida, com experiências simples de usar e tecnologia preparada para acompanhar seu crescimento.',
   },
-  {
-    id: 'Article_8',
-    image: '/assets/servicos/solucoes-ia.jpg',
-    description:
-      'Aplicamos inteligência artificial aos desafios do seu negócio para automatizar tarefas, analisar informações e apoiar decisões com mais clareza.',
-  },
-  {
-    id: 'Article_9',
-    image: '/assets/servicos/manutencao.jpg',
-    description:
-      'Cuidamos da estabilidade, da segurança e da evolução do seu software, com suporte contínuo e melhorias que acompanham as necessidades da operação.',
-  },
 ];
 export type ServicesContent = {
   ariaLabel: string;
@@ -55,7 +43,13 @@ export function servicesContent(section: SectionData): ServicesContent {
     ariaLabel: section.label,
     label: rawBlockText(heading.label),
     subtitle: rawBlockText(heading.subtitle),
-    cards: definitions.map((card) => ({ ...card, title: text(card.id, 'h3') })),
+    cards: definitions.map((card) => ({
+      ...card,
+      title:
+        card.id === 'Article_7'
+          ? 'Aplicativos, plataformas web e soluções de IA sob medida'
+          : text(card.id, 'h3'),
+    })),
     agent: {
       title: text('Article_10', 'h3'),
       description: text('Article_10', 'p'),

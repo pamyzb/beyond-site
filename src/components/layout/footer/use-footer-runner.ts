@@ -40,10 +40,14 @@ export function useFooterRunner() {
     let y = 0;
     let dropProgress = 0;
     let landingPause = 0;
+    let rest = 0;
+    let deathX = 0;
     let jump: {
       elapsed: number;
       duration: number;
       height: number;
+      fromX: number;
+      landX: number;
       fromY: number;
       landY: number;
     } | null = null;
@@ -143,6 +147,8 @@ export function useFooterRunner() {
       y = startY;
       dropProgress = 0;
       landingPause = 0;
+      rest = 0;
+      deathX = width * (0.25 + Math.random() * 0.6);
       jump = null;
       runner.style.opacity = '1';
       place(x, y);
@@ -153,6 +159,8 @@ export function useFooterRunner() {
       y = startY;
       dropProgress = 0;
       landingPause = 0;
+      rest = 0;
+      deathX = width * (0.25 + Math.random() * 0.6);
       jump = null;
       runner.style.opacity = '1';
       place(x, y);
@@ -169,51 +177,95 @@ export function useFooterRunner() {
       return surface;
     };
 
+    const explode = () => {
+      runner.style.opacity = '0';
+      for (let index = 0; index < 10; index++) {
+        const particle = document.createElement('span');
+        particle.className = 'footer-runner-particle';
+        stage.appendChild(particle);
+        const angle = (index / 10) * Math.PI * 2;
+        const distance = size * (1.8 + Math.random() * 2);
+        const originX = x + size / 2;
+        const originY = y + runnerHeight / 2;
+        const animation = particle.animate(
+          [
+            { transform: `translate3d(${originX}px,${originY}px,0) scale(1)`, opacity: 1 },
+            {
+              transform: `translate3d(${originX + Math.cos(angle) * distance}px,${originY + Math.sin(angle) * distance - size}px,0) rotate(160deg) scale(.25)`,
+              opacity: 0,
+            },
+          ],
+          { duration: 420, easing: 'cubic-bezier(0.23, 1, 0.32, 1)' },
+        );
+        animation.onfinish = () => particle.remove();
+      }
+    };
+
     const tick = (now: number) => {
       const delta = last ? Math.min((now - last) / 1000, 0.04) : 0;
       last = now;
-      if (dropProgress < 1) {
-        dropProgress = Math.min(1, dropProgress + delta / 0.85);
+      if (rest > 0) {
+        rest = Math.max(0, rest - delta);
+        runner.style.opacity = '0';
+        if (rest === 0) reset();
+      } else if (dropProgress < 1) {
+        dropProgress = Math.min(
+          1,
+          dropProgress + delta / Math.sqrt((2 * Math.max(1, surfaceAt(startX) - startY)) / 1800),
+        );
         const landingSurface = surfaceAt(startX);
         y = startY + (landingSurface - startY) * dropProgress * dropProgress;
-        if (dropProgress === 1) landingPause = 0.22;
+        if (dropProgress === 1) landingPause = 0.06;
         place(x, y);
       } else if (landingPause > 0) {
         // Let the first contact read as a landing before horizontal motion
         // begins; this removes the sideways skid at the top of the first SVG.
         landingPause = Math.max(0, landingPause - delta);
-        y = surfaceAt(x) - Math.sin((1 - landingPause / 0.22) * Math.PI) * 4;
+        y = surfaceAt(x) - Math.sin((1 - landingPause / 0.06) * Math.PI) * 4;
         place(x, y);
       } else {
-        const speed = Math.max(115, width * 0.12);
+        const speed = Math.max(170, width * 0.15);
         const next = obstacles.find((obstacle) => obstacle.right > x && obstacle.left > x - size);
-        if (!jump && next && x + size >= next.left - 42) {
+        if (!jump) {
           // Use one shared target for horizontal travel and the landing
           // surface. Matching those values prevents a visible snap at the end
           // of each arc.
           const fromY = surfaceAt(x);
-          const landingX = Math.min(width - size, next.right + 42);
+          const crossingObstacle = next && x + size >= next.left - 42;
+          const landingX = Math.min(deathX, crossingObstacle ? next.right + 42 : x + 80);
           const landY = surfaceAt(landingX);
           const distance = Math.max(1, landingX - x);
+          const height = Math.max(
+            32,
+            Math.min(fromY, landY) - (crossingObstacle ? next.top : ground) + runnerHeight + 8,
+          );
           jump = {
             elapsed: 0,
-            duration: distance / speed,
+            duration: Math.max(distance / speed, Math.sqrt((8 * height) / 1800)),
+            fromX: x,
+            landX: landingX,
             fromY,
             landY,
-            height: Math.max(48, Math.min(fromY, landY) - next.top + runnerHeight + 8),
+            height,
           };
         }
-        x += speed * delta;
         let rotation = 0;
         if (jump) {
           jump.elapsed += delta;
           const progress = Math.min(1, jump.elapsed / jump.duration);
+          x = jump.fromX + (jump.landX - jump.fromX) * progress;
           y =
             jump.fromY +
             (jump.landY - jump.fromY) * progress -
             4 * progress * (1 - progress) * jump.height;
           rotation = progress * 360;
-          if (progress === 1) jump = null;
+          if (progress === 1) {
+            jump = null;
+            if (x >= deathX) {
+              rest = 0.65;
+              explode();
+            }
+          }
         } else {
           y = surfaceAt(x);
         }
@@ -230,7 +282,7 @@ export function useFooterRunner() {
         runner.style.opacity = '0';
         return;
       }
-      runner.style.opacity = '1';
+      runner.style.opacity = rest > 0 ? '0' : '1';
       if (visible && !document.hidden) frame = requestAnimationFrame(tick);
     };
 
@@ -248,6 +300,7 @@ export function useFooterRunner() {
 
     return () => {
       cancelAnimationFrame(frame);
+      stage.querySelectorAll('.footer-runner-particle').forEach((particle) => particle.remove());
       observer.disconnect();
       resize.disconnect();
       reduced.removeEventListener('change', sync);

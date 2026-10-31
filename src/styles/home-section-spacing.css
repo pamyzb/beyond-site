@@ -1,0 +1,50 @@
+/* One shared boundary rhythm: 40px from each adjacent section totals 80px. */
+@media (max-width: 59.999em) {
+  .home-page {
+    --home-section-gap: 5rem;
+    --home-section-edge: calc(var(--home-section-gap) / 2);
+  }
+  .home-page
+    > .section-band
+    > :is(
+      .services-editorial,
+      .cases-editorial,
+      .section-conversa,
+      .section-aplicativo,
+      .section-depoimentos,
+      .section-processo,
+      .section-sobre,
+      .section-blog.blog-bento,
+      .section-faq,
+      .section-contato
+    ) {
+    padding-top: var(--home-section-edge);
+    padding-bottom: var(--home-section-edge);
+  }
+  .home-page .impact-figma .impact-brands {
+    padding-top: var(--home-section-edge);
+  }
+  .home-page .impact-figma .impact-panel {
+    padding-bottom: var(--home-section-edge);
+  }
+  .home-page .impact-figma .impact-metrics-wrap {
+    padding-bottom: 0;
+  }
+  .footer-frame--home .section-rodape .footer-layout {
+    padding-top: 2.5rem;
+  }
+  /* Decorative corner vectors need more clearance than plain section edges. */
+  .home-page .impact-figma .impact-brands {
+    padding-top: var(--space-20);
+  }
+  .home-page .impact-figma .impact-panel {
+    padding-bottom: var(--space-20);
+  }
+  .home-page > .section-band > #cases {
+    padding-block: var(--space-20);
+  }
+  /* Restore the photo composition's reserved space around the copy. */
+  .home-page > .section-band > #conversa {
+    padding-block: calc(var(--section-space) + var(--space-20));
+  }
+}

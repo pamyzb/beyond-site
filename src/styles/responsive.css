@@ -103,6 +103,21 @@ video {
   }
 }
 
+@media (max-width: 59.999em) {
+  .home-page .section-heading {
+    row-gap: var(--space-4);
+  }
+  .home-page .section-heading-icon {
+    transform: rotate(90deg);
+  }
+  .home-page .section-heading-subtitle {
+    margin-top: var(--space-2);
+  }
+  .home-page .secondary-section-heading-copy {
+    margin-top: var(--space-6);
+  }
+}
+
 @media (max-width: 37.499em) {
   :root {
     --page-gutter: 1.25rem;

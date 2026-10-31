@@ -51,12 +51,20 @@ export function CasePanel({
   active,
   project,
   cta,
+  sequence = false,
 }: {
   active: number;
   project: CaseProject;
   cta: string;
+  sequence?: boolean;
 }) {
   const quoteText = project.quote.replace(/^[“"]|[”"]$/g, '');
+  const action = (
+    <ButtonLink className="case-explore" href={SITE_LINKS.contact}>
+      {cta}
+      <img src="/assets/compartilhados/header-button-arrow.svg" width={18} height={18} alt="" />
+    </ButtonLink>
+  );
   return (
     <>
       <div className="case-browser-main">
@@ -70,15 +78,7 @@ export function CasePanel({
             <strong>{project.result}</strong>
             <span>{project.resultCaption}</span>
           </div>
-          <ButtonLink className="case-explore" href={SITE_LINKS.contact}>
-            {cta}
-            <img
-              src="/assets/compartilhados/header-button-arrow.svg"
-              width={18}
-              height={18}
-              alt=""
-            />
-          </ButtonLink>
+          {!sequence && action}
         </div>
         <div className="case-visual">
           {active === 0 ? (
@@ -131,6 +131,7 @@ export function CasePanel({
           )}
         </div>
       </footer>
+      {sequence && <div className="case-sequence-action">{action}</div>}
     </>
   );
 }

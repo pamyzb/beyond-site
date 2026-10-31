@@ -76,8 +76,7 @@
     max-width: none;
   }
   .section-contato .component-art {
-    width: min(28rem, 100%);
-    margin-inline: auto;
+    display: none;
   }
 }
 

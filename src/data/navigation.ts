@@ -2,9 +2,9 @@ export const SITE_LINKS = {
   home: '#inicio',
   contact: '#contato',
   agentService: '/colaboradores-agenticos/',
-  whatsapp: 'https://wa.me/5511936182404',
+  whatsapp: 'https://wa.me/5511936191071',
   maps: 'https://www.google.com/maps/search/?api=1&query=Rua+Cardeal+Arcoverde+745+Pinheiros+Sao+Paulo',
-  phone: 'tel:+5511936182404',
+  phone: 'tel:+5511936191071',
   email: 'mailto:contato@beyondthebytes.com.br',
 } as const;
 export const WHATSAPP = SITE_LINKS.whatsapp;
@@ -15,6 +15,13 @@ export const NAVIGATION = [
   { label: 'Processos', href: '#processo' },
   { label: 'Blog', href: '#blog' },
   { label: 'Contato', href: SITE_LINKS.contact },
+] as const;
+// Dedicated header pages will be linked when they are available.
+export const HEADER_NAVIGATION = [
+  { label: 'IA', href: SITE_LINKS.agentService },
+  { label: 'Cases' },
+  { label: 'Serviços' },
+  { label: 'Conteúdo' },
 ] as const;
 export const HEADER_ACTION = {
   label: 'Fale com um especialista',

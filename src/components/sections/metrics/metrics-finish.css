@@ -54,3 +54,218 @@
 .impact-figma .impact-metrics-wrap {
   padding-bottom: 3rem;
 }
+/* Shared credibility treatment: original brand colors and anchored previews. */
+:root .impact-figma #clients-heading,
+:root .impact-figma .impact-press > p {
+  font-size: var(--text-title);
+  line-height: var(--leading-heading);
+  font-weight: var(--weight-semibold);
+  text-align: center;
+  text-transform: none;
+  letter-spacing: var(--tracking-snug);
+  color: var(--scroll-ink);
+}
+:root .impact-figma .impact-press {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-6);
+}
+:root .impact-figma .impact-press > p {
+  flex-basis: 100%;
+  max-width: none;
+  width: 100%;
+}
+:root .impact-figma .impact-press-logos {
+  display: block;
+  flex: 1;
+}
+.media-logo-track {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  gap: var(--space-8);
+}
+.media-logo-trigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: var(--control-height);
+  padding: var(--space-3);
+  cursor: pointer;
+}
+:root .impact-figma .client-strip .impact-brand img,
+:root .impact-figma .impact-press-logos img {
+  filter: none;
+  opacity: 1;
+}
+:root .impact-figma .title--metric-stat {
+  font-size: clamp(var(--text-title-lg), 19cqi, var(--text-display-md));
+  align-items: center;
+}
+:root .impact-figma .title--metric-stat > .impact-live-dot {
+  order: 0;
+  margin: 0 var(--space-2) 0 0;
+  background: var(--color-accent);
+  box-shadow: 0 0 var(--space-3) var(--space-1)
+    color-mix(in srgb, var(--color-accent) 85%, transparent);
+}
+.impact-softdex-caption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.impact-softdex-caption img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: var(--space-6);
+  object-fit: contain;
+}
+:root[data-scroll-theme='dark'] .impact-softdex-caption img {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: var(--space-1) var(--space-2);
+}
+.credibility-popover .client-tooltip-content {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 var(--space-3) var(--space-8)
+    color-mix(in srgb, var(--color-primary-950) 18%, transparent);
+}
+.credibility-popover .client-tooltip-image {
+  background: var(--color-white);
+}
+.credibility-popover .client-tooltip-image.has-photo {
+  height: 10rem;
+  padding: 0;
+}
+.credibility-popover .client-tooltip-image.has-photo img {
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.credibility-read-link {
+  display: block;
+  padding: var(--space-4) var(--space-6);
+  color: var(--color-action);
+  font-size: var(--text-small);
+  font-weight: var(--weight-semibold);
+}
+.credibility-popover .blog-card--preview {
+  min-height: 22rem;
+  width: 100%;
+  border-radius: var(--radius-card);
+}
+
+@media (max-width: 59.999em) {
+  :root .impact-figma #clients-heading,
+  :root .impact-figma .impact-press > p {
+    font-size: var(--text-title-sm);
+  }
+  .media-logo-track {
+    gap: var(--space-2);
+  }
+}
+.credibility-popover .blog-card--preview {
+  color: var(--color-white);
+}
+.credibility-popover .blog-card-copy p {
+  color: var(--color-white);
+}
+
+.media-logo-track .media-logo-trigger {
+  border: 0;
+  padding: var(--space-3);
+}
+:root[data-scroll-theme='dark'] .impact-figma .client-strip .impact-brand img {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  padding: var(--space-2);
+}
+
+/* Matching corner dimensions, shared with the lower-left mark. */
+.impact-figma .impact-pattern-top-right {
+  width: clamp(4.5rem, 10.8vw, 9.6875rem);
+}
+/* Keep the activity indicator legible against the primary surface. */
+:root .impact-figma .impact-stat:first-child {
+  background-color: var(--color-white);
+  background-image: url('/assets/metricas/padroes/card-businesses.svg');
+  color: var(--color-black);
+  --metric-depth-color: var(--color-metric-neutral-depth);
+}
+:root .impact-figma .impact-stat:first-child :is(p, .impact-stat-label) {
+  color: var(--color-gray-600);
+}
+:root .impact-figma .impact-stat.impact-stat-users {
+  background-color: var(--color-primary-700);
+  background-image: url('/assets/metricas/padroes/card-users.svg');
+  color: var(--color-white);
+  --metric-depth-color: var(--color-metric-primary-depth);
+}
+:root .impact-figma .impact-stat-users :is(p, .impact-stat-label) {
+  color: var(--color-white);
+}
+.credibility-popover .client-tooltip-arrow,
+.credibility-popover[data-side='below'] .client-tooltip-arrow {
+  background: var(--color-white);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .credibility-popover[data-ready='true'] {
+    animation: credibility-window-open 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+@keyframes credibility-window-open {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.88);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(0) scale(1.012);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* The press surface must not blur the moving metric cards into a dark band. */
+:root .impact-figma .impact-press {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+:root .impact-figma .title--metric-stat > .impact-live-dot {
+  position: relative;
+}
+.impact-live-dot::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--space-1));
+  border: 1px solid var(--color-accent);
+  border-radius: inherit;
+  box-shadow: 0 0 var(--space-4) var(--space-1)
+    color-mix(in srgb, var(--color-accent) 70%, transparent);
+  pointer-events: none;
+  opacity: 0.65;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .impact-live-dot::after {
+    animation: impact-online-pulse 2s ease-out infinite;
+  }
+}
+@keyframes impact-online-pulse {
+  from {
+    transform: scale(0.75);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}

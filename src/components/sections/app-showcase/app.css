@@ -93,6 +93,7 @@
   .app-feature-copy
   > .text-block:not(.app-feature-title) {
   width: 33.5rem;
+  margin-top: 1.5rem;
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions {
   position: relative;
@@ -102,7 +103,7 @@
   flex: 0 0 calc(9.75 * var(--app-qr-unit));
   width: calc(33.75 * var(--app-qr-unit));
   height: calc(9.75 * var(--app-qr-unit));
-  margin-top: var(--app-qr-top-gap);
+  margin-top: 2.5rem;
 }
 .section-aplicativo .app-feature-card[data-source='container 2'] .qr-instructions .app-qr-surface {
   position: relative;
@@ -118,4 +119,32 @@
   height: 100%;
   margin: 0;
   text-align: center;
+}
+
+/* The invitation belongs to the code card, without a side banner. */
+:root .section-aplicativo .app-feature-card[data-source] .app-qr-compact {
+  flex: none;
+  width: auto;
+  height: auto;
+  background: transparent;
+  border-radius: 0;
+}
+.section-aplicativo .app-feature-card[data-source] .app-qr-compact::before,
+.section-aplicativo .app-feature-card[data-source] .app-qr-compact::after {
+  content: none;
+}
+.section-aplicativo .app-feature-card[data-source] .app-qr-compact .app-qr-surface {
+  width: 13.125rem;
+  height: auto;
+  padding: var(--space-4);
+  gap: var(--space-3);
+}
+.section-aplicativo .app-qr-compact .app-qr-surface > .app-qr-caption {
+  margin: 0;
+  color: var(--color-black);
+  font-size: var(--text-title-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: normal;
+  line-height: var(--leading-form);
+  text-transform: none;
 }

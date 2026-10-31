@@ -1,5 +1,74 @@
 /* Responsive rules owned by this component; loaded after base styles. */
 
+.case-mobile-sequence {
+  display: none;
+}
+@media (min-width: 60em) {
+  .cases-editorial
+    > .impact-patterns
+    :is(.impact-pattern-bottom-left, .impact-pattern-bottom-right) {
+    display: none;
+  }
+}
+
+@media (max-width: 59.999em) and (prefers-reduced-motion: no-preference) {
+  .cases-editorial > .case-stack {
+    display: none;
+  }
+  .cases-editorial .case-mobile-sequence {
+    display: grid;
+    gap: var(--space-6);
+    margin-inline: calc(-1 * var(--page-gutter));
+  }
+  .cases-editorial .case-sequence-window {
+    position: relative;
+    display: block;
+    border-radius: 0;
+    clip-path: inset(0 var(--page-gutter) round 1.5rem);
+  }
+  .case-sequence-step:not(:last-child) {
+    /* Keep the complete CTA visible for half a screen of scroll before overlap. */
+    padding-bottom: 50svh;
+  }
+  .case-sequence-favicon {
+    display: inline-flex;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .case-sequence-favicon :is(img, svg) {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .case-sequence-favicon .case-tab-logo {
+    object-fit: cover;
+    object-position: left;
+  }
+  .case-sequence-window .case-browser-toolbar {
+    gap: 1rem;
+    padding-inline: 1.5rem;
+  }
+  .case-sequence-window .case-window-dots {
+    display: flex;
+  }
+  .case-sequence-name {
+    font-size: var(--text-small);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .case-sequence-action {
+    padding: 0 max(1.5rem, calc(var(--page-gutter) + 0.5rem)) 1.5rem;
+    padding-inline: max(1.5rem, calc(var(--page-gutter) + 0.5rem));
+  }
+  .case-sequence-action .case-explore {
+    margin-top: 0;
+    width: 100%;
+  }
+}
+
 .case-browser-toolbar {
   container-type: inline-size;
   container-name: case-toolbar;

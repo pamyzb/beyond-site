@@ -4,8 +4,7 @@
   overflow: visible;
   contain: layout;
   background: none;
-  filter: drop-shadow(2px 4px 2px rgb(52 69 113 / 0.2))
-    drop-shadow(12px 22px 24px rgb(26 43 85 / 0.24));
+  filter: drop-shadow(0 3px 8px rgb(26 43 85 / 0.1));
 }
 .hero-glass-material {
   position: absolute;
@@ -13,7 +12,7 @@
   overflow: hidden;
   mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
   -webkit-mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
-  background: rgb(220 232 255 / 0.22);
+  background: rgb(220 232 255 / 0.08);
 }
 .hero-glass-tint {
   position: absolute;
@@ -21,11 +20,12 @@
   pointer-events: none;
   background: linear-gradient(132deg, #7187ff80 4%, #2f43fc52 38%, #1731bc66 72%, #abc9ff73);
   mix-blend-mode: normal;
-  opacity: 0.72;
+  opacity: 0.2;
 }
 .hero-glass-sheen {
+  box-shadow: inset 1px 1px 2px #ffffff60;
   background:
-    url('/assets/inicio/hero-glass-rim-depth.svg') center/100% 100% no-repeat,
+    url('/assets/inicio/hero-glass-rim.svg') center/100% 100% no-repeat,
     linear-gradient(118deg, transparent 20%, #ffffff30 32%, #ffffff05 43%, transparent 54%),
     linear-gradient(132deg, #ffffffd9, #dde8ff30 16%, #ffffff08 46%, #6f97ff38 86%, #ffffffe0);
 }
@@ -41,7 +41,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  transform: translate(6px, 8px);
+  transform: none;
+  opacity: 0;
   mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
   -webkit-mask: url('/assets/inicio/hero-glass-mask.svg') center/100% 100% no-repeat;
   background: linear-gradient(135deg, #eff5ffb3 5%, #bbcef080 38%, #647ba880 72%, #dceaffb3);

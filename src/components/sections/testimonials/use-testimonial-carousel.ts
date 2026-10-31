@@ -2,7 +2,10 @@
 import { useRef, useState, type HTMLAttributes } from 'react';
 import { gsap, useGSAP } from '@/lib/animation/gsap';
 import { createTestimonialGlass, type TestimonialGlass } from '@/lib/animation/testimonial-glass';
-export function useTestimonialCarousel() {
+export function useTestimonialCarousel({
+  glass = true,
+  desktopScroll = false,
+}: { glass?: boolean; desktopScroll?: boolean } = {}) {
   const scope = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const pagination = useRef<HTMLDivElement>(null);
@@ -82,9 +85,6 @@ export function useTestimonialCarousel() {
       const root = scope.current!;
       const rail = track.current!;
       const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const glassMedia = window.matchMedia(
-        '(min-width: 60em) and (hover: hover) and (pointer: fine)',
-      );
       // Shareable preview of the same HTML fallback used when WebGL fails.
       const glassDisabled =
         new URLSearchParams(window.location.search).get('testimonialGlass') === 'off';
@@ -107,8 +107,8 @@ export function useTestimonialCarousel() {
       let preparation: AbortController | null = null;
       let renderedPosition = NaN;
       const glassEnabled = () =>
+        glass &&
         !glassDisabled &&
-        glassMedia.matches &&
         !media.matches &&
         paused.current.visible &&
         !document.hidden &&
@@ -211,6 +211,7 @@ export function useTestimonialCarousel() {
         wasPlaying = paused.current.playing;
         const p = paused.current;
         if (
+          !desktopScroll &&
           p.visible &&
           !p.hover &&
           !p.focus &&
@@ -261,6 +262,26 @@ export function useTestimonialCarousel() {
         { threshold: 0.25 },
       );
       visibility.observe(root);
+      const scrollMedia = gsap.matchMedia();
+      if (desktopScroll) {
+        scrollMedia.add('(min-width: 60em) and (prefers-reduced-motion: no-preference)', () => {
+          gsap.to(
+            {},
+            {
+              scrollTrigger: {
+                trigger: root,
+                start: 'center center',
+                end: '+=160%',
+                pin: true,
+                onUpdate: (self) => {
+                  const page = Math.min(2, Math.floor(self.progress * 3));
+                  if (page !== state.target) navigate.current(page);
+                },
+              },
+            },
+          );
+        });
+      }
       const preferenceChanged = () => {
         if (media.matches) {
           tween?.kill();
@@ -280,19 +301,18 @@ export function useTestimonialCarousel() {
         syncTicker();
       };
       media.addEventListener('change', preferenceChanged);
-      glassMedia.addEventListener('change', resize);
       window.addEventListener('resize', resize);
       document.addEventListener('visibilitychange', pageVisibilityChanged);
       syncTicker();
       resize();
       return () => {
+        scrollMedia.revert();
         tween?.kill();
         gsap.killTweensOf(stage);
         observer.disconnect();
         visibility.disconnect();
         gsap.ticker.remove(tick);
         media.removeEventListener('change', preferenceChanged);
-        glassMedia.removeEventListener('change', resize);
         window.removeEventListener('resize', resize);
         document.removeEventListener('visibilitychange', pageVisibilityChanged);
         disposed = true;

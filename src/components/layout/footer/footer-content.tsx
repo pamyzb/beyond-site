@@ -60,7 +60,7 @@ export function FooterContent({
           ))}
         </nav>
         <h2 className="footer-slogan">
-          Impulsionando empresas e<br />
+          <span className="footer-slogan-lead">Impulsionando</span> empresas e<br />
           surpreendendo usuários.
         </h2>
         <div className="footer-socials" role="group" aria-label="Redes sociais">
@@ -106,25 +106,9 @@ export function FooterContent({
           <ButtonLink className="footer-action" variant="primary-lime" href={SITE_LINKS.whatsapp}>
             Agende uma visita presencial
           </ButtonLink>
-          <ButtonLink
-            className="footer-action footer-action-secondary"
-            variant="secondary"
-            href={SITE_LINKS.maps}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              className="button-icon"
-              src="/assets/compartilhados/button-icon-maps.svg"
-              width={24}
-              height={24}
-              alt=""
-            />
-            <span>Ver a rota no Maps</span>
-          </ButtonLink>
         </address>
         <div className="footer-contact">
-          <a href={SITE_LINKS.phone}>+55 (11) 93618-2404</a>
+          <a href={SITE_LINKS.phone}>+55 (11) 93619-1071</a>
           <a href={SITE_LINKS.email}>contato@beyondthebytes.com.br</a>
         </div>
       </div>

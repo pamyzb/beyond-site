@@ -28,7 +28,7 @@ export function useServicesJourney({
       const svg = path.ownerSVGElement!;
       const robots = Array.from(track.querySelectorAll<HTMLElement>(':scope > .builder'));
       const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-      const compactMedia = matchMedia('(max-width: 59.999em), (hover: none), (pointer: coarse)');
+      const compactMedia = matchMedia('(hover: none), (pointer: coarse)');
       let length = 0;
       let outlineLength = 0;
       let construction: gsap.core.Timeline | undefined;
@@ -270,7 +270,7 @@ export function useServicesJourney({
       // read the cards. Compact pointer layouts can use the same journey;
       // touch devices and short viewports retain native scrolling.
       mm.add(
-        '(min-width: 60em) and (min-height: 48em) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+        '(min-height: 48em) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
         () => {
           const element = viewport.current!;
           element.classList.add('is-scroll-driven');
@@ -298,7 +298,7 @@ export function useServicesJourney({
       // layout. On touch devices it is driven by the user's horizontal swipe;
       // desktop adds the pinned page-scroll controller above.
       mm.add(
-        '(min-width: 60em) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
+        '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
         () => {
           construction = gsap.timeline({
             repeat: -1,

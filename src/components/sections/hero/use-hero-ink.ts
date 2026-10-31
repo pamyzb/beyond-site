@@ -15,24 +15,16 @@ export function useHeroInk() {
   const layer = useRef<HTMLDivElement>(null);
   const backdrop = useRef<HTMLVideoElement>(null);
   const trail = useRef<SVGPathElement>(null);
-  const headerTrail = useRef<SVGPathElement>(null);
-  const headerInverse = useRef<SVGPathElement>(null);
-  const headerMask = useRef<SVGMaskElement>(null);
-  const headerWhite = useRef<SVGRectElement>(null);
   useEffect(() => {
     const ink = layer.current!,
       hero = ink.parentElement!;
     const host = ink.querySelector<HTMLElement>('.hero-ink-copy')!;
-    const header = document.querySelector<HTMLElement>('.site-header:not(.hero-header-reveal)');
-    const nextSection = document.getElementById('metricas');
     const desktop = matchMedia('(hover: hover) and (pointer: fine)');
     const touch = matchMedia('(any-pointer: coarse)');
     const pointerMode = () =>
       usesHeroPointer(desktop.matches, touch.matches, navigator.maxTouchPoints);
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-    let bounds = hero.getBoundingClientRect(),
-      headerBounds = header?.getBoundingClientRect();
-    let nextTop = nextSection?.getBoundingClientRect().top ?? Infinity;
+    let bounds = hero.getBoundingClientRect();
     let visible = false,
       ready = false,
       disposed = false,
@@ -40,7 +32,6 @@ export function useHeroInk() {
     let frame = 0,
       lastPaint = 0,
       points: HeroPoint[] = [];
-    let headerReveal: HTMLElement | null = null;
     let wordVideo: HTMLVideoElement | null = null;
     let playing = false;
     const primeBackdrop = () => {
@@ -64,7 +55,6 @@ export function useHeroInk() {
       }
     };
     let heroControls: { source: HTMLElement; copy: HTMLElement }[] = [];
-    let headerControls: { source: HTMLElement; copy: HTMLElement }[] = [];
     const controls = (source: Element, copy: Element) => {
       const selector = '.action-link,.button,.menu-toggle,.hero-scroll-cue';
       const originals = Array.from(source.querySelectorAll<HTMLElement>(selector));
@@ -80,12 +70,6 @@ export function useHeroInk() {
           copy.style.setProperty(property, source.style.getPropertyValue(property));
       }
     };
-    const resetHeader = () => {
-      header?.removeAttribute('data-dark-area-visible');
-      header?.style.removeProperty('mask-image');
-      header?.style.removeProperty('-webkit-mask-image');
-      if (headerReveal) headerReveal.style.visibility = 'hidden';
-    };
     const clear = () => {
       cancelAnimationFrame(frame);
       frame = 0;
@@ -95,53 +79,11 @@ export function useHeroInk() {
       trail.current?.setAttribute('d', '');
       ink.style.visibility = 'hidden';
       ink.dataset.motionState = reduced.matches ? 'reduced' : 'paused';
-      resetHeader();
-    };
-    const syncHeader = () => {
-      if (!header || !headerReveal) return;
-      headerReveal.replaceChildren(
-        ...Array.from(header.childNodes, (node) => node.cloneNode(true)),
-      );
-      headerReveal.querySelectorAll('.language-options').forEach((node) => node.remove());
-      headerReveal.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
-      headerControls = controls(header, headerReveal);
-    };
-    const headerObserver = new MutationObserver(syncHeader);
-    const ensureHeader = () => {
-      if (!header || headerReveal) return;
-      headerReveal = header.cloneNode(true) as HTMLElement;
-      headerReveal.classList.add('hero-header-reveal');
-      headerReveal.removeAttribute('style');
-      headerReveal.setAttribute('aria-hidden', 'true');
-      headerReveal.inert = true;
-      headerReveal.style.clipPath = `url("#${id}-header")`;
-      document.body.append(headerReveal);
-      syncHeader();
-      headerObserver.observe(header, {
-        childList: true,
-        subtree: true,
-        characterData: true,
-        attributes: true,
-        attributeFilter: ['href', 'aria-label', 'aria-expanded'],
-      });
     };
     const geometry = () => {
       const nextBounds = hero.getBoundingClientRect();
       if (nextBounds.width !== bounds.width || nextBounds.height !== bounds.height) dirty = true;
       bounds = nextBounds;
-      headerBounds = header?.getBoundingClientRect();
-      nextTop = nextSection?.getBoundingClientRect().top ?? Infinity;
-      if (headerBounds) {
-        const transform = `translate(${bounds.left - headerBounds.left} ${bounds.top - headerBounds.top})`;
-        headerTrail.current?.setAttribute('transform', transform);
-        headerInverse.current?.setAttribute('transform', transform);
-        const w = String(headerBounds.width + 64),
-          h = String(headerBounds.height + 64);
-        headerMask.current?.setAttribute('width', w);
-        headerMask.current?.setAttribute('height', h);
-        headerWhite.current?.setAttribute('width', w);
-        headerWhite.current?.setAttribute('height', h);
-      }
     };
     const ensureCopy = () => {
       if (!dirty && host.firstChild) return;
@@ -185,29 +127,6 @@ export function useHeroInk() {
       ink.style.visibility = path ? 'visible' : 'hidden';
       ink.dataset.motionState = path ? 'running' : 'idle';
       syncControls(heroControls);
-      const atHeader =
-        pointerMode() &&
-        matchMedia('(min-width: 90em)').matches &&
-        header &&
-        headerBounds &&
-        bounds.bottom > headerBounds.bottom &&
-        nextTop > headerBounds.bottom &&
-        document.documentElement.dataset.scrollTheme !== 'dark' &&
-        points.some((point) => point.y - radius < headerBounds!.bottom - bounds.top);
-      if (atHeader) {
-        ensureHeader();
-        headerTrail.current?.setAttribute('d', path);
-        headerInverse.current?.setAttribute('d', path);
-        header!.style.maskImage = `url("#${id}-header-light")`;
-        header!.style.webkitMaskImage = `url("#${id}-header-light")`;
-        header!.toggleAttribute('data-dark-area-visible', true);
-        headerReveal!.style.setProperty(
-          '--header-collapse',
-          header!.style.getPropertyValue('--header-collapse'),
-        );
-        headerReveal!.style.visibility = path ? 'visible' : 'hidden';
-        syncControls(headerControls);
-      } else resetHeader();
       if (points.length) frame = requestAnimationFrame(paint);
       else {
         frame = 0;
@@ -250,7 +169,6 @@ export function useHeroInk() {
       });
     };
     const ambient = (event: Event) => {
-      if (pointerMode()) return;
       const point = (event as CustomEvent<HeroPoint>).detail;
       const previous = points.at(-1);
       // Holding at an endpoint must let the existing ink develop and fade,
@@ -282,7 +200,6 @@ export function useHeroInk() {
       }
     });
     hero.addEventListener('pointermove', move);
-    header?.addEventListener('pointermove', move);
     hero.addEventListener('hero-ambient-position', ambient);
     hero.addEventListener('hero-ambient-pause', clear);
     window.addEventListener('scroll', geometry, { passive: true });
@@ -296,11 +213,8 @@ export function useHeroInk() {
       clear();
       observer.disconnect();
       resize.disconnect();
-      headerObserver.disconnect();
-      headerReveal?.remove();
       host.replaceChildren();
       hero.removeEventListener('pointermove', move);
-      header?.removeEventListener('pointermove', move);
       hero.removeEventListener('hero-ambient-position', ambient);
       hero.removeEventListener('hero-ambient-pause', clear);
       window.removeEventListener('scroll', geometry);
@@ -310,5 +224,5 @@ export function useHeroInk() {
       reduced.removeEventListener('change', modeChanged);
     };
   }, [id]);
-  return { id, layer, backdrop, trail, headerTrail, headerInverse, headerMask, headerWhite };
+  return { id, layer, backdrop, trail };
 }

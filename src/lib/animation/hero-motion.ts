@@ -6,6 +6,15 @@ export type AmbientArea = {
   bottom: number;
   trace?: { left: number; right: number; top: number; bottom: number };
 };
+/** Automatic painting yields to manual control after the first pointer entry. */
+export function isHeroAmbient(
+  mode: string,
+  interacted: boolean,
+  _now: number,
+  _pointerTime: number,
+) {
+  return mode === 'auto' || (mode === 'pointer' && !interacted);
+}
 export const HERO_INK_POINTS = 90;
 export const HERO_INK_SEGMENTS = 32;
 export const HERO_FRAME_MS = 32;

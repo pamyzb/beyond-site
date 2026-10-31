@@ -27,7 +27,7 @@ export default async function Home() {
   const art = await readHomeArtwork();
   const renderers: Record<string, (section: SectionData) => ReactNode> = {
     inicio: (section) => <HeroSection section={section} />,
-    metricas: () => <MetricsSection />,
+    metricas: () => <MetricsSection blogSection={siteSection('blog')} />,
     servicos: (section) => <ServicesSection content={servicesContent(section)} />,
     cases: (section) => <CasesSection content={casesContent(section)} />,
     conversa: (section) => (
@@ -46,9 +46,9 @@ export default async function Home() {
     contato: (section) => <ContactSection section={section} artwork={art.contact} />,
   };
   return (
-    <MotionRoot>
+    <MotionRoot themeTrigger="#conversa h2" themeStart="top 35%" themeMobileStart="top 35%">
       <SiteHeader section={siteSection('cabecalho')} />
-      <main className="page-frame w-full mx-auto">
+      <main className="home-page page-frame w-full mx-auto">
         {siteSections
           .filter((section) => !['cabecalho', 'rodape', 'clientes'].includes(section.id))
           .map((section) => {
@@ -64,7 +64,7 @@ export default async function Home() {
             );
           })}
       </main>
-      <div className="footer-frame mx-auto">
+      <div className="footer-frame footer-frame--home mx-auto">
         <SectionShell section={siteSection('rodape')}>
           <FooterRunner bottomArtwork={art.footer} />
         </SectionShell>

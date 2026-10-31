@@ -418,3 +418,14 @@
     display: none;
   }
 }
+
+.footer-runner-particle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 0.0625rem;
+  background: var(--color-accent);
+  pointer-events: none;
+}

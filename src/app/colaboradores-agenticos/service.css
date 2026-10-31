@@ -3,6 +3,107 @@
   color: var(--color-text);
 }
 
+.agent-benefit-editorial {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  margin-top: var(--space-15);
+  gap: var(--space-6);
+}
+.agent-benefit-item {
+  padding: var(--space-8);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(135deg, rgb(255 255 255 / 5%), rgb(47 67 252 / 6%)),
+    color-mix(in srgb, var(--color-gray-800) 55%, var(--color-black));
+}
+.agent-benefit-item:first-child {
+  grid-row: span 2;
+}
+.agent-benefit-item .about-card-body {
+  min-height: 0;
+  padding: 0;
+  gap: var(--space-4);
+}
+.agent-benefit-item .about-card-title {
+  margin-bottom: 0;
+}
+.agent-benefit-item .about-icon {
+  margin-bottom: var(--space-4);
+}
+.agent-benefit-editorial .agent-benefit-number {
+  display: block;
+  margin-block: var(--space-4);
+  color: var(--color-accent);
+  font-size: clamp(6rem, 11vw, 10rem);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-stat);
+}
+.agent-human-bot {
+  display: flex;
+  gap: 0.125rem;
+  align-items: center;
+  justify-content: center;
+}
+.about-icon .agent-human-bot svg {
+  width: 1.25rem;
+  height: 1.5rem;
+}
+.agent-roles-summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: var(--space-10);
+  margin-top: var(--space-15);
+  padding-block: var(--space-8);
+}
+.agent-service-content .agent-roles-summary .agent-roles-closing {
+  margin: 0;
+  text-align: left;
+  max-width: none;
+}
+.agent-service-content .agent-roles-summary .secondary-section-heading-copy {
+  align-self: flex-start;
+  text-align: left;
+  margin-top: var(--space-6);
+}
+.agent-roles-summary .agent-closing-line:last-child {
+  color: var(--color-accent);
+}
+.agent-roles-summary .agent-remuneration-transition {
+  margin: 0;
+  max-width: 22rem;
+  text-align: left;
+  color: var(--color-accent);
+  font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-card);
+  letter-spacing: var(--tracking-compact);
+}
+@media (max-width: 48em) {
+  .agent-benefit-editorial {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .agent-benefit-item:first-child {
+    grid-row: auto;
+  }
+  .agent-roles-summary {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .agent-roles-summary .agent-remuneration-transition {
+    max-width: none;
+  }
+}
+
+.agent-remuneration-transition {
+  margin: var(--space-10) 0 0;
+  color: var(--color-text-subtle);
+  font-size: var(--text-body-lg);
+  line-height: var(--leading-relaxed);
+  text-align: center;
+}
+
 .agent-service-page .section-heading-label-text {
   text-transform: uppercase;
 }
@@ -17,7 +118,7 @@
 
 .agent-service-section .section-heading-title {
   max-width: none;
-  align-self: center;
+  align-self: end;
 }
 
 .agent-service-section {
@@ -90,6 +191,28 @@
 
 .agent-challenge-list .about-panel-card + .about-panel-card {
   border-left: 0.0625rem solid var(--color-gray-700);
+}
+
+.agent-role-list > .about-panel-card {
+  position: relative;
+}
+
+.agent-role-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.agent-role-list .agent-role-owner {
+  display: inline-flex;
+  align-self: flex-start;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  border: 0.0625rem solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-accent) 8%, transparent);
+  color: var(--color-accent);
+  font-size: var(--text-caption);
+  line-height: var(--leading-body);
 }
 
 .agent-role .title {
@@ -212,6 +335,19 @@
 
   .agent-challenge-list .about-panel-card:nth-child(n + 3) {
     border-top: 0.0625rem solid var(--color-gray-700);
+  }
+
+  .agent-role-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .agent-role-list .about-panel-card + .about-panel-card {
+    border-left: 0;
+    border-top: 0.0625rem solid var(--color-gray-700);
+  }
+
+  .agent-role-list .about-card-body {
+    min-height: 0;
   }
 
   .agent-about-layout {
@@ -400,8 +536,7 @@
   line-height: var(--leading-card);
 }
 
-.agent-result-context,
-.agent-results-note {
+.agent-result-context {
   color: var(--color-text-subtle);
   font-size: var(--text-small);
   line-height: var(--leading-relaxed);
@@ -459,10 +594,6 @@
   text-align: right;
   font-size: var(--text-title-sm);
   line-height: var(--leading-body);
-}
-
-.agent-results-note {
-  margin: var(--space-8) 0 0;
 }
 
 @media (max-width: 59.999em) {
@@ -528,6 +659,7 @@
   width: 100%;
   height: 100%;
   touch-action: pan-y;
+  pointer-events: none;
 }
 
 .agent-scene[data-status='ready'] .agent-scene-canvas {
@@ -561,20 +693,225 @@
   filter: blur(1rem);
 }
 
-.agent-cursor-marker {
+.agent-cursor-spark {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2rem;
-  height: 2rem;
+  width: 4rem;
+  height: 4rem;
   translate: -50% -50%;
+  border-radius: var(--radius-pill);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--color-white) 85%, transparent) 0%,
+    color-mix(in srgb, var(--color-primary-50) 60%, transparent) 6%,
+    color-mix(in srgb, var(--color-primary-200) 24%, transparent) 20%,
+    color-mix(in srgb, var(--color-primary-700) 8%, transparent) 45%,
+    transparent 72%
+  );
+  filter: blur(0.1875rem);
+  mix-blend-mode: screen;
 }
 
-.agent-cursor-marker svg {
+.agent-cursor-spark::after {
+  content: '';
+  position: absolute;
+  inset: 45% 20%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    color-mix(in srgb, var(--color-white) 40%, transparent),
+    transparent 70%
+  );
+  filter: blur(0.125rem);
+}
+
+.agent-task-ribbon {
+  position: absolute;
+  top: 17%;
+  right: 0;
+  width: max(18rem, 22%);
+  z-index: 0;
+  padding: var(--space-4);
+  border: 0.0625rem solid color-mix(in srgb, var(--color-primary-200) 24%, transparent);
+  border-radius: var(--radius-card);
+  background:
+    radial-gradient(
+      ellipse at 0 0,
+      color-mix(in srgb, var(--color-primary-700) 28%, transparent),
+      transparent 65%
+    ),
+    linear-gradient(
+      115deg,
+      var(--color-primary-950),
+      color-mix(in srgb, var(--color-primary-950) 45%, var(--color-ink))
+    );
+  box-shadow: inset 0 0.0625rem 0 color-mix(in srgb, var(--color-white) 8%, transparent);
+  color: var(--color-white);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 600ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 600ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.agent-task-ribbon-secondary {
+  top: 58%;
+  right: auto;
+  left: 48%;
+}
+
+.agent-task-ribbon[data-active='true'] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.agent-task-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.agent-task-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.agent-task-icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  color: var(--color-primary-100);
+  border-radius: var(--space-3);
+  background: color-mix(in srgb, var(--color-primary-400) 12%, transparent);
+}
+
+.agent-task-detail {
   display: block;
-  width: 100%;
+  margin-top: var(--space-1);
+  color: var(--color-primary-200);
+  font-size: var(--text-micro);
+  line-height: var(--leading-caption);
+}
+
+.agent-task-label {
+  display: block;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-snug);
+}
+
+.agent-task-feedback {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.agent-task-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-primary-400) 10%, transparent);
+  color: var(--color-primary-100);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.agent-task-percentage {
+  font-size: var(--text-caption);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary-100);
+}
+
+.agent-task-status svg {
+  flex-shrink: 0;
+}
+.agent-task-ribbon[data-complete='false'] .agent-task-status svg {
+  animation: agent-task-spin 1.5s linear infinite;
+}
+.agent-task-ribbon[data-complete='true'] .agent-task-status {
+  color: var(--color-accent);
+  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+}
+
+.agent-task-track {
+  height: 0.25rem;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--color-primary-200) 15%, transparent);
+  overflow: hidden;
+}
+
+.agent-task-track span {
+  display: block;
   height: 100%;
-  overflow: visible;
+  background: var(--color-accent);
+  border-radius: inherit;
+  transform: scaleX(0);
+  transform-origin: left;
+  box-shadow: 0 0 0.75rem color-mix(in srgb, var(--color-accent) 40%, transparent);
+}
+
+@keyframes agent-task-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 59.999em) {
+  .agent-task-ribbon {
+    top: 22%;
+    left: 0;
+    width: 100%;
+    padding: var(--space-4);
+  }
+
+  .agent-task-label {
+    font-size: var(--text-small);
+  }
+  .agent-task-identity {
+    gap: var(--space-2);
+  }
+  .agent-task-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--space-2);
+  }
+  .agent-task-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .agent-task-detail {
+    font-size: var(--text-xxs);
+  }
+  .agent-task-status {
+    font-size: var(--text-xs);
+    gap: var(--space-1);
+  }
+  .agent-task-copy {
+    margin-bottom: var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agent-task-ribbon {
+    transform: none;
+    transition: opacity 150ms linear;
+  }
+  .agent-task-ribbon .agent-task-status svg {
+    animation: none;
+  }
 }
 
 @media (max-width: 59.999em) {
@@ -595,6 +932,19 @@
   .agent-scene {
     position: relative;
     min-height: 26rem;
+  }
+
+  .agent-task-ribbon {
+    top: 8%;
+    left: auto;
+    right: 0;
+    width: min(17.5rem, 82%);
+  }
+
+  .agent-task-ribbon-secondary {
+    top: 58%;
+    left: 0;
+    right: auto;
   }
 
   .agent-scene-canvas {
@@ -831,10 +1181,9 @@
 .agent-service-content {
   background: var(--scroll-canvas);
 }
-:root[data-scroll-theme='light']
-  .agent-service-page
-  :is(.agent-service-content, .section-band, .section-contato) {
+:root[data-scroll-theme='light'] .agent-service-page .agent-service-content {
   --color-page: var(--color-white);
+  --color-surface: var(--color-gray-50);
   --color-text: var(--color-black);
   --color-text-subtle: var(--color-gray-600);
   --color-accent: var(--color-primary-700);
@@ -866,32 +1215,11 @@
   max-width: none;
   width: 100%;
 }
-:root[data-scroll-theme='light'] .agent-service-page .field-label {
-  color: var(--color-text);
-}
-:root[data-scroll-theme='light'] .agent-service-page .field :is(input, textarea) {
-  background: var(--color-gray-100);
-  color: var(--color-text);
-}
-:root[data-scroll-theme='light'] .agent-service-page .form-actions .contact-submit {
-  --button-fill: var(--color-primary-900);
-  --button-depth: var(--color-primary-200);
-  color: var(--color-white);
-}
-:root[data-scroll-theme='light'] .agent-service-page .contact-submit .button-icon {
-  filter: brightness(0) invert(1);
-}
-:root[data-scroll-theme='light'] .agent-service-page .form-actions .whatsapp-link {
-  background: var(--color-white);
-}
-:root[data-scroll-theme='light'] .agent-service-page .whatsapp-link .button-icon {
-  filter: brightness(0);
-}
 
 :root[data-scroll-theme='light'] .agent-service-content .agent-result-sector {
   background: var(--color-primary-50);
 }
-:root[data-scroll-theme='light'] .agent-service-content .circular-carousel-card {
+:root[data-scroll-theme='light'] #aplicacoes .circular-carousel-card {
   background: var(--color-white);
   border-color: var(--color-primary-100);
   box-shadow: none;
@@ -911,62 +1239,15 @@
     top: 17.8125rem;
   }
 }
-:root[data-scroll-theme='light'] .agent-service-page .field :is(input, textarea) {
-  background: var(--color-white);
-  border: 0.0625rem solid var(--color-primary-100);
-}
-:root[data-scroll-theme='light'] .agent-service-page .field :is(input, textarea)::placeholder {
-  color: var(--color-gray-600);
-}
-:root[data-scroll-theme='light'] .agent-service-page .form-actions .contact-submit {
-  box-shadow: 0.25rem 0.25rem 0 var(--color-primary-200);
-}
-:root[data-scroll-theme='light'] .agent-service-page .whatsapp-link .button-icon {
-  filter: none;
-}
-:root[data-scroll-theme='light']
-  #site:has(.agent-service-page)
-  :is(.footer-decoration--top-left, .footer-decoration--top-right) {
-  filter: brightness(0) invert(1);
-}
 
-:root[data-scroll-theme='light'] .agent-service-page .form-actions .whatsapp-link.button::before {
-  border-color: var(--color-gray-200);
-}
-:root[data-scroll-theme='light'] #site:has(.agent-service-page) .footer-decoration--top-left {
-  content: url('/assets/rodape/left-top-light.svg');
-  filter: none;
-}
-
-.agent-service-page #aplicacoes {
+.agent-service-page :is(#aplicacoes, #eficiencia) {
   position: relative;
   isolation: isolate;
   width: 100%;
   padding-inline: max(var(--page-gutter), calc((100% - var(--content-width)) / 2));
 }
-.agent-service-page #aplicacoes .impact-pattern {
+.agent-service-page :is(#aplicacoes, #eficiencia) .impact-pattern {
   filter: brightness(0) invert(1);
-}
-:root[data-scroll-theme='light'] .agent-service-page #aplicacoes,
-:root[data-scroll-theme='light'] .agent-service-page > .section-band,
-:root[data-scroll-theme='light'] .agent-service-page .section-contato {
-  background: var(--color-gray-50);
-}
-:root[data-scroll-theme='light'] .agent-service-page .section-contato {
-  margin-bottom: 0;
-  padding-bottom: var(--space-20);
-}
-:root[data-scroll-theme='light'] #site:has(.agent-service-page) .footer-decoration--top-right {
-  content: url('/assets/rodape/right-top-light.svg');
-  filter: none;
-}
-
-:root[data-scroll-theme='light'] .agent-service-page .form-actions .whatsapp-link.button::before {
-  border-color: var(--color-gray-300);
-}
-:root[data-scroll-theme='light'] .agent-service-page .whatsapp-link .button-icon {
-  content: url('/assets/compartilhados/form-whatsapp-blue.svg');
-  filter: none;
 }
 :root[data-scroll-theme='light'] .agent-service-content .circular-carousel-card {
   background:
@@ -1054,12 +1335,6 @@
     gap: var(--space-10);
   }
 }
-:root[data-scroll-theme='light'] .agent-service-page .field :is(input, textarea) {
-  border-color: var(--color-gray-300);
-}
-:root[data-scroll-theme='light'] .agent-service-page .form-actions .whatsapp-link {
-  background: transparent;
-}
 
 :root[data-scroll-theme='light']
   .agent-service-content
@@ -1081,9 +1356,6 @@
 .agent-result-savings .impact-count {
   font-weight: inherit;
   letter-spacing: inherit;
-}
-:root[data-scroll-theme='light'] .agent-service-page .field :is(input, textarea) {
-  background: transparent;
 }
 .agent-delivery-builder {
   position: absolute;
@@ -1121,4 +1393,307 @@
   .agent-delivery-builder {
     display: none;
   }
+}
+
+/* Match the Home contact canvas and the surrounding footer cutouts. */
+.agent-contact-band {
+  position: relative;
+  isolation: isolate;
+  padding-top: var(--space-8);
+}
+
+.agent-contact-band > .agent-contact-patterns {
+  z-index: 1;
+  opacity: 1;
+  overflow: visible;
+}
+
+.agent-contact-patterns .impact-pattern {
+  top: -0.5rem;
+  filter: brightness(0) invert(1);
+}
+
+.agent-contact-patterns .impact-pattern-top-right {
+  width: clamp(4.5rem, 10.8vw, 9.6875rem);
+}
+
+.agent-service-page > .section-band,
+#site:has(.agent-service-page) .footer-frame {
+  background: var(--color-black);
+}
+
+:root[data-scroll-theme='light'] .agent-service-page :is(#aplicacoes, #eficiencia) {
+  background: var(--color-gray-50);
+}
+
+@media (min-width: 60em) {
+  .agent-service-section > .section-heading {
+    position: relative;
+  }
+  .agent-service-section > .section-heading > .section-heading-label {
+    position: relative;
+    height: 0;
+    min-height: 0;
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: start;
+    justify-content: center;
+  }
+  .agent-service-section > .section-heading > .section-heading-label > * {
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .agent-role-list .about-card-body {
+    padding: var(--space-6);
+  }
+  .agent-role-list .about-icon {
+    margin-bottom: var(--space-4);
+  }
+}
+@media (min-width: 26.25em) and (max-width: 59.999em) {
+  .agent-role-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .agent-role-list .about-panel-card:nth-child(2) {
+    border-left: 0.0625rem solid var(--color-gray-700);
+    border-top: 0;
+  }
+  .agent-role-list .about-card-title {
+    font-size: 1.25rem;
+  }
+  .agent-role-list .about-card-copy {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .agent-role-list .about-icon {
+    flex-basis: 2.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .agent-role-list .about-icon-surface {
+    width: 2.75rem;
+    height: 2.75rem;
+    outline-offset: 0.375rem;
+  }
+  .agent-role-list .about-icon--lucide svg {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+  .agent-role-list .about-icon .agent-human-bot svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+@media (min-width: 26.25em) and (max-width: 59.999em) {
+  .agent-role-list > .about-panel-card:last-child {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 0.0625rem solid var(--color-gray-700);
+  }
+}
+@media (max-width: 47.999em) {
+  .agent-contact-patterns .impact-pattern {
+    top: -0.25rem;
+  }
+}
+
+/* Mobile sections share an 80px rhythm: 40px on either side of a boundary. */
+@media (max-width: 47.999em) {
+  .agent-service-page .agent-service-section {
+    padding-block: var(--space-10);
+  }
+  .agent-service-page #beneficios {
+    padding-top: var(--space-20);
+  }
+  .agent-service-page .agent-contact-band {
+    padding-top: 0;
+  }
+  .agent-service-page .section-contato {
+    padding-block: var(--space-10);
+  }
+  .agent-service-section > :last-child {
+    margin-bottom: 0;
+  }
+  .agent-benefit-editorial {
+    margin-top: var(--space-8);
+  }
+  .agent-benefit-item:first-child {
+    padding-top: var(--space-6);
+  }
+  .agent-benefit-item:last-child {
+    padding-bottom: var(--space-6);
+  }
+  .agent-benefit-item {
+    padding: var(--space-6);
+  }
+  .agent-roles-summary {
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 59.999em) {
+  .agent-service-page .section-heading {
+    row-gap: var(--space-4);
+  }
+  .agent-service-page .section-heading-icon {
+    transform: rotate(90deg);
+  }
+  .agent-service-page .section-heading-subtitle {
+    margin-top: var(--space-2);
+  }
+  .agent-delivery-copy .title {
+    font-size: var(--text-card);
+    line-height: var(--leading-heading);
+  }
+  .agent-delivery-copy p {
+    font-size: var(--text-body);
+  }
+}
+@media (max-width: 47.999em) {
+  .agent-service-page #eficiencia {
+    padding-top: var(--space-20);
+  }
+}
+
+@media (max-width: 47.999em) {
+  .agent-service-page #contratacao-e-entrega > .section-heading {
+    margin-bottom: var(--space-6);
+  }
+  .agent-service-page #contratacao-e-entrega .agent-delivery-steps {
+    margin-top: 0;
+  }
+  .agent-service-page #contratacao-e-entrega .agent-delivery-journey {
+    margin-top: 0;
+  }
+  .agent-service-page .section-contato {
+    padding-top: var(--space-20);
+  }
+}
+
+.agent-service-page .agent-operation-comparison.theme-dark .circular-carousel-card {
+  z-index: 1;
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 14%),
+    rgb(255 255 255 / 3%) 55%,
+    rgb(255 255 255 / 8%)
+  );
+  backdrop-filter: blur(12px) saturate(170%);
+  -webkit-backdrop-filter: blur(12px) saturate(170%);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 30%),
+    inset 0 -1px 0 rgb(255 255 255 / 12%);
+}
+.agent-comparison-glass {
+  background: radial-gradient(ellipse at 80% 90%, rgb(47 67 252 / 25%), transparent 70%);
+}
+.agent-service-page .agent-operation-comparison.theme-dark .circular-carousel-card p {
+  color: rgb(255 255 255 / 80%);
+}
+@media (min-width: 60em) {
+  .agent-role-list .about-icon {
+    margin-bottom: var(--space-6);
+  }
+  #como-atuam > .section-heading {
+    margin-bottom: var(--space-6);
+  }
+  #como-atuam > .agent-role-list {
+    margin-top: 0;
+  }
+  #como-atuam > .agent-roles-summary {
+    margin-top: var(--space-6);
+    padding-block: 0;
+  }
+}
+
+#remuneracao .agent-service-prose p + p {
+  margin-top: var(--space-3);
+}
+@media (max-width: 59.999em) {
+  #remuneracao .agent-about-layout {
+    gap: var(--space-6);
+  }
+  #remuneracao .agent-service-prose {
+    justify-self: start;
+    text-align: left;
+  }
+}
+.agent-service-page #aplicacoes {
+  background: transparent;
+}
+.agent-service-page #aplicacoes > .impact-patterns {
+  display: none;
+}
+:root[data-scroll-theme='light'] .agent-service-page #aplicacoes {
+  background: transparent;
+}
+
+.agent-service-page #resultados {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  padding-inline: max(var(--page-gutter), calc((100% - var(--content-width)) / 2));
+  background: var(--color-gray-50);
+}
+.agent-service-page #resultados .impact-pattern {
+  filter: brightness(0) invert(1);
+}
+
+/* One 80px interval across sections, including decorated background transitions. */
+.agent-service-page .agent-service-section,
+.agent-service-page .section-contato {
+  padding-block: var(--space-10);
+}
+.agent-service-page .agent-service-section > :last-child {
+  margin-bottom: 0;
+}
+.agent-service-page #beneficios,
+.agent-service-page #resultados,
+.agent-service-page #eficiencia,
+.agent-service-page .section-contato {
+  padding-top: var(--space-20);
+}
+.agent-service-page #remuneracao,
+.agent-service-page #aplicacoes,
+.agent-service-page #contratacao-e-entrega {
+  padding-bottom: 0;
+}
+.agent-service-page .agent-contact-band {
+  padding-top: 0;
+}
+
+/* Separate section boxes as well as their content; decorated boxes retain inset space. */
+.agent-service-page .agent-service-section {
+  margin-block: var(--space-20) 0;
+  padding-block: 0;
+}
+.agent-service-page #beneficios {
+  margin-top: 0;
+  padding-top: var(--space-20);
+}
+.agent-service-page #resultados,
+.agent-service-page #eficiencia {
+  padding-block: var(--space-20);
+}
+.agent-service-page .agent-contact-band {
+  margin-top: var(--space-20);
+}
+.agent-service-page .section-contato {
+  padding-block: var(--space-20);
+}
+.agent-service-page #como-atuam > .agent-roles-summary {
+  margin-top: var(--space-20);
+  padding-block: 0;
+}
+.agent-service-page #como-atuam > .agent-operation {
+  margin-top: var(--space-20);
+}
+.agent-service-page .agent-operation-comparison {
+  margin-top: 0;
+  margin-bottom: var(--space-20);
 }

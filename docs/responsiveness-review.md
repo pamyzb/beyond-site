@@ -1,5 +1,28 @@
 # Revisão da V1 — responsividade, unidades e animação
 
+## Ajustes mobile da home — 30/10/2026
+
+Revisão dos comentários de navegador: Softdex restaurada, CTA de mídia
+reposicionado, arraste de serviços, ritmo 16/24px nos títulos, liquid glass
+mobile, cards finais em duas colunas onde cabem e remoções responsivas de
+fotos/itens do rodapé. Decisões anteriores conflitantes foram substituídas
+pela revisão da usuária. Detalhes em
+[home-mobile-comments.md](qa/home-mobile-comments.md).
+
+Executado o plano da home, mantendo o desktop como referência. Menu e hero
+foram simplificados no celular; empresas fecham no segundo toque; serviços
+usam paginação pela geometria real. Cases percorrem os três projetos em fluxo
+normal, com expansão por scroll e controles originais em movimento reduzido.
+O marcador do processo passou a usar um percurso contínuo mobile, alinhado aos
+badges, sem medir layout por frame. App, depoimentos, FAQ, cards finais e
+rodapé receberam ajustes locais de tamanho, fluxo de texto e espaçamento.
+
+As propostas abertas de duas linhas de marcas, cards em 2 + 1 e ocultação dos
+botões finais não foram adotadas. A paleta existente foi preservada. Estilos
+novos do menu e rodapé estão restritos à home; o blog não foi modificado nesta
+execução. Relatório, comparativos e limites em
+[home-mobile-execution.md](qa/home-mobile-execution.md).
+
 Data: 24/10/2026. Escopo: implementação ativa na raiz do repositório, incluindo
 `/` e `/design-system`. A composição de desktop permanece como referência.
 

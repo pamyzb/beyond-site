@@ -1,11 +1,12 @@
 /* Responsive rules owned by this component; loaded after base styles. */
 
-@media (max-width: 89.999em) {
+@media (max-width: 70.624em) {
   .site-header {
     --menu-open-duration: 560ms;
-    --menu-close-duration: 280ms;
+    --menu-close-duration: 560ms;
     --menu-item-duration: 480ms;
     --menu-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --menu-exit-ease: cubic-bezier(0.7, 0, 0.84, 0);
     --menu-panel-ease: cubic-bezier(0.65, 0, 0.2, 1);
     height: 5rem;
     background: transparent;
@@ -66,6 +67,10 @@
     background: var(--color-action);
     color: #fff;
   }
+  :root[data-scroll-theme='dark'] .site-header.site-header--home .menu-toggle {
+    background: transparent;
+    color: var(--scroll-ink);
+  }
   .site-header .desktop-nav {
     margin: 0;
     position: absolute;
@@ -81,57 +86,69 @@
     box-shadow: 0 1rem 2rem #0002;
     visibility: hidden;
     pointer-events: none;
-    clip-path: inset(0 0 100% 0 round 0 0 1.5rem 1.5rem);
+    transform: translateX(100%);
     transition:
-      clip-path var(--menu-close-duration) var(--menu-panel-ease),
-      visibility 0s var(--menu-close-duration);
+      transform var(--menu-close-duration) cubic-bezier(0.8, 0, 0.35, 1),
+      visibility 0s;
+    transition-delay: 700ms, 1260ms;
   }
   .site-header.menu-open .desktop-nav {
     visibility: visible;
     pointer-events: auto;
-    clip-path: inset(0 0 -3rem 0 round 0 0 0 0);
+    transform: translateX(0);
     transition-duration: var(--menu-open-duration), 0s;
+    transition-timing-function: var(--menu-panel-ease);
     transition-delay: 0s;
   }
   .site-header .header-nav-link,
   .site-header .header-language,
   .site-header .header-cta {
     opacity: 0;
-    transform: translateY(1.5rem);
+    transform: translateX(2rem);
     transition:
-      opacity var(--menu-item-duration) ease,
-      transform var(--menu-item-duration) var(--menu-ease);
+      transform var(--menu-item-duration) var(--menu-exit-ease),
+      opacity var(--menu-item-duration) var(--menu-exit-ease);
+    transition-delay: var(--menu-exit-delay, 0ms);
   }
   .site-header.menu-open .header-nav-link,
   .site-header.menu-open .header-language,
   .site-header.menu-open .header-cta {
     opacity: 1;
-    transform: translateY(0);
-    transition-delay: var(--menu-item-delay, 660ms);
+    transform: translateX(0);
+    transition-duration: var(--menu-item-duration);
+    transition-timing-function: var(--menu-ease);
+    transition-delay: var(--menu-item-delay, 180ms);
   }
   .header-nav-link:nth-child(1) {
-    --menu-item-delay: 180ms;
+    --menu-item-delay: 420ms;
+    --menu-exit-delay: 360ms;
   }
   .header-nav-link:nth-child(2) {
-    --menu-item-delay: 260ms;
+    --menu-item-delay: 480ms;
+    --menu-exit-delay: 300ms;
   }
   .header-nav-link:nth-child(3) {
-    --menu-item-delay: 340ms;
+    --menu-item-delay: 540ms;
+    --menu-exit-delay: 240ms;
   }
   .header-nav-link:nth-child(4) {
-    --menu-item-delay: 420ms;
+    --menu-item-delay: 600ms;
+    --menu-exit-delay: 180ms;
   }
   .header-nav-link:nth-child(5) {
-    --menu-item-delay: 500ms;
+    --menu-item-delay: 660ms;
+    --menu-exit-delay: 120ms;
   }
   .header-nav-link:nth-child(6) {
-    --menu-item-delay: 580ms;
+    --menu-item-delay: 720ms;
+    --menu-exit-delay: 60ms;
   }
   .site-header .header-cta {
-    --menu-item-delay: 740ms;
+    --menu-item-delay: 780ms;
   }
   .menu-toggle .menu-icon {
     position: relative;
+    z-index: 1;
     width: 1.5rem;
     height: 1.5rem;
   }
@@ -158,18 +175,15 @@
   }
   .menu-open .menu-icon > span:nth-child(2) {
     opacity: 0;
-    transform: scaleX(0);
+    transform: translateX(-0.5rem);
   }
   .menu-open .menu-icon > span:last-child {
     transform: rotate(-45deg);
   }
   @media (prefers-reduced-motion: reduce) {
     .site-header .desktop-nav {
-      clip-path: none;
-      opacity: 0;
-      transition:
-        opacity 90ms ease,
-        visibility 0s 90ms;
+      transform: none;
+      transition: none;
     }
     .site-header.menu-open .desktop-nav {
       opacity: 1;
@@ -194,11 +208,41 @@
     gap: 0;
     white-space: normal;
   }
+  .site-header.site-header--home .header-nav-center {
+    display: block;
+    width: 100%;
+  }
+  .site-header.site-header--home .header-nav-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    width: 100%;
+  }
+  .site-header.site-header--home .header-nav-actions .header-cta {
+    justify-content: center;
+  }
   .site-header .header-nav-link {
     padding: 0.875rem 0.5rem;
     font-size: var(--text-body);
     line-height: 1.5;
     color: var(--scroll-ink);
+  }
+  .site-header.site-header--home .header-nav-link::before {
+    content: '';
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: var(--color-gray-400);
+    mask: url('/assets/compartilhados/section-title-icon.svg') center / contain no-repeat;
+    transform: rotate(90deg);
+    transition: transform 180ms ease;
+  }
+  .site-header.site-header--home .header-nav-link:is(:active, :focus-visible)::before {
+    transform: rotate(90deg);
+  }
+  .site-header.site-header--home .header-nav-link[aria-current='page']::before {
+    background: var(--color-action);
   }
   .site-header .header-language,
   .site-header .desktop-nav .header-cta {
@@ -216,5 +260,112 @@
     .header-language
     .language-trigger {
     color: #fff;
+  }
+}
+
+@media (max-width: 70.624em) and (prefers-reduced-motion: reduce) {
+  .site-header.site-header--home .header-nav-link .menu-ink {
+    transition: none;
+  }
+  .site-header.site-header--home .header-nav-link::before {
+    transition: none;
+  }
+}
+
+@media (max-width: 70.624em) {
+  .site-header.site-header--home .menu-toggle {
+    border-radius: 0;
+    background: transparent;
+    color: var(--scroll-ink);
+  }
+  .site-header.site-header--home .desktop-nav {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    box-sizing: border-box;
+    height: calc(100dvh - 5rem);
+    min-height: 0;
+    overflow-x: hidden;
+    box-shadow: none;
+  }
+  .site-header.site-header--home .header-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    line-height: 1.2;
+  }
+  .site-header.site-header--home .header-nav-link::before {
+    width: 2rem;
+    height: 2rem;
+  }
+  .site-header.site-header--home .header-nav-link .menu-ink {
+    transition: margin-left 180ms var(--menu-ease);
+  }
+  .site-header.site-header--home .header-nav-link:is(:hover, :focus-visible) .menu-ink {
+    margin-left: 1.25rem;
+  }
+  .site-header.site-header--home .header-nav-actions .header-language {
+    align-self: stretch;
+    width: 100%;
+    --menu-item-delay: 720ms;
+    --menu-exit-delay: 60ms;
+  }
+  .site-header.site-header--home .header-nav-actions .language-trigger {
+    width: 100%;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+  .site-header.site-header--home .menu-background-mark {
+    display: block;
+    position: absolute;
+    right: -25%;
+    bottom: 0;
+    width: 115%;
+    aspect-ratio: 1;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .menu-background-mark path {
+    stroke: var(--scroll-ink);
+    stroke-width: 1px;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1800ms var(--menu-exit-ease);
+  }
+  .menu-open .menu-background-mark path {
+    stroke-dashoffset: 0;
+    transition-duration: 1800ms;
+    transition-delay: 480ms;
+  }
+  .language-abbreviation {
+    display: none;
+  }
+  .language-full {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .language-flag {
+    flex: none;
+  }
+  .language-options {
+    box-sizing: border-box;
+    padding: var(--space-2);
+  }
+  .language-options button {
+    min-height: 3.5rem;
+    padding: var(--space-3) var(--space-4);
+  }
+  .language-options button + button {
+    margin-top: var(--space-2);
+  }
+}
+@media (max-width: 70.624em) and (prefers-reduced-motion: reduce) {
+  .site-header .desktop-nav,
+  .menu-background-mark path {
+    transition: none;
   }
 }

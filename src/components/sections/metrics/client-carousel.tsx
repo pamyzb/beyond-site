@@ -1,10 +1,18 @@
 'use client';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { gsap } from '@/lib/animation/gsap';
 import { Title } from '@/components/ui/title';
 
-type Client = { key: string; name: string; summary: string; image: string };
+type Client = {
+  key: string;
+  name: string;
+  summary: string;
+  image: string;
+  photo?: string;
+  photoAlt?: string;
+  href?: string;
+  preview?: ReactNode;
+};
 type FeaturedClient = Client & { photo: string; photoAlt: string };
 const descriptions: Record<string, string> = {
   Article:
@@ -15,102 +23,12 @@ const descriptions: Record<string, string> = {
     'A Superpet é uma feira do setor pet que reúne empresas, marcas e profissionais para apresentar produtos, compartilhar conhecimento e criar oportunidades de negócios.',
 };
 
-/** Inline variant of the client carousel, sharing the tooltip's content styles. */
+/** Both credibility rows use the same anchored popover. */
 export function ClientDetailsCarousel({ clients }: { clients: FeaturedClient[] }) {
-  const [active, setActive] = useState<FeaturedClient | null>(null);
-  const [expanded, setExpanded] = useState(false);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const cancelClose = () => {
-    if (closeTimer.current) clearTimeout(closeTimer.current);
-  };
-  const open = (client: FeaturedClient) => {
-    cancelClose();
-    setActive(client);
-    setExpanded(true);
-  };
-  const close = () => {
-    cancelClose();
-    closeTimer.current = setTimeout(() => setExpanded(false), 260);
-  };
-  useEffect(
-    () => () => {
-      if (closeTimer.current) clearTimeout(closeTimer.current);
-    },
-    [],
-  );
-  return (
-    <div
-      className="client-inline-carousel"
-      onPointerEnter={cancelClose}
-      onPointerLeave={close}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) close();
-      }}
-      onKeyDown={(event) => {
-        if (event.key === 'Escape') {
-          cancelClose();
-          setExpanded(false);
-        }
-      }}
-    >
-      <div className={`client-strip${expanded ? ' is-paused' : ''}`}>
-        <div className="client-track">
-          {Array.from({ length: 4 }, (_, repeat) =>
-            [...clients, ...clients].map((client, index) => (
-              <button
-                type="button"
-                className="client-strip-item impact-brand"
-                key={`${repeat}-${index}`}
-                tabIndex={repeat === 0 && index < clients.length ? 0 : -1}
-                aria-hidden={repeat > 0 || index >= clients.length ? true : undefined}
-                aria-label={`${client.name}: ${client.summary}`}
-                aria-expanded={expanded && active?.key === client.key}
-                aria-controls="client-inline-details"
-                onPointerEnter={(event) => {
-                  if (event.pointerType !== 'touch') open(client);
-                }}
-                onFocus={() => open(client)}
-                onClick={() => open(client)}
-              >
-                <img src={client.image} alt="" width="160" height="48" />
-                <span className="client-visible-summary">{client.summary}</span>
-              </button>
-            )),
-          )}
-        </div>
-      </div>
-      <div
-        id="client-inline-details"
-        className="client-inline-details"
-        data-open={expanded}
-        aria-hidden={!expanded}
-        inert={!expanded}
-      >
-        <div className="client-inline-reveal">
-          {active && (
-            <div className="client-tooltip-content client-inline-card">
-              <img
-                className="client-inline-photo"
-                src={active.photo}
-                alt={active.photoAlt}
-                width="480"
-                height="300"
-              />
-              <div className="client-tooltip-body">
-                <Title as="h3" variant="tooltip">
-                  {active.name}
-                </Title>
-                <p>{descriptions[active.key] || active.summary}</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  return <ClientCarousel clients={clients} />;
 }
 
-export function ClientCarousel({ clients }: { clients: Client[] }) {
+export function ClientCarousel({ clients, media = false }: { clients: Client[]; media?: boolean }) {
   const [active, setActive] = useState<{
     client: Client;
     trigger: HTMLButtonElement;
@@ -124,6 +42,8 @@ export function ClientCarousel({ clients }: { clients: Client[] }) {
     ready: false,
   });
   const card = useRef<HTMLDivElement>(null);
+  const logoTrack = useRef<HTMLDivElement>(null);
+  const touchIntent = useRef(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const cancelClose = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -138,6 +58,35 @@ export function ClientCarousel({ clients }: { clients: Client[] }) {
     setPosition((p) => ({ ...p, ready: false }));
     setActive({ client, trigger, id });
   };
+  useLayoutEffect(() => {
+    const track = logoTrack.current;
+    if (media || !track) return;
+    let disposed = false;
+    const measure = () => {
+      if (disposed) return;
+      const first = track.children[0];
+      const clone = track.children[clients.length];
+      if (!first || !clone) return;
+      // WebKit's max-content track can be wider than its laid-out flex items.
+      // The first matching clone is the exact repeat boundary in every engine.
+      const distance = clone.getBoundingClientRect().left - first.getBoundingClientRect().left;
+      if (distance > 0) track.style.setProperty('--clients-loop-offset', `${-distance}px`);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(track);
+    Array.from(track.children)
+      .slice(0, clients.length)
+      .forEach((item) => observer.observe(item));
+    track.addEventListener('load', measure, true);
+    void document.fonts.ready.then(measure);
+    measure();
+    return () => {
+      disposed = true;
+      observer.disconnect();
+      track.removeEventListener('load', measure, true);
+      track.style.removeProperty('--clients-loop-offset');
+    };
+  }, [clients, media]);
   useLayoutEffect(() => {
     if (!active || !card.current) return;
     const rect = active.trigger.getBoundingClientRect();
@@ -157,65 +106,6 @@ export function ClientCarousel({ clients }: { clients: Client[] }) {
       ready: true,
     });
   }, [active]);
-  useLayoutEffect(() => {
-    const element = card.current;
-    if (!element || !active || !position.ready) return;
-    const media = gsap.matchMedia();
-    media.add(
-      '(prefers-reduced-motion: no-preference)',
-      () => {
-        const content = element.querySelector('.client-tooltip-content');
-        const details = element.querySelectorAll(
-          '.client-tooltip-image img,.client-tooltip-body h3,.client-tooltip-body p',
-        );
-        const tip = (position.arrowLeft / element.offsetWidth) * 100;
-        const narrow = position.above
-          ? `polygon(${tip - 8}% 0%, ${tip + 8}% 0%, ${tip + 2}% 100%, ${tip - 2}% 100%)`
-          : `polygon(${tip - 2}% 0%, ${tip + 2}% 0%, ${tip + 8}% 100%, ${tip - 8}% 100%)`;
-        const timeline = gsap.timeline({ defaults: { ease: 'power3.out' } });
-        gsap.set(element, {
-          transformOrigin: `${position.arrowLeft}px ${position.above ? 'calc(100% + 7px)' : '-7px'}`,
-          willChange: 'transform,opacity',
-        });
-        timeline
-          .fromTo(
-            element,
-            { opacity: 0, scaleX: 0.35, scaleY: 0.04, y: position.above ? 10 : -10 },
-            {
-              opacity: 1,
-              scaleY: 1,
-              scaleX: 1,
-              y: 0,
-              duration: 0.62,
-              ease: 'power4.out',
-              clearProps: 'willChange',
-            },
-            0,
-          )
-          .fromTo(
-            content,
-            { clipPath: narrow },
-            {
-              clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
-              duration: 0.5,
-              ease: 'power3.inOut',
-              clearProps: 'clipPath',
-            },
-            0,
-          )
-          .fromTo(
-            details,
-            { opacity: 0, y: position.above ? 9 : -9 },
-            { opacity: 1, y: 0, duration: 0.28, stagger: 0.045, clearProps: 'opacity,transform' },
-            0.2,
-          );
-      },
-      element,
-    );
-    return () => media.revert();
-    // Repositioning on scroll must not replay the entrance.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active?.id, position.ready]);
   useEffect(() => {
     if (!active) return;
     const dismiss = (event: KeyboardEvent) => {
@@ -253,37 +143,62 @@ export function ClientCarousel({ clients }: { clients: Client[] }) {
   );
   return (
     <>
-      <div className={`client-strip${active ? ' is-paused' : ''}`}>
-        <div className="client-track">
-          {Array.from({ length: 4 }, (_, repeat) =>
+      <div
+        className={`${media ? 'impact-press-logos' : 'client-strip'}${active ? ' is-paused' : ''}`}
+      >
+        <div ref={logoTrack} className={media ? 'media-logo-track' : 'client-track'}>
+          {Array.from({ length: media ? 1 : 4 }, (_, repeat) =>
             clients.map((client) => {
               const id = `client-info-${repeat}-${client.key}`;
               return (
                 <button
                   type="button"
-                  className="client-strip-item"
+                  className={
+                    media
+                      ? 'client-strip-item media-logo-trigger'
+                      : 'client-strip-item impact-brand'
+                  }
                   aria-label={`${client.name}: ${client.summary}`}
                   key={id}
                   tabIndex={repeat === 0 ? 0 : -1}
                   aria-hidden={repeat > 0 ? true : undefined}
                   aria-describedby={active?.id === id ? id : undefined}
+                  aria-expanded={active?.id === id}
+                  onPointerDown={(event) => {
+                    touchIntent.current = event.pointerType === 'touch';
+                  }}
                   onPointerEnter={(event) => {
                     if (event.pointerType !== 'touch') open(client, event.currentTarget, id);
                   }}
-                  onPointerLeave={scheduleClose}
-                  onFocus={(event) => open(client, event.currentTarget, id)}
+                  onPointerLeave={(event) => {
+                    if (event.pointerType !== 'touch') scheduleClose();
+                  }}
+                  onFocus={(event) => {
+                    if (!touchIntent.current) open(client, event.currentTarget, id);
+                  }}
                   onBlur={scheduleClose}
-                  onClick={(event) => open(client, event.currentTarget, id)}
+                  onClick={(event) => {
+                    if (touchIntent.current) {
+                      cancelClose();
+                      touchIntent.current = false;
+                      if (active?.id === id) {
+                        setActive(null);
+                        return;
+                      }
+                    }
+                    open(client, event.currentTarget, id);
+                  }}
                 >
                   <img
                     className="component-art"
                     src={client.image.replace(/\.svg$/, '-dark.png')}
                     alt=""
                   />
-                  <span className="client-copy">
-                    <span>{client.name}</span>
-                    <span>{client.summary}</span>
-                  </span>
+                  {!media && (
+                    <span className="client-visible-summary">
+                      <span>{client.summary}</span>
+                    </span>
+                  )}
                 </button>
               );
             }),
@@ -293,16 +208,22 @@ export function ClientCarousel({ clients }: { clients: Client[] }) {
       {active &&
         createPortal(
           <div
+            key={active.id}
             ref={card}
+            data-ready={position.ready}
             id={active.id}
-            role="tooltip"
-            className="client-tooltip"
+            aria-label={active.client.href ? active.client.name : undefined}
+            role={active.client.href ? 'dialog' : 'tooltip'}
+            className="client-tooltip credibility-popover"
             data-side={position.above ? 'above' : 'below'}
             style={{
+              transformOrigin: `${position.arrowLeft}px ${position.above ? '100%' : '0%'}`,
               left: position.left,
               top: position.top,
               visibility: position.ready ? 'visible' : 'hidden',
             }}
+            onFocus={cancelClose}
+            onBlur={scheduleClose}
             onPointerEnter={cancelClose}
             onPointerLeave={scheduleClose}
           >
@@ -312,15 +233,22 @@ export function ClientCarousel({ clients }: { clients: Client[] }) {
               style={{ left: position.arrowLeft }}
             />
             <div className="client-tooltip-content">
-              <div className="client-tooltip-image">
-                <img src={active.client.image} alt="" />
-              </div>
-              <div className="client-tooltip-body">
-                <Title as="h3" variant="tooltip">
-                  {active.client.name}
-                </Title>
-                <p>{descriptions[active.client.key] || active.client.summary}</p>
-              </div>
+              {active.client.preview || (
+                <>
+                  <div className={`client-tooltip-image${active.client.photo ? ' has-photo' : ''}`}>
+                    <img
+                      src={active.client.photo || active.client.image}
+                      alt={active.client.photoAlt || ''}
+                    />
+                  </div>
+                  <div className="client-tooltip-body">
+                    <Title as="h3" variant="tooltip">
+                      {active.client.name}
+                    </Title>
+                    <p>{descriptions[active.client.key] || active.client.summary}</p>
+                  </div>
+                </>
+              )}
             </div>
           </div>,
           document.body,

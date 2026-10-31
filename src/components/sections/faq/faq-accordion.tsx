@@ -11,7 +11,7 @@ const questions = [
   'Vocês atendem empresas pequenas?',
 ];
 export function FaqAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   return (
     <div className="faq-accordion">
       {questions.map((question, index) => {

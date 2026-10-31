@@ -35,7 +35,7 @@
   width: 33.75rem !important;
   height: auto !important;
   color: var(--color-white);
-  font-size: var(--text-subheading);
+  font-size: calc(var(--text-subheading) * 1.08);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-subheading);
   line-height: var(--leading-app-title);
@@ -124,4 +124,8 @@
   .section-aplicativo .qr-instructions::after {
     transition: none;
   }
+}
+
+.app-drawn-art [data-artwork-role='phone-camera'] {
+  display: none;
 }

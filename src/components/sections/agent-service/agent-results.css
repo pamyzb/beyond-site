@@ -1,0 +1,281 @@
+/* Home movement with local HTML glass: no portrait or baked testimonial texture. */
+.agent-results-carousel {
+  position: relative;
+  width: min(100%, 73rem);
+  margin: var(--space-15) auto 0;
+  color: var(--color-text);
+}
+.agent-results-carousel .testimonial-viewport {
+  position: relative;
+  overflow: visible;
+  touch-action: pan-y;
+  cursor: grab;
+}
+.agent-results-carousel .testimonial-track {
+  display: grid;
+  position: relative;
+  width: 100%;
+  height: auto;
+  transform: none;
+}
+.agent-results-carousel .testimonial-track > .testimonial-slide {
+  position: relative;
+  inset: auto;
+  grid-area: 1 / 1;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  border-radius: var(--radius-section);
+  overflow: hidden;
+  transform-origin: center;
+}
+.agent-results-carousel .testimonial-slide:not(:first-child) {
+  opacity: 0;
+}
+.agent-results-carousel .agent-result-surface {
+  position: relative;
+  height: 100%;
+  padding: var(--space-10) var(--space-15);
+  border: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      ellipse at top left,
+      color-mix(in srgb, var(--color-action) 12%, transparent),
+      transparent 70%
+    ),
+    color-mix(in srgb, var(--color-surface) 80%, transparent);
+  backdrop-filter: blur(1.25rem) saturate(140%);
+  -webkit-backdrop-filter: blur(1.25rem) saturate(140%);
+}
+.agent-results-carousel .agent-result-surface::before,
+.agent-results-carousel .agent-result-surface::after {
+  content: '';
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  pointer-events: none;
+  background: var(--color-page);
+}
+.agent-results-carousel .agent-result-surface::before {
+  inset: 0 auto auto 0;
+  mask: url('/assets/depoimentos/testimonial-corner-top.svg') left top / contain no-repeat;
+}
+.agent-results-carousel .agent-result-surface::after {
+  inset: auto 0 0 auto;
+  mask: url('/assets/depoimentos/testimonial-corner-bottom.svg') right bottom / contain no-repeat;
+}
+.agent-results-carousel .agent-result-surface > * {
+  position: relative;
+}
+@media (min-width: 60em) and (hover: hover) and (pointer: fine) {
+  .agent-results-carousel .testimonial-slide[aria-hidden='true'] .agent-result-surface {
+    filter: blur(0.1875rem);
+  }
+}
+.agent-results-carousel .agent-result-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: var(--space-10);
+}
+.agent-results-carousel .agent-result-company {
+  min-width: 0;
+  padding: var(--space-8);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--color-action) 9%, var(--color-page));
+}
+.agent-results-carousel .agent-result-wordmark {
+  display: block;
+  margin-bottom: var(--space-8);
+  color: var(--color-action);
+  font-family: var(--font-sans);
+  font-size: var(--text-title-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-compact);
+  overflow-wrap: anywhere;
+}
+.agent-results-carousel .agent-result-wordmark span {
+  display: block;
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-none);
+}
+.agent-results-carousel .agent-result-company h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-title-sm);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-caption);
+  overflow-wrap: anywhere;
+}
+.agent-results-carousel .agent-result-segment,
+.agent-results-carousel .agent-result-revenue {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+  color: var(--color-text-subtle);
+}
+.agent-results-carousel .agent-result-revenue {
+  margin-top: var(--space-6);
+  color: var(--color-text);
+}
+.agent-results-carousel .agent-result-revenue span {
+  display: block;
+  margin: 0 0 var(--space-1);
+  color: var(--color-text-subtle);
+  font-size: var(--text-small);
+}
+.agent-results-carousel .agent-result-savings {
+  display: block;
+  padding: 0;
+  margin: 0 0 var(--space-6);
+}
+.agent-results-carousel .agent-result-savings strong {
+  color: var(--color-text);
+  font-size: clamp(var(--text-display-sm), 7vw, var(--text-display-lg));
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-stat);
+  font-variant-numeric: tabular-nums;
+}
+.agent-results-carousel .agent-result-savings span {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--color-text-subtle);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+.agent-results-carousel blockquote {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(var(--text-title-sm), 2.4vw, var(--text-title-lg));
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-caption);
+  letter-spacing: var(--tracking-snug);
+  text-wrap: pretty;
+}
+.agent-results-carousel .agent-result-attribution {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-subtle);
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+}
+.agent-results-carousel .agent-result-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.agent-results-carousel .agent-result-metrics li {
+  max-width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0.0625rem solid color-mix(in srgb, var(--color-text) 20%, transparent);
+  border-radius: var(--radius-card);
+  color: var(--color-text);
+  font-size: var(--text-small);
+  line-height: var(--leading-body);
+  overflow-wrap: anywhere;
+}
+.agent-results-carousel .agent-results-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  margin-top: var(--space-6);
+}
+.agent-results-carousel .testimonial-arrow {
+  position: relative;
+  inset: auto;
+  width: 3rem;
+  height: 3rem;
+  flex-shrink: 0;
+  background: var(--color-action);
+  color: var(--color-on-action);
+}
+.agent-results-carousel .testimonial-pagination {
+  margin: 0;
+  gap: var(--space-6);
+}
+.agent-results-carousel .testimonial-pagination button {
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+.agent-results-carousel .testimonial-pagination button[aria-current] {
+  color: var(--color-on-accent);
+}
+.agent-results-carousel .testimonial-page-highlight {
+  border-color: var(--color-surface);
+}
+.agent-results-carousel:focus-visible,
+.agent-results-carousel button:focus-visible {
+  outline: 0.125rem solid var(--color-focus);
+  outline-offset: 0.25rem;
+}
+@media (max-width: 47.999em) {
+  .agent-results-carousel {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .agent-results-carousel .testimonial-viewport {
+    grid-area: 1 / 1;
+  }
+  .agent-results-carousel .agent-results-controls {
+    display: contents;
+  }
+  .agent-results-carousel .testimonial-arrow {
+    display: grid;
+    grid-area: 1 / 1;
+    align-self: center;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+  .agent-results-carousel .testimonial-prev {
+    justify-self: start;
+    translate: -0.75rem 0;
+  }
+  .agent-results-carousel .testimonial-next {
+    justify-self: end;
+    translate: 0.75rem 0;
+  }
+  .agent-results-carousel .testimonial-pagination {
+    grid-area: 2 / 1;
+    margin-top: var(--space-6);
+  }
+  .agent-results-carousel .agent-result-surface {
+    padding: var(--space-8) var(--space-10);
+  }
+  .agent-results-carousel .agent-result-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+  .agent-results-carousel .agent-result-company {
+    padding: var(--space-4);
+  }
+  .agent-results-carousel .agent-result-wordmark {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-card);
+  }
+  .agent-results-carousel .agent-result-revenue {
+    margin-top: var(--space-4);
+  }
+  .agent-results-carousel .agent-results-controls {
+    gap: var(--space-3);
+  }
+  .agent-results-carousel .testimonial-pagination {
+    gap: var(--space-3);
+  }
+}
+.agent-results-carousel .agent-result-logo {
+  display: block;
+  width: min(100%, 12.5rem);
+  height: 5rem;
+  object-fit: contain;
+  object-position: left center;
+  margin-bottom: var(--space-6);
+}

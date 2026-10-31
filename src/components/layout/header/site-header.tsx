@@ -7,15 +7,33 @@ import { HeaderNavigation } from '@/components/layout/header/header-navigation';
 export function SiteHeader({
   section,
   homePath = '',
+  mobileVariant = homePath ? 'compact' : 'home',
 }: {
   section: SectionData;
   homePath?: string;
+  mobileVariant?: 'home' | 'compact';
 }) {
   const [open, setOpen] = useState(false);
   const toggle = useRef<HTMLButtonElement>(null);
   const header = useRef<HTMLElement>(null);
   useEffect(() => {
-    const desktop = matchMedia('(min-width: 90em)');
+    if (mobileVariant === 'home') return;
+    const close = () => setOpen(false);
+    window.addEventListener('scroll', close, { passive: true });
+    return () => window.removeEventListener('scroll', close);
+  }, [mobileVariant]);
+  useEffect(() => {
+    if (!open) return;
+    const escape = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      toggle.current?.focus();
+    };
+    document.addEventListener('keydown', escape);
+    return () => document.removeEventListener('keydown', escape);
+  }, [open]);
+  useEffect(() => {
+    const desktop = matchMedia('(min-width: 70.625em)');
     const sync = () => {
       const navigation = header.current?.querySelector<HTMLElement>('#mobile-navigation');
       if (navigation) navigation.inert = !desktop.matches && !open;
@@ -25,7 +43,7 @@ export function SiteHeader({
     return () => desktop.removeEventListener('change', sync);
   }, [open]);
   useEffect(() => {
-    const desktop = matchMedia('(min-width: 90em)');
+    const desktop = matchMedia('(min-width: 70.625em)');
     const close = () => setOpen(false);
     const outside = (event: PointerEvent) => {
       if (!header.current?.contains(event.target as Node)) close();
@@ -37,36 +55,10 @@ export function SiteHeader({
       document.removeEventListener('pointerdown', outside);
     };
   }, []);
-  useEffect(() => {
-    let frame = 0;
-    const sync = () => {
-      frame = 0;
-      const progress = Math.min(1, Math.max(0, window.scrollY / 180));
-      header.current?.style.setProperty('--header-collapse', String(progress));
-    };
-    const onScroll = () => {
-      setOpen(false);
-      if (!frame) frame = requestAnimationFrame(sync);
-    };
-    sync();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('pageshow', sync);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('pageshow', sync);
-    };
-  }, []);
   return (
     <header
       ref={header}
-      className={`site-header${open ? ' menu-open' : ''}`}
-      onKeyDown={(event) => {
-        if (event.key === 'Escape') {
-          setOpen(false);
-          toggle.current?.focus();
-        }
-      }}
+      className={`site-header${mobileVariant === 'home' ? ' site-header--home' : ''}${open ? ' menu-open' : ''}`}
     >
       <div className="header-frame">
         <Artwork

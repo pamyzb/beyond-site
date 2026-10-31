@@ -41,8 +41,6 @@
 }
 .section-heading-icon {
   display: block;
-  width: 0.875rem;
-  height: 0.875rem;
   flex-shrink: 0;
   mask: url('/assets/compartilhados/section-title-icon.svg') center/contain no-repeat;
 }
@@ -75,9 +73,7 @@
 .case-browser {
   border-radius: 1.5rem;
   background: var(--color-white);
-  box-shadow:
-    0 1.75rem 4.5rem -0.75rem #071a3d30,
-    0 0.5rem 1.5rem #071a3d14;
+  box-shadow: none;
   overflow: hidden;
 }
 .case-browser-toolbar {
@@ -267,11 +263,6 @@
 .case-navigation button:disabled {
   opacity: 0.25;
   cursor: default;
-}
-.case-tab {
-  transition:
-    background 0.25s,
-    color 0.25s;
 }
 .case-tab:hover:not([aria-selected='true']) {
   background: #ffffff70;
@@ -521,4 +512,48 @@
 .section-band > .section-clientes {
   background-color: var(--color-white);
   color: var(--color-black);
+}
+
+/* Incoming windows settle directly over the previous case. */
+.case-stack {
+  position: relative;
+  overflow: clip;
+  padding-bottom: 1.5rem;
+}
+.case-stack-card {
+  display: none;
+  position: absolute;
+  inset: 0 0 1.5rem;
+  visibility: hidden;
+  pointer-events: none;
+}
+.case-scroll-progress {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  overflow: hidden;
+  background: var(--color-primary-100);
+}
+.case-scroll-progress > span {
+  display: block;
+  height: 100%;
+  background: var(--color-action);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@media (min-width: 60em) and (min-height: 48em) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .case-stack-card,
+  .case-scroll-progress {
+    display: block;
+  }
+}
+
+.case-stack-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) var(--case-testimonial-height);
+  min-height: 0;
 }

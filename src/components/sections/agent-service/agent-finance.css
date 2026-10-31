@@ -1,0 +1,164 @@
+.agent-finance-demo {
+  overflow: hidden;
+  border: 0.0625rem solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  border-radius: 1.5rem;
+  background: var(--color-page);
+  color: var(--color-text);
+}
+.agent-finance-workspace {
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+.agent-finance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+.agent-finance-header p {
+  margin: 0;
+  font-size: var(--text-card);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-compact);
+  line-height: var(--leading-heading);
+}
+.agent-finance-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: var(--space-8);
+}
+.agent-finance-main {
+  min-width: 0;
+}
+.agent-finance-summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--section-heading-accent) 9%, var(--color-page));
+}
+.agent-finance-summary > span {
+  font-size: var(--text-small);
+  color: var(--color-text-subtle);
+}
+.agent-finance-total {
+  font-size: clamp(var(--text-title-lg), 3.5vw, var(--text-subheading));
+  line-height: var(--leading-heading);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-title);
+  color: var(--section-heading-accent);
+}
+.agent-finance-ledger {
+  margin-top: var(--space-6);
+  border: 0.0625rem solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  border-radius: var(--radius-card);
+  padding: var(--space-6);
+}
+.agent-finance-ledger-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+}
+.agent-finance-ledger-title > span {
+  margin-left: auto;
+  color: var(--color-text-subtle);
+  font-size: var(--text-caption);
+}
+.agent-finance-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-3);
+  padding-block: var(--space-6);
+  font-size: var(--text-small);
+}
+.agent-finance-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.agent-finance-row strong {
+  font-weight: var(--weight-medium);
+}
+.agent-finance-row > div > span {
+  font-size: var(--text-caption);
+  color: var(--color-text-subtle);
+}
+.agent-finance-status {
+  justify-self: start;
+  grid-column: 1 / -1;
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+  background: color-mix(in srgb, var(--section-heading-accent) 12%, var(--color-page));
+  color: var(--section-heading-accent);
+  font-size: var(--text-caption);
+}
+.agent-finance-demo[data-step='3'] .agent-finance-status {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+}
+.agent-finance-match {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-top: var(--space-4);
+  border-top: 0.0625rem solid color-mix(in srgb, var(--color-text) 12%, transparent);
+  font-size: var(--text-caption);
+  color: var(--color-text-subtle);
+}
+.agent-finance-match strong {
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}
+.agent-finance-visual {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+}
+.agent-finance-visual .case-project-image {
+  display: block;
+  width: 100%;
+  height: 28.75rem;
+  max-height: 28.75rem;
+  object-fit: cover;
+  object-position: 40% center;
+}
+@media (max-width: 48em) {
+  .agent-finance-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+  .agent-finance-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .agent-finance-visual .case-project-image {
+    height: auto;
+    max-height: none;
+    aspect-ratio: 689 / 510;
+  }
+  .agent-finance-demo .case-tab {
+    min-width: 2.75rem;
+    padding-inline: var(--space-3);
+    flex: 1;
+  }
+  .agent-finance-demo .case-tabs {
+    flex: 1;
+  }
+  .agent-finance-demo .case-browser-toolbar {
+    gap: var(--space-2);
+  }
+  .agent-finance-summary,
+  .agent-finance-ledger {
+    padding: var(--space-4);
+  }
+}
+@media (max-width: 24em) {
+  .agent-finance-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -212,33 +212,27 @@
 .header-cta img {
   flex-shrink: 0;
 }
-/* Start on the hero grid, then converge on the original compact header. */
+/* Keep glass and logo alignment stable at every scroll position. */
 .site-header {
-  --header-collapse: 0;
-  --header-glass: rgb(255 255 255 / calc(0.72 * var(--header-collapse)));
-  --header-border: rgb(255 255 255 / calc(0.65 * var(--header-collapse)));
+  --header-glass: rgb(255 255 255 / 0.72);
+  --header-border: rgb(255 255 255 / 0.65);
   --header-shadow: none;
-  --header-backdrop: blur(calc(1.5rem * var(--header-collapse)))
-    saturate(calc(100% + 80% * var(--header-collapse)));
+  --header-backdrop: blur(1.5rem) saturate(180%);
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .site-header {
-    --header-glass: rgb(255 255 255 / calc(0.96 * var(--header-collapse)));
+    --header-glass: rgb(255 255 255 / 0.96);
   }
 }
 
 .header-frame::before {
-  left: calc(3.75rem + 4.0625rem * var(--header-collapse));
-  right: calc(3.75rem + 4rem * var(--header-collapse));
+  left: 2rem;
   -webkit-backdrop-filter: var(--header-backdrop);
   backdrop-filter: var(--header-backdrop);
 }
 .header-frame > .figma-art,
 .brand-link {
-  translate: calc(-4.0625rem * (1 - var(--header-collapse))) 0;
-}
-.site-header .header-cta {
-  right: calc(6.25rem + 4rem * var(--header-collapse));
+  translate: -6.5625rem 0;
 }
 
 /* Header controls share one desktop row. The exported SVG remains a visual
@@ -251,9 +245,10 @@
   align-items: center;
   width: 100%;
   height: 5.4375rem;
-  padding: 0 4rem 0 10.3125rem;
+  padding: 0 3.75rem;
 }
 .header-content .brand-link {
+  translate: none;
   position: relative;
   left: auto;
   top: auto;

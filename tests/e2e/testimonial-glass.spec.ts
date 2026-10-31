@@ -1,8 +1,100 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Locator } from '@playwright/test';
 
+// Pinned sections above the carousel can refresh after the first scroll.
+// Recompute its actual document position until the intended viewport is reached.
+async function revealCarousel(carousel: Locator) {
+  await expect
+    .poll(async () =>
+      carousel.evaluate((element) => {
+        const bounds = element.getBoundingClientRect();
+        const target = Math.max(0, (innerHeight - Math.min(bounds.height, innerHeight)) / 2);
+        if (Math.abs(bounds.top - target) > 3) {
+          window.scrollTo({ top: scrollY + bounds.top - target, behavior: 'instant' });
+          return false;
+        }
+        return bounds.bottom > 0 && bounds.top < innerHeight;
+      }),
+    )
+    .toBe(true);
+  await expect(carousel.locator('.testimonial-viewport')).toHaveCSS('opacity', '1');
+}
 type Metrics = { draws: number; uploads: number; contexts: number };
 type Instrumented = Window & { glassMetrics: Metrics };
 type FailedGpu = Window & { failedGpu: { checks: number; deletedTextures: number } };
+
+test('compact glass enters the card edges during navigation and returns to a crisp resting card', async ({
+  page,
+}) => {
+  test.skip((page.viewportSize()?.width ?? 1440) >= 960, 'Compact layout only');
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
+  const carousel = page.getByRole('region', { name: 'Depoimentos de clientes', exact: true });
+  await revealCarousel(carousel);
+  await carousel.getByRole('button', { name: 'Próximo depoimento', exact: true }).focus();
+  await expect(carousel).toHaveAttribute('data-glass-renderer', 'webgl');
+  const window = carousel.locator('.testimonial-reading-window');
+  await expect(carousel.locator('.testimonial-video-poster')).toHaveCSS('filter', 'none');
+  expect(
+    await carousel
+      .locator('.testimonial-text')
+      .first()
+      .evaluate((el) => getComputedStyle(el, '::before').filter),
+  ).toBe('none');
+  const peak = await carousel.evaluate(
+    (el) =>
+      new Promise<number>((resolve) => {
+        const reading = el.querySelector<HTMLElement>('.testimonial-reading-window')!;
+        let peak = 0;
+        let frame = 0;
+        const inspect = () => {
+          peak = Math.max(
+            peak,
+            parseFloat(reading.style.getPropertyValue('--testimonial-lens-inset')) || 0,
+          );
+          frame = requestAnimationFrame(inspect);
+        };
+        el.querySelector<HTMLButtonElement>('.testimonial-next')!.click();
+        frame = requestAnimationFrame(inspect);
+        setTimeout(() => {
+          cancelAnimationFrame(frame);
+          resolve(peak);
+        }, 1400);
+      }),
+  );
+  expect(
+    peak,
+    'Refraction reaches inside narrow cards instead of disappearing beyond the screen',
+  ).toBeGreaterThan(45);
+  await expect(window).toHaveCSS('--testimonial-lens-inset', '0px');
+});
+
+test('compact testimonial cards share attribution size and preserve desktop artwork', async ({
+  page,
+}) => {
+  test.skip((page.viewportSize()?.width ?? 1440) >= 960, 'Compact layout only');
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
+  const carousel = page.getByRole('region', { name: 'Depoimentos de clientes', exact: true });
+  await revealCarousel(carousel);
+  const layout = await carousel.evaluate((element) => {
+    const text = element.querySelector<HTMLElement>('.testimonial-text')!;
+    const video = element.querySelector<HTMLElement>('.testimonial-video')!;
+    const card = text.getBoundingClientRect();
+    const quote = text.querySelector('blockquote')!.getBoundingClientRect();
+    const person = text.querySelector('.testimonial-person')!.getBoundingClientRect();
+    return {
+      textName: getComputedStyle(text.querySelector('strong')!).fontSize,
+      videoName: getComputedStyle(video.querySelector('strong')!).fontSize,
+      mark: getComputedStyle(text, '::before').backgroundImage,
+      markSize: getComputedStyle(text, '::before').backgroundSize,
+      contentFits: quote.top >= card.top && person.bottom <= card.bottom,
+    };
+  });
+  expect(layout.textName).toBe(layout.videoName);
+  expect(layout.mark).toContain('/assets/depoimentos/testimonial-outline.svg');
+  expect(layout.markSize).toContain('85% auto');
+  expect(layout.contentFits).toBe(true);
+});
 
 test('failed GPU draws release textures and stop retrying while HTML navigation continues', async ({
   page,
@@ -22,12 +114,8 @@ test('failed GPU draws release textures and stop retrying while HTML navigation 
   });
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
-  const desktop = await page.evaluate(
-    () => matchMedia('(min-width:60em) and (hover:hover) and (pointer:fine)').matches,
-  );
-  test.skip(!desktop, 'WebGL is only initialized on desktop');
   const carousel = page.getByRole('region', { name: 'Depoimentos de clientes', exact: true });
-  await carousel.scrollIntoViewIfNeeded();
+  await revealCarousel(carousel);
   const next = carousel.getByRole('button', { name: 'Próximo depoimento', exact: true });
   await next.focus();
   const metrics = () => page.evaluate(() => (window as unknown as FailedGpu).failedGpu);
@@ -85,14 +173,11 @@ test('GPU glass remains continuous during navigation, caches textures and keeps 
   const track = carousel.locator('.testimonial-track');
   const stage = carousel.locator('.testimonial-viewport');
   const next = carousel.getByRole('button', { name: 'Próximo depoimento', exact: true });
-  await carousel.scrollIntoViewIfNeeded();
+  await revealCarousel(carousel);
   await next.focus();
-  const desktop = await page.evaluate(
-    () => matchMedia('(min-width:60em) and (hover:hover) and (pointer:fine)').matches,
-  );
   await expect(track).toHaveCSS('filter', 'none');
   await expect(carousel.locator('feDisplacementMap')).toHaveCount(0);
-  if (desktop) {
+  {
     await expect(carousel).toHaveAttribute('data-glass-renderer', 'webgl');
     await expect(canvas).toBeVisible();
     await expect(stage).toHaveCSS('opacity', '1');
@@ -202,19 +287,16 @@ test('GPU glass remains continuous during navigation, caches textures and keeps 
     await expect(canvas).toBeVisible();
     await page.locator('#inicio').scrollIntoViewIfNeeded();
     await expect(canvas).toBeHidden();
-    await carousel.scrollIntoViewIfNeeded();
+    await revealCarousel(carousel);
     await expect(canvas).toBeVisible();
     expect((await metrics()).uploads).toBe(2);
-  } else {
-    await expect(canvas).toBeHidden();
-    expect((await metrics()).contexts).toBe(0);
   }
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(canvas).toBeHidden();
   await next.click();
   await expect(carousel.locator('.testimonial-slide[aria-hidden="false"]')).toHaveAttribute(
     'aria-label',
-    desktop ? /^3 de 3/ : /^2 de 3/,
+    /^3 de 3/,
   );
   expect(errors).toEqual([]);
 });
@@ -231,7 +313,7 @@ test('carousel remains readable and navigable without WebGL', async ({ page }) =
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
   const carousel = page.getByRole('region', { name: 'Depoimentos de clientes', exact: true });
-  await carousel.scrollIntoViewIfNeeded();
+  await revealCarousel(carousel);
   await expect(carousel.locator('canvas')).toBeHidden();
   await expect(carousel.locator('.testimonial-track')).toHaveCSS('clip-path', 'none');
   await expect(carousel.locator('.testimonial-reading-window')).toHaveCSS('mask-image', 'none');
@@ -248,7 +330,7 @@ test('HTML fallback preview disables only testimonial glass and remains navigabl
   await page.goto('/?testimonialGlass=off');
   await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
   const carousel = page.getByRole('region', { name: 'Depoimentos de clientes', exact: true });
-  await carousel.scrollIntoViewIfNeeded();
+  await revealCarousel(carousel);
   const next = carousel.getByRole('button', { name: 'Próximo depoimento', exact: true });
   await next.focus();
   await expect(carousel).toHaveAttribute('data-glass-renderer', 'fallback');
@@ -271,7 +353,7 @@ test('GPU context loss restores the HTML carousel', async ({ page }, info) => {
   await page.goto('/');
   await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
   const carousel = page.getByRole('region', { name: 'Depoimentos de clientes', exact: true });
-  await carousel.scrollIntoViewIfNeeded();
+  await revealCarousel(carousel);
   await carousel.getByRole('button', { name: 'Próximo depoimento', exact: true }).focus();
   await expect(carousel).toHaveAttribute('data-glass-renderer', 'webgl');
   await carousel.locator('canvas').evaluate((canvas) => {

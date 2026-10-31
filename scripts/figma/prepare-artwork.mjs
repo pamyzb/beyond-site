@@ -10,6 +10,7 @@ import { processFragments } from './process-fragments.mjs';
 import { normalizePhoneScreens } from './normalize-phone-screens.mjs';
 import { annotateArtworkRoles } from './artwork-roles.mjs';
 import { replaceConversationPhotos } from './conversation-photos.mjs';
+import { replaceAppScreens } from './replace-app-screens.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 if (process.argv.includes('--clean-export')) {
@@ -60,9 +61,18 @@ await writeGeneratedFile(
   ),
 );
 const uniqueAssets = new Map();
+const appScreens = Object.fromEntries(
+  await Promise.all(
+    ['CORRETO1', 'CORRETO2'].map(async (name) => [
+      name,
+      await readFile(path.join(root, 'public/assets/aplicativo', name), 'utf8'),
+    ]),
+  ),
+);
 let sharedFontFaces = 0;
 for (const [key, input] of Object.entries(inputs)) {
   let source = await readFile(path.join(root, 'public', input), 'utf8');
+  source = replaceAppScreens(source, appScreens);
   if (key === 'conversation') source = pruneSvgDefs(replaceConversationPhotos(source)).svg;
   const shared = stripSharedSvgFonts(source, sharedFonts);
   sharedFontFaces += shared.removedFonts;

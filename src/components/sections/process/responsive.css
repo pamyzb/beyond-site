@@ -30,6 +30,9 @@
 }
 
 @media (max-width: 59.999em) {
+  .section-processo .process-marker-layer {
+    z-index: 0;
+  }
   .section-processo .section-content--processo {
     grid-template-columns: minmax(0, 1fr);
     row-gap: 3rem;

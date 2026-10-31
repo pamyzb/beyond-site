@@ -1,5 +1,5 @@
 /* Section-owned rules; import position preserves the V1 cascade. */
-@media (min-width: 60em) and (prefers-reduced-motion: no-preference) {
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .services-editorial .services-stage {
     min-height: calc(100svh - 6rem);
   }
