@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('application cards stay centered after navigation and resize', async ({ page }) => {
   await page.goto('/colaboradores-agenticos/');
   const stage = page.locator('.circular-carousel-stage');
-  const card = page.locator('.circular-carousel-card[data-active="true"]');
+  const card = stage.locator('.circular-carousel-card[data-active="true"]');
   for (const width of [390, 320, 768, 1440]) {
     await page.setViewportSize({ width, height: 930 });
     for (let index = 0; index < 4; index++) {
@@ -58,13 +58,13 @@ test('service integrates Home navigation, local anchors and static metadata', as
   await page.getByRole('link', { name: 'Conhecer os resultados', exact: true }).click();
   await expect(page).toHaveURL(/#resultados$/);
   await page.getByRole('button', { name: 'Próxima aplicação', exact: true }).click();
-  await expect(page.locator('.circular-carousel-card[data-active="true"]')).toContainText(
-    'Pedidos e atendimento',
-  );
+  await expect(
+    page.locator('.circular-carousel-stage .circular-carousel-card[data-active="true"]'),
+  ).toContainText('Pedidos e atendimento');
   await page.getByRole('button', { name: 'Próxima aplicação', exact: true }).press('ArrowLeft');
-  await expect(page.locator('.circular-carousel-card[data-active="true"]')).toContainText(
-    'Financeiro e faturamento',
-  );
+  await expect(
+    page.locator('.circular-carousel-stage .circular-carousel-card[data-active="true"]'),
+  ).toContainText('Financeiro e faturamento');
   for (const width of [1449, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 930 });
     expect(
@@ -113,10 +113,11 @@ test('approved service journey, illustrative cases and financial reconciliation'
     'eficiencia',
     'contratacao-e-entrega',
   ]);
-  const carousel = page.getByRole('region', { name: 'Cases ilustrativos' });
+  const carousel = page.locator('.agent-results-carousel');
   await carousel.scrollIntoViewIfNeeded();
-  await expect(carousel.locator('article[aria-hidden="false"]')).toContainText(
-    'Distribuidora Exemplo A',
+  await expect(carousel.locator('article[aria-hidden="false"]')).toHaveAttribute(
+    'aria-label',
+    /Grup Mediapro/,
   );
   const slideBounds = await carousel.locator('article').evaluateAll((slides) =>
     slides.map((slide) => {
@@ -127,12 +128,14 @@ test('approved service journey, illustrative cases and financial reconciliation'
   expect(slideBounds[1].left).toBeGreaterThan(slideBounds[0].right);
   expect(slideBounds[2].right).toBeLessThan(slideBounds[0].left);
   await carousel.getByRole('button', { name: 'Próximo case', exact: true }).click();
-  await expect(carousel.locator('article[aria-hidden="false"]')).toContainText(
-    'Indústria Exemplo B',
+  await expect(carousel.locator('article[aria-hidden="false"]')).toHaveAttribute(
+    'aria-label',
+    /CM Capital/,
   );
   await carousel.getByRole('button', { name: 'Próximo case', exact: true }).press('ArrowLeft');
-  await expect(carousel.locator('article[aria-hidden="false"]')).toContainText(
-    'Distribuidora Exemplo A',
+  await expect(carousel.locator('article[aria-hidden="false"]')).toHaveAttribute(
+    'aria-label',
+    /Grup Mediapro/,
   );
   await expect(page.locator('.agent-finance-demo')).toContainText('Conciliado');
   await expect(page.locator('.agent-finance-demo')).toContainText('R$ 1.250,00');
@@ -143,11 +146,12 @@ test('illustrative cases support pagination and drag without video controls', as
   await page.route('https://prod.spline.design/**', (route) => route.abort());
   await page.goto('/colaboradores-agenticos/', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('html')).toHaveAttribute('data-ready', 'true', { timeout: 30_000 });
-  const carousel = page.getByRole('region', { name: 'Cases ilustrativos', exact: true });
+  const carousel = page.locator('.agent-results-carousel');
   await carousel.scrollIntoViewIfNeeded();
-  await carousel.getByRole('button', { name: 'Case 3: Comércio Exemplo C', exact: true }).click();
-  await expect(carousel.locator('article[aria-hidden="false"]')).toContainText(
-    'Comércio Exemplo C',
+  await carousel.getByRole('button', { name: 'Case 3: Superpet', exact: true }).click();
+  await expect(carousel.locator('article[aria-hidden="false"]')).toHaveAttribute(
+    'aria-label',
+    /Superpet/,
   );
   const viewport = carousel.locator('.testimonial-viewport');
   const bounds = (await viewport.boundingBox())!;
@@ -157,8 +161,9 @@ test('illustrative cases support pagination and drag without video controls', as
   await page.mouse.down();
   await page.mouse.move(x - bounds.width * 0.7, y, { steps: 12 });
   await page.mouse.up();
-  await expect(carousel.locator('article[aria-hidden="false"]')).toContainText(
-    'Distribuidora Exemplo A',
+  await expect(carousel.locator('article[aria-hidden="false"]')).toHaveAttribute(
+    'aria-label',
+    /Grup Mediapro/,
   );
   await expect(carousel.locator('video, .testimonial-play')).toHaveCount(0);
 });

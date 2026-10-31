@@ -10,7 +10,7 @@ test('compact home keeps credibility and contact actions while removing requeste
   await expect(metric).toContainText('Top 3');
   await expect(metric.getByAltText('Softdex')).toBeVisible();
   await expect(page.locator('.impact-press .impact-media-link')).toHaveAttribute('href', '#blog');
-  await expect(page.locator('.impact-press .impact-press-logos')).toBeVisible();
+  await expect(page.locator('.impact-press .media-logo-trigger').first()).toBeVisible();
   await expect(page.locator('.impact-press .media-logo-trigger')).toHaveCount(3);
   for (const logo of await page.locator('.impact-press .media-logo-trigger img').all()) {
     expect((await logo.boundingBox())!.width).toBeGreaterThan(40);
@@ -31,7 +31,7 @@ test('compact home keeps credibility and contact actions while removing requeste
   expect(gaps[1]).toBeCloseTo(24, 0);
 });
 
-test('narrow computer can drag services and still open the service link', async ({
+test('narrow computer scrolls through services and still opens the service link', async ({
   browser,
   baseURL,
 }) => {
@@ -41,13 +41,12 @@ test('narrow computer can drag services and still open the service link', async 
   await expect(page.locator('html')).toHaveAttribute('data-ready', 'true');
   const carousel = page.locator('#services-carousel');
   await carousel.scrollIntoViewIfNeeded();
-  const box = await carousel.boundingBox();
-  expect(box).not.toBeNull();
-  await page.mouse.move(box!.x + 300, box!.y + 200);
-  await page.mouse.down();
-  await page.mouse.move(box!.x + 50, box!.y + 200, { steps: 12 });
-  await page.mouse.up();
-  await expect.poll(() => carousel.evaluate((element) => element.scrollLeft)).toBeGreaterThan(100);
+  await expect(carousel).toHaveClass(/is-scroll-driven/);
+  const initial = await carousel.evaluate((element) => element.scrollLeft);
+  await page.evaluate(() => window.scrollBy({ top: 400, behavior: 'instant' }));
+  await expect
+    .poll(() => carousel.evaluate((element) => element.scrollLeft))
+    .toBeGreaterThan(initial + 100);
   await carousel.focus();
   await page.keyboard.press('Home');
   await expect.poll(() => carousel.evaluate((element) => element.scrollLeft)).toBeLessThan(2);
